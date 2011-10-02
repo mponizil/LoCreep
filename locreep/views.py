@@ -197,7 +197,7 @@ def myGroups(request):
     for i in groups:
         if rows%4==0:
             html+='<tr>'
-        html+='<td><a href="/group/?id='+str(i.id)+'/"><img src = "'+str(i.photo)+'" style="height:50px;width:50px"></a></td>'
+        html+='<td><a href="/group/?id='+str(i.id)+'"><img src = "'+str(i.photo)+'" style="height:50px;width:50px"></a></td>'
 
         if rows%4==3:
             html += '</tr>'
