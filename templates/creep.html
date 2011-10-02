@@ -10,7 +10,6 @@ var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|
 var socket = io.connect('http://localhost:3000/');
 socket.emit('init', { conversation_id: {{ conversation_id }} })
 socket.on('message', function(data) {
-  console.log(data);
   // add message to the page
   if(data.user_type == 'creep') {
     var message = (data.message.match(/\.mp3/)) ? '<a href="' + data.message + '">Voicemail</a>' : data.message;
@@ -98,7 +97,7 @@ function submit_msg() {
 	
 	<div class="chat_form" id="action_buttons">
 		<a class="small blue awesome" id="to_tumblr">To Tumblr</a>
-		<a class="small orange awesome">QR</a>
+		<a class="small orange awesome" href="{{ qr }}" target="_blank">QR</a>
 		<a class="small red awesome" href="/myGroups/">Back</a>
 	</div>
 	

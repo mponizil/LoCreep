@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 from tumblr import Api
 import urllib
 import urllib2
+import json
 
 domain_name = "http://3pyv.localtunnel.com"
 
@@ -173,7 +174,12 @@ def creep(request, creep_id):
     
     messages = Message.objects.filter(conversation=conversations[0]).order_by('-id')
     
-    return render_to_response("creep.html", { 'conversation_id': conversations[0].id, 'creep': creep, 'messages': messages })
+    longUrl = urllib.quote_plus('http://locreep.com/creep/' + str(conversations[0].id))
+    f = urllib2.urlopen('http://api.bitly.com/v3/shorten?login=afcampa&apiKey=R_a2e5411ee02dc84186802a509dfb4ced&longUrl='+longUrl+'%2F&format=json')
+    a=json.loads(f.read())
+    qr = a['data']['url']+'.qrcode'
+    
+    return render_to_response("creep.html", { 'conversation_id': conversations[0].id, 'creep': creep, 'messages': messages, 'qr': qr })
 
 @csrf_exempt
 @require_POST
