@@ -17,9 +17,6 @@ client = TwilioRestClient(account, token)
 def welcome(request):
     return HttpResponse("wassup")
 
-def phone(request):
-    return HttpResponse("phone")
-
 @csrf_exempt
 @require_POST
 def text(request):

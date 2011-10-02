@@ -3,7 +3,6 @@ from locreep import views
 
 urlpatterns = patterns('',
 	(r'^$', views.welcome),
-	(r'^phone/$', views.phone),
 	(r'^text/$', views.text),
 	
     #(r'^create/$', views.create),

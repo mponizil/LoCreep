@@ -34,10 +34,11 @@ class Conversation(models.Model):
         return self.id
 
 class Message(models.Model):
-    conversation_id = models.ForeignKey(Conversation)
+    conversation = models.ForeignKey(Conversation)
     user_type = models.CharField(max_length=10)
     user = models.ForeignKey(User, null=True)
     creep = models.ForeignKey(Creep, null=True)
+    body = models.TextField()
 
     def __unicode__(self):
         return self.id
