@@ -14,6 +14,7 @@ def phone(request):
     return HttpResponse("phone")
 
 def text(request):
+    print 'here'
     print request
     # message = client.sms.messages.create(to="+17608463179",
     #                                      from_="+13475148471",
