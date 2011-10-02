@@ -88,3 +88,15 @@ def phone(request):
     r.say("hello")
     r.record(action=domain_name+"/save_creepy_voice/", method="GET")
     return HttpResponse(str(r))
+
+#def tumblr_text(request):
+def tumblr_text(request, title, body):
+#    title = "html post"
+#    body = "<p style='color:green'> paragraph </p> <center> centered stuff </center>"
+
+    title = urlparse.unquote(title)
+    body = urlparse.unquote(body)
+
+    api = Api(BLOG,USER,PASSWORD)
+    post = api.write_regular(title,body)
+    return HttpResponse(title + "\n" + body)
