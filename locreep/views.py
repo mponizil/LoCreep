@@ -2,6 +2,7 @@ from locreep import models
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from twilio.rest import TwilioRestClient
+from twilio import twiml
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -21,23 +22,26 @@ def twilio(request):
     #                                      body="Hello!"
     return HttpResponse(str(request.POST)+"hello")
 def xml(request):
-    return render_to_response('myGroups.xml')
-    
+
+    from twilio import twiml
+
+    r = twiml.Response()
+    r.say("Hello")
+    return HttpResponse(str(r))
+
+
 def myGroups(request):
-    context={}
-    return render_to_response('myGroups.xml', context, context_instance=RequestContext(request))
-    #                                      body="Hello!")
 	
     # call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://foo.com/call.xml")
     # print call.length
     # print call.sid
 	
-    call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://foo.com/call.xml")
+    call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://locreep.com/test_site/xml/")
 	
-    sid = call.sid
-    call = client.calls.get(sid)
+    # sid = call.sid
+    # call = client.calls.get(sid)
 	
-    print call.notifications.list()
-    print call.recordsings.list()
-    print call.transcriptions.list()
+    # print call.notifications.list()
+    # print call.recordsings.list()
+    # print call.transcriptions.list()
     return HttpResponse(request)
