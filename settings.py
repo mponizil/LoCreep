@@ -12,27 +12,24 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'djangostack',
-#        'HOST': '/opt/bitnami/postgresql',
-#        'PORT': '5432',
-#        'USER': 'bitnami',
-#        'PASSWORD': '485d689220'
-#    }
-# }
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       'NAME': 'djangostack',
+       'HOST': '/opt/bitnami/postgresql',
+       'PORT': '5432',
+       'USER': 'bitnami',
+       'PASSWORD': '485d689220'
+   }
+}
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.dirname(__file__)+'locreep.db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'NAME': os.path.join(os.path.dirname(__file__), 'locreep.db')
     }
 }
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
