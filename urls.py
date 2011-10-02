@@ -5,6 +5,7 @@ admin.autodiscover()
 from locreep import views
 
 urlpatterns = patterns('',
+	(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
 	(r'^$', views.welcome),
 	(r'^text/$', views.text),
 	
