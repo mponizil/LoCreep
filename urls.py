@@ -13,10 +13,11 @@ urlpatterns = patterns('',
     #(r'^confirmInvite/(\d{1,2})/$', views.confirmInvite),
     (r'^user_message/$', views.user_message),
     
-	(r'^twilio/$', views.twilio),
-	(r'^myGroups/$', views.myGroups),
 	(r'^xml/$', views.xml),
 	(r'^call/$', views.call),
+
+	(r'^save_creepy_voice/$', views.save_creepy_voice),
+	(r'^phone/$', views.phone),
 	
 	#(r'^search/$', views.search),
 	#(r'^groups/$', views.groups),
