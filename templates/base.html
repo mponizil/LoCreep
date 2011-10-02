@@ -6,16 +6,23 @@
 	
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
+  <link href="/static/reset.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/static/page.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/static/chat.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/static/awesome_btn.css" media="screen" rel="stylesheet" type="text/css" />
+
   <title>Locreep</title>
 	
 </head>
 
 <body>
 
-<div id="container">
+<div id="whole_page">
+  <div id="header">header</div>
 	
 	{% block content %}{% endblock %}
 	
+	<div id="footer">footer</div>
 </div>
 
 </body>

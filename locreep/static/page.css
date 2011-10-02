@@ -1,0 +1,56 @@
+#summary{
+	width: 100%;
+	float: left;
+	border-bottom: 3px solid red;
+}
+
+.other_info{
+	float: left;
+    padding-top: 3px;
+	padding-bottom: 5px;
+    width: 200px;
+}
+
+.phone{
+	float: left;
+	font-size: 15px;
+	color: #6E6965;	
+	padding: 7px 0;
+}
+h2.creep_name{
+	font-size: 30px;
+    font-weight: bold;
+}
+.creep_details{
+	float: left;
+	width: 200px;
+	margin-left: 10px;
+}
+.creep_pic{
+	float: left;
+	width: 200px;
+	padding: 4px 11px 0 0;
+}
+.creep_pic img{
+	border: 1px solid #aaa;
+}
+
+/* width is the variable */
+#whole_page {
+  	width: 320px;
+	margin: auto;
+	position: relative;
+	border: 1px solid #ddd;
+}
+#content{
+}
+#header{
+	border: 1px solid #ddd;
+}
+#footer {
+	clear: both;
+	border: 1px solid #ddd;
+}
+body{
+	font-family: "HelveticaNeue","Helvetica Neue","HelveticaNeueRoman","HelveticaNeue-Roman","Helvetica Neue Roman","TeXGyreHerosRegular","Helvetica","Tahoma","Geneva","Arial",sans-serif;
+}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="/static/application.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|addslashes }}', body: '{{ message.body|addslashes }}' },{% endfor %}];
+
+var socket = io.connect('http://localhost:3000/');
+socket.emit('init', { conversation_id: {{ conversation_id }} })
+socket.on('message', function(data) {
+  // add message to the page
+  if(data.user_type == 'creep') {
+    $("#top_form").after($('<div class="bubble right">		  <div class="chat-bubble gray-bubble">			<div class="chat-bubble-glare"></div>			<p class="lemon">' + data.message + '</p>			<div class="chat-bubble-arrow-border-gray"></div>			<div class="chat-bubble-arrow-gray"></div>		  </div>	  		</div>'));
+  } else {
+    $("#top_form").after($('<div class="bubble left">			<div class="chat-bubble green-bubble">				<div class="chat-bubble-glare"></div>				<p class="lemon">' + data.message + '</p>				<div class="chat-bubble-arrow-border-green"></div>				<div class="chat-bubble-arrow-green"></div>			</div>		</div>'));
+  }
+})
+
+$(function() {
+  $("#send_message").submit(submit_msg)
+  $("#make_post").click(submit_msg)
+  
+  $("#to_tumblr").click(function() {
+    var all_messages = "";
+    for(i in messages) {
+      var user_type = (messages[i].user_type == 'user') ? 'Babe' : 'Creep';
+      all_messages += "<strong>" + user_type + "</strong>" + ": " + messages[i].body + "<br />";
+    }
+    $.post("/tumblr_text/", { conversation_id: {{ conversation_id }}, title: messages[0].body, body: all_messages })
+  })
+})
+
+function submit_msg() {
+  var body = $("input[name='msg']").val();
+  $.post("/user_message/", { conversation_id: {{ conversation_id }}, body: body })
+  return false;
+}
+</script>
+
+<div id="content">		
+	
+	<div id="summary">
+		<div class="creep_pic"><img src="/static/hackny.jpg"></div>
+		<div class="creep_details">
+			<h2 class="creep_name">{{ creep.name }}</h2>
+			<p class="phone">{{ creep.phone }}</p>
+			<!-- <ul class="other_info">other info!</ul> -->
+		</div>
+	</div>
+	
+	<div id="chat">
+		
+		<div class="chat_form" id="top_form">
+			<form action="form_action" method="post" id="send_message">
+			  <input class="msg_form_field"  type="text" name="msg"/>
+			  <a class="medium red awesome chat_profile_btn" id="make_post">Post</a>
+			</form>
+		</div>
+		
+		{% for message in messages %}
+		  
+		  {% if message.user_type == 'creep' %}
+		  <div class="bubble right">
+  		  <div class="chat-bubble gray-bubble">
+  			<div class="chat-bubble-glare"></div>
+  			<p class="lemon">{{ message.body }}</p>
+  			<div class="chat-bubble-arrow-border-gray"></div>
+  			<div class="chat-bubble-arrow-gray"></div>
+  		  </div>	  
+  		</div>
+  		{% else %}
+  		<div class="bubble left">
+  			<div class="chat-bubble green-bubble">
+  				<div class="chat-bubble-glare"></div>
+  				<p class="lemon">{{ message.body }}</p>
+  				<div class="chat-bubble-arrow-border-green"></div>
+  				<div class="chat-bubble-arrow-green"></div>
+  			</div>
+  		</div>
+  		{% endif %}
+		  
+		{% endfor %}	
+		
+	</div>
+	
+	<div class="chat_form">
+		<a class="small blue awesome" id="to_tumblr">To Tumblr</a>
+		<a class="small orange awesome">QR</a>
+		<a class="small red awesome">Back</a>
+	</div>
+</div>
+
+{% endblock %}

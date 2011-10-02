@@ -12,15 +12,16 @@ urlpatterns = patterns('',
     #(r'^myGroups/$', views.myGroups),
     #(r'^confirmInvite/(\d{1,2})/$', views.confirmInvite),
     
-    (r'^chat/$', views.chat),
+    (r'^creep/(\d+)$', views.creep),
     (r'^user_message/$', views.user_message),
 
 	(r'^save_creepy_voice/$', views.save_creepy_voice),
 	(r'^phone/$', views.phone),
 	
+	(r'^tumblr_text/$', views.tumblr_text),
+	
 	#(r'^search/$', views.search),
 	#(r'^groups/$', views.groups),
 	#(r'^creeps/$', views.creeps),
     url(r'^admin/', include(admin.site.urls)),
-	(r'^tumblr_text/(.*)/(.*)$', views.tumblr_text),
 )

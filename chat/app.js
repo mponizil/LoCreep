@@ -22,9 +22,7 @@ app.configure('production', function(){
 var io = require('socket.io').listen(app);
 io.set('log level',2);
 
-var chat = io.of('/chat');
-
-chat.on('connection', function(socket) {
+io.sockets.on('connection', function(socket) {
   
   socket.on('init', function(data) {
     socket.join(data.conversation_id)
@@ -42,6 +40,7 @@ app.post('/message', function(req, res){
   io.sockets.in(conversation_id).emit('message', { user_type: user_type, message: message })
   
   res.write('{success:true}');
+  res.end();
 });
 
 app.listen(3000);

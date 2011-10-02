@@ -9,17 +9,19 @@ from twilio import twiml
 from django.views.decorators.csrf import csrf_exempt
 from django.core.context_processors import csrf
 from django.views.decorators.http import require_POST
+from tumblr import Api
 import urllib
 import urllib2
 
-domain_name = "http://3bbq.localtunnel.com"
-
-# from django.views.decorators.http import require_POST
-
+domain_name = "http://4th3.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
 client = TwilioRestClient(account, token)
+
+BLOG = "locreep.tumblr.com"
+USER = "locreep@mailinator.com"
+PASSWORD = "locreep"
 
 def welcome(request):
     return HttpResponse("wassup")
@@ -30,6 +32,10 @@ def text(request):
     creep_phone = request.POST.get('From')
     group_phone = request.POST.get('To')
     body = request.POST.get('Body')
+    
+    # creep_phone = '+17608463179'
+    # group_phone = '+13475148471'
+    # body = 'sup'
 
     # check if it's from a creep we know
     try:
@@ -56,7 +62,7 @@ def text(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://localhost:3000/message'
+    url = 'http://localhost:3000/message/'
     values = {'conversation_id' : conversation.id,
               'user_type' : 'creep',
               'message' : body }
@@ -66,7 +72,7 @@ def text(request):
     the_page = response.read()
     
     # send reply
-    sms = client.sms.messages.create(to = creep_phone, from_ = group_phone, body = "lol you're funny!")
+    # sms = client.sms.messages.create(to = creep_phone, from_ = group_phone, body = "lol you're funny!")
     
     return HttpResponse('{success:true}')
 
@@ -105,14 +111,17 @@ def phone(request):
 @csrf_exempt
 def user_message(request):
     conversation_id = request.POST.get('conversation_id')
-    conversation = Conversation.objects.get(id=conversation_id)
+    try:
+        conversation = Conversation.objects.get(id=conversation_id)
+    except Conversation.DoesNotExist:
+        return HttpResponse('no conversation')
     user = request.user
     body = request.POST.get('body')
     
-    message = Message(conversation=conversation,user_type='user',user=user,body=body)
+    message = Message(conversation=conversation,user_type='user',body=body)
     message.save()
-
-    url = 'http://localhost:3000/message'
+    
+    url = 'http://localhost:3000/message/'
     values = {'conversation_id' : conversation_id,
               'user_type' : 'user',
               'message' : body }
@@ -121,19 +130,29 @@ def user_message(request):
     response = urllib2.urlopen(req)
     the_page = response.read()
     
+    sms = client.sms.messages.create(to = conversation.creep.phone, from_ = conversation.group.phone, body = body)
+    
     return HttpResponse('{success:true}')
 
-def chat(request):
-    return render_to_response("chat.html")
+def creep(request, creep_id):
+    try:
+        creep = Creep.objects.get(id=creep_id)
+    except Creep.DoesNotExist:
+        return HttpResponse("no creep found")
+    
+    conversations = Conversation.objects.filter(creep=creep)
+    
+    messages = Message.objects.filter(conversation=conversations[0])
+    
+    return render_to_response("creep.html", { 'conversation_id': conversations[0].id, 'creep': creep, 'messages': messages })
 
-#def tumblr_text(request):
-def tumblr_text(request, title, body):
-#    title = "html post"
-#    body = "<p style='color:green'> paragraph </p> <center> centered stuff </center>"
-
-    title = urlparse.unquote(title)
-    body = urlparse.unquote(body)
-
+@csrf_exempt
+@require_POST
+def tumblr_text(request):
+    conversation_id = request.POST.get('conversation_id')
+    title = request.POST.get('title')
+    body = request.POST.get('body')
+    
     api = Api(BLOG,USER,PASSWORD)
-    post = api.write_regular(title,body)
+    post = api.write_regular(title, body)
     return HttpResponse(title + "\n" + body)
