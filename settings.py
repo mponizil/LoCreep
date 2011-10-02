@@ -23,12 +23,12 @@ DATABASES = {
    }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(os.path.dirname(__file__), 'locreep.db')
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(os.path.dirname(__file__), 'locreep.db')
+#    }
+#}
 
 
 # Local time zone for this installation. Choices can be found here:

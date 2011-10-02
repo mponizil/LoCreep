@@ -156,3 +156,68 @@ def tumblr_text(request):
     api = Api(BLOG,USER,PASSWORD)
     post = api.write_regular(title, body)
     return HttpResponse(title + "\n" + body)
+
+def myGroups(request):
+    html=''
+
+    html+='<b>Groups</b>'
+
+    groups = Group.objects.filter(users=request.user) #lets say this is all groups i belong to
+    rows=0
+    html+='<table>'
+    for i in groups:
+        if rows%4==0:
+            html+='<tr>'
+        html+='<td><a href="/group/?id='+str(i.id)+'/"><img src = "'+str(i.photo)+'" style="height:50px;width:50px"></a></td>'
+
+        if rows%4==3:
+            html += '</tr>'
+
+        rows+=1
+    if rows%4!=0:
+        html += '</tr>'
+
+    html+= '</table>'
+    html+='<a href="/newGroup/">New Group</a>'
+
+    return HttpResponse(html)
+
+def group(request):
+
+    html=''
+
+    html+='<b>Members</b>'
+    g = Group.objects.filter(id=request.GET['id']) #lets say this is all groups i belong to
+    members = User.objects.filter(group=g)
+    html+='<table>'
+
+    for i in members:
+        html+='<tr>'
+        html+='<td>'+i.name+'</td>'
+        html+='</tr>'
+
+    html+='</table>'
+
+    html+='<b>Creeps</b>'
+    creeps = Creep.objects.filter(group=g)
+
+    rows=0
+    html+='<table>'
+    for i in groups:
+        if rows%4==0:
+            html+='<tr>'
+        html+='<td><a href="/creep/'+i.id+'/"><img src = "'+i.photo+'" style="height:50px;width:50px"></a></td>'
+        if rows%4==3:
+            html += '</tr>'
+
+        rows+=1
+
+    if rows%4!=0:
+        html += '</tr>'
+
+    html+= '</table>'
+
+    html+='<a href="/invite/'+request.GET['id']+'/">Invite</a>'
+
+    return HttpResponse(html)
+

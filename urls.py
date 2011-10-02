@@ -24,4 +24,7 @@ urlpatterns = patterns('',
 	#(r'^groups/$', views.groups),
 	#(r'^creeps/$', views.creeps),
     url(r'^admin/', include(admin.site.urls)),
+
+    (r'^myGroups/$', views.myGroups),
+    (r'^group/$', views.group),
 )

@@ -12,14 +12,18 @@ class User(models.Model):
 class Creep(models.Model):
     phone = models.IntegerField(max_length=10)
     photo = models.CharField(max_length=75)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=75)
+
+    def __unicode__(self):
+        return str(self.phone)
 
 class Group(models.Model):
-    name = models.CharField(max_length = 30)
-    phone = models.CharField(max_length = 12)
+    name = models.CharField(max_length=30)
+    phone = models.CharField(max_length=12)
     description = models.TextField()
     creeps = models.ManyToManyField(Creep, verbose_name="creeps in a group")
     users = models.ManyToManyField(User, verbose_name="users in a group") 
+    photo = models.CharField(max_length=75)
 
     def __unicode__(self):
         return self.name
@@ -42,4 +46,3 @@ class Message(models.Model):
 
     def __unicode__(self):
         return str(self.id)
-
