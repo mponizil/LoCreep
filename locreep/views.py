@@ -12,7 +12,6 @@ from django.views.decorators.http import require_POST
 
 domain_name = "http://3bbq.localtunnel.com"
 
-# from django.views.decorators.http import require_POST
 
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
