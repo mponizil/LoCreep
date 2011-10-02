@@ -30,11 +30,12 @@ def twilio(request):
 @csrf_exempt
 def xml(request):
 
+ 
     from twilio import twiml
 
     r = twiml.Response()
     r.say("Hello")
-    return HttpResponse(str(r),content_type="application/xhtml+xml")
+    return HttpResponse(str(r))
 
 def myGroups(request):
 	
