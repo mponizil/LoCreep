@@ -34,8 +34,13 @@ def text(request):
         creep = Creep(phone=creep_phone)
         creep.save()
     
+    # find the group
+    try:
+        group = Group.objects.get(phone=group_phone)
+    except Group.DoesNotExist:
+        return HttpResponse('no group with this phone number')
+    
     # check if conversation with this creep is going on
-    group = Group.objects.get(phone=group_phone)
     try:
         conversation = Conversation.objects.get(group=group)
     except Conversation.DoesNotExist:
@@ -43,7 +48,7 @@ def text(request):
         conversation.save()
     
     # create message
-    message = Message(conversation=conversation,user_type='creep',creep=creep)
+    message = Message(conversation=conversation,user_type='creep',creep=creep,body=body)
     message.save()
     
     sms = client.sms.messages.create(to = creep_phone, from_ = group_phone, body = "lol you're funny!")
