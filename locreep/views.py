@@ -14,9 +14,15 @@ def phone(request):
     return HttpResponse("phone")
 
 def text(request):
-    print 'here'
-    print request
+    print('yay')
+    #print str(request.POST)
     # message = client.sms.messages.create(to="+17608463179",
     #                                      from_="+13475148471",
     #                                      body="Hello!")
-    return HttpResponse(request)
+    return HttpResponse('success')
+
+def my_groups(request):
+    return render_to_response("my-groups.html")
+
+def create(request):
+    return render_to_response("create.html")
