@@ -3,11 +3,11 @@
 {% block content %}
 
 <script src="/static/application.js"></script>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="http://locreep.com:3000/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|addslashes }}', body: '{% if ".mp3" in message.body %}<a href="{{ message.body }}">Voicemail</a>{% else %}{{ message.body|addslashes }}{% endif %}' },{% endfor %}];
 
-var socket = io.connect('http://localhost:3000/');
+var socket = io.connect('http://locreep.com:3000/');
 socket.emit('init', { conversation_id: {{ conversation_id }} })
 socket.on('message', function(data) {
   // add message to the page
@@ -37,6 +37,7 @@ $(function() {
 function submit_msg() {
   var body = $("input[name='msg']").val();
   $.post("/user_message/", { conversation_id: {{ conversation_id }}, body: body })
+  $("input[name='msg']").val('').focus();
   return false;
 }
 </script>
@@ -58,7 +59,7 @@ function submit_msg() {
 		<div class="chat_form" id="top_form">
 			<form action="form_action" method="post" id="send_message">
 			  <input class="msg_form_field"  type="text" name="msg"/>
-			  <a class="medium red awesome chat_profile_btn" id="make_post">Post</a>
+			  <a class="medium red awesome chat_profile_btn" id="make_post">Send Text</a>
 			</form>
 		</div>
 		
@@ -96,7 +97,7 @@ function submit_msg() {
 	
 	<div class="chat_form" id="action_buttons">
 		<a class="small blue awesome" id="to_tumblr">To Tumblr</a>
-		<a class="small orange awesome">QR</a>
+		<a class="small orange awesome" href="{{ qr }}" target="_blank">QR</a>
 		<a class="small red awesome" href="/myGroups/">Back</a>
 	</div>
 	
