@@ -26,17 +26,16 @@ def twilio(request):
     #                                      from_="+13475148471",
     #                                      body="Hello!"
     return HttpResponse(str(request.POST)+"hello")
+
+@csrf_exempt
 def xml(request):
 
-    c = {}
-    c.update(csrf(request))
     from twilio import twiml
 
     r = twiml.Response()
     r.say("Hello")
-    return HttpResponse(str(r),c,content_type="application/xhtml+xml")
+    return HttpResponse(str(r),content_type="application/xhtml+xml")
 
-@csrf_exempt
 def myGroups(request):
 	
     # call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://foo.com/call.xml")
