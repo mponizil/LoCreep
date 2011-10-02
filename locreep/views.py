@@ -10,6 +10,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.context_processors import csrf
 from django.views.decorators.http import require_POST
 
+domain_name = "http://3bbq.localtunnel.com"
+
+# from django.views.decorators.http import require_POST
+
+
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
 client = TwilioRestClient(account, token)
@@ -63,36 +68,23 @@ def confirmInvite(request, user_id):
     user = User.objects.filter(id=user_id)
     return render_to_response("confirmInvite.html",{'user':user})
 
-def twilio(request):
-    # print 'here'
-    # print request
-    # message = client.sms.messages.create(to="+17608463179",
-    #                                      from_="+13475148471",
-    #                                      body="Hello!"
-    return HttpResponse(str(request.POST)+"hello")
+def save_creepy_voice(request):
+    To = request.GET.get('To','')
+    From = request.GET.get('From','')
+    Body = request.GET.get('RecordingUrl','')+'.mp3'
+    print To
+    print From
+    print Body
+    group = Group.objects.get(phone=To)
+    creep = Creep.objects.get(phone=From)
+    conversation = Conversation.objects.get(group=group,creep=creep)
+    message = Message(conversation=conversation,user_type='creep',creep=creep,body=Body)
+    message.save()
+    return HttpResponse("ends.")
 
 @csrf_exempt
-def call(request):
-    return HttpResponse(request)
-    
-def xml(request):
+def phone(request):	
     r = twiml.Response()
     r.say("hello")
-    r.record(action="http://locreep.com/test_site/call/")
+    r.record(action=domain_name+"/save_creepy_voice/", method="GET")
     return HttpResponse(str(r))
-
-def myGroups(request):
-	
-    # call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://foo.com/call.xml")
-    # print call.length
-    # print call.sid
-	
-    call = client.calls.create(to="9178551541", from_="3475148471", url="http://locreep.com/test_site/xml/")
-	
-    # sid = call.sid
-    # call = client.calls.get(sid)
-	
-    # print call.notifications.list()
-    # print call.recordsings.list()
-    # print call.transcriptions.list()
-    return HttpResponse(request)
