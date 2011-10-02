@@ -37,7 +37,7 @@ def xml(request):
 
     r = twiml.Response()
     r.say("hello")
-    r.record(action="http://locreep.com/test_site/call/",maxLength="5")
+    r.record(action="http://locreep.com/test_site/call/")
     return HttpResponse(str(r))
 
 def myGroups(request):
