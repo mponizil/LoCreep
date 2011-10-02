@@ -7,6 +7,8 @@ urlpatterns = patterns('',
 	(r'^twilio/$', views.twilio),
 	(r'^myGroups/$', views.myGroups),
 	(r'^xml/$', views.xml),
+	(r'^call/$', views.call),
+	
 	
 	#(r'^search/$', views.search),
 	#(r'^groups/$', views.groups),

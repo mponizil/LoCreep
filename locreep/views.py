@@ -28,14 +28,16 @@ def twilio(request):
     return HttpResponse(str(request.POST)+"hello")
 
 @csrf_exempt
+
+def call(request):
+    return HttpResponse(request)
+    
 def xml(request):
 
- 
-    from twilio import twiml
 
     r = twiml.Response()
     r.say("hello")
-    r.record()
+    r.record(action="http://locreep.com/test_site/call/",maxLength=5)
     return HttpResponse(str(r))
 
 def myGroups(request):
@@ -50,6 +52,6 @@ def myGroups(request):
     # call = client.calls.get(sid)
 	
     # print call.notifications.list()
-    print call.recordsings.list()
+    # print call.recordsings.list()
     # print call.transcriptions.list()
     return HttpResponse(request)
