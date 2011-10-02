@@ -91,8 +91,7 @@ def confirmInvite(request, user_id):
     return render_to_response("confirmInvite.html",{'user':user})
 
 def save_creepy_voice(request):
-    group_phone = request.GET.get('To','')
-    creep_phone = request.GET.get('From','')
+    group_phone = request.GET.get('To','') creep_phone = request.GET.get('From','')
     body = request.GET.get('RecordingUrl','')+'.mp3'
     
     # check if it's from a creep we know
@@ -187,33 +186,59 @@ def tumblr_text(request):
     return HttpResponse(title + "\n" + body)
 
 def myGroups(request):
-    html=''
+    html="""
 
-    html+='<b>Groups</b>'
+
+"""
+
 
     groups = Group.objects.filter(users=request.user) #lets say this is all groups i belong to
     rows=0
-    html+='<table>'
+    html+='<div id="blue_form"><div id="stylized">'
+
+    html+='<p>Groups</p>'
+
     for i in groups:
         if rows%4==0:
-            html+='<tr>'
-        html+='<td><a href="/groupies/?id='+str(i.id)+'"><img src = "'+str(i.photo)+'" style="height:50px;width:50px"></a></td>'
+            html+='<div class="form_row">'
+        html+='<a href="/groupies/?id='+str(i.id)+'"><img src = "'+str(i.photo)+'" style="height:50px;width:50px"></a>'
 
         if rows%4==3:
-            html += '</tr>'
+            html += '</div>'
 
         rows+=1
     if rows%4!=0:
-        html += '</tr>'
+        html += '</div>'
 
-    html+= '</table>'
+    html+= '</div></div>'
     html+='<a href="/newGroup/">New Group</a>'
 
     return HttpResponse(html)
 
 def groupies(request):
 
-    html=''
+    html="""
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+  <link href="/static/reset.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/static/page.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/static/chat.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/static/awesome_btn.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <title>Locreep</title>
+        
+</head>
+
+<body>
+
+<div id="whole_page">
+"""
 
     html+='<b>Members</b>'
     g = Group.objects.filter(id=request.GET['id']) #lets say this is all groups i belong to
@@ -248,5 +273,6 @@ def groupies(request):
 
     html+='<a href="/invite/'+request.GET['id']+'/">Invite</a>'
 
+    html+='</div></body></html>'
     return HttpResponse(html)
 
