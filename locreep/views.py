@@ -27,7 +27,7 @@ def xml(request):
 
     r = twiml.Response()
     r.say("Hello")
-    return HttpResponse(str(r))
+    return HttpResponse(str(r),content_type="application/xhtml+xml")
 
 
 def myGroups(request):
