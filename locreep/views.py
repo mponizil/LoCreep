@@ -29,9 +29,6 @@ def text(request):
     logger.debug("THIS IS A TEST")
     return HttpResponse(request.POST)
 
-def my_groups(request):
-    return render_to_response("my-groups.html")
-
 def create(request):
     return render_to_response("create.html")
 
