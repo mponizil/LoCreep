@@ -69,30 +69,27 @@ def twilio(request):
     #                                      body="Hello!"
     return HttpResponse(str(request.POST)+"hello")
 
-@csrf_exempt
-def call(request):
+
+def save_creepy_voice(request):
     To = request.GET.get('To','')
-	From = request.GET.get('From','')
-	Body = request.GET.get('RecordingUrl','')+'.mp3'
-	group = Group.objects.get(phone=To)
-	creep = Creep.objects.get(phone=From)
-	conversation = Conversation.objects.get(group=group,creep=creep)
-	message = Message(conversation=conversation,user_type='creep',creep=creep,body=Body)
-	message.save()
-	return HttpResponse("ends.")
-    # print str(request.POST)+"hello"
-    # print str(request.GET)+"hellohello"
-    # return HttpResponse(str(request.POST)+"hello")
-
-	
-
+    From = request.GET.get('From','')
+    Body = request.GET.get('RecordingUrl','')+'.mp3'
+    print To
+    print From
+    print Body
+    group = Group.objects.get(phone=To)
+    creep = Creep.objects.get(phone=From)
+    conversation = Conversation.objects.get(group=group,creep=creep)
+    message = Message(conversation=conversation,user_type='creep',creep=creep,body=Body)
+    message.save()
+    return HttpResponse("ends.")
 
 
 @csrf_exempt
 def phone(request):	
     r = twiml.Response()
     r.say("hello")
-    r.record(action="http://3bbq.localtunnel.com/call/", method="GET")
+    r.record(action="http://3bbq.localtunnel.com/save_creepy_voice/", method="GET")
     return HttpResponse(str(r))
 	
 @csrf_exempt
@@ -101,7 +98,7 @@ def xml(request):
 	
     r = twiml.Response()
     r.say("hello")
-    r.record(action="http://3bbq.localtunnel.com/call/", method="GET")
+    r.record(action="http://3bbq.localtunnel.com/save_creepy_voice/", method="GET")
     return HttpResponse(str(r))
 
 def myGroups(request):
