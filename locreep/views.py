@@ -125,3 +125,15 @@ def user_message(request):
 
 def chat(request):
     return render_to_response("chat.html")
+
+#def tumblr_text(request):
+def tumblr_text(request, title, body):
+#    title = "html post"
+#    body = "<p style='color:green'> paragraph </p> <center> centered stuff </center>"
+
+    title = urlparse.unquote(title)
+    body = urlparse.unquote(body)
+
+    api = Api(BLOG,USER,PASSWORD)
+    post = api.write_regular(title,body)
+    return HttpResponse(title + "\n" + body)
