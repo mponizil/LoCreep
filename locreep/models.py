@@ -3,13 +3,13 @@ from django.db import models
 class User(models.Model):
     email = models.CharField(max_length = 60)
     password = models.CharField(max_length = 60)
-    fname = models.CharField()
-    lname = models.CharField()
+    fname = models.CharField(max_length = 20)
+    lname = models.CharField(max_length = 20)
     def __unicode__(self):
         return self.fname
 
 class Group(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length = 30)
     phone = models.IntegerField(max_length = 10)
     description = models.TextField()
 
