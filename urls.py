@@ -30,5 +30,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     (r'^myGroups/$', views.myGroups),
-    (r'^group/$', views.group),
+    (r'^groupies/$', views.groupies),
 )
