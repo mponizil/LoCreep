@@ -34,7 +34,8 @@ def xml(request):
     from twilio import twiml
 
     r = twiml.Response()
-    r.say("Hello")
+    r.say("hello")
+    r.record()
     return HttpResponse(str(r))
 
 def myGroups(request):
