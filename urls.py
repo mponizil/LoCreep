@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     #(r'^create/$', views.create),
     #(r'^myGroups/$', views.myGroups),
     #(r'^confirmInvite/(\d{1,2})/$', views.confirmInvite),
+    (r'^user_message/$', views.user_message),
     
 	(r'^twilio/$', views.twilio),
 	(r'^myGroups/$', views.myGroups),

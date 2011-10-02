@@ -9,6 +9,8 @@ from twilio import twiml
 from django.views.decorators.csrf import csrf_exempt
 from django.core.context_processors import csrf
 from django.views.decorators.http import require_POST
+import urllib
+import urllib2
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -48,9 +50,20 @@ def text(request):
     message = Message(conversation=conversation,user_type='creep',creep=creep,body=body)
     message.save()
     
+    # broadcast to chat room
+    url = 'http://localhost:3000/message'
+    values = {'conversation_id' : conversation.id,
+              'user_type' : 'creep',
+              'message' : body }
+    data = urllib.urlencode(values)
+    req = urllib2.Request(url, data)
+    response = urllib2.urlopen(req)
+    the_page = response.read()
+    
+    # send reply
     sms = client.sms.messages.create(to = creep_phone, from_ = group_phone, body = "lol you're funny!")
     
-    return HttpResponse('success')
+    return HttpResponse('{success:true}')
 
 def create(request):
     return render_to_response("create.html")
@@ -96,3 +109,24 @@ def myGroups(request):
     # print call.recordsings.list()
     # print call.transcriptions.list()
     return HttpResponse(request)
+
+@csrf_exempt
+def user_message(request):
+    conversation_id = request.POST.get('conversation_id')
+    conversation = Conversation.objects.get(id=conversation_id)
+    user = request.user
+    body = request.POST.get('body')
+    
+    message = Message(conversation=conversation,user_type='user',user=user,body=body)
+    message.save()
+
+    url = 'http://localhost:3000/message'
+    values = {'conversation_id' : conversation_id,
+              'user_type' : 'user',
+              'message' : body }
+    data = urllib.urlencode(values)
+    req = urllib2.Request(url, data)
+    response = urllib2.urlopen(req)
+    the_page = response.read()
+    
+    return HttpResponse('{success:true}')

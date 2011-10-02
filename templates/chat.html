@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+var socket = io.connect('/chat');
+
+socket.on('message', function(data) {
+  console.log(data)
+})
+</script>
+
+{% endblock %}
