@@ -66,7 +66,7 @@ def text(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://localhost:3000/message/'
+    url = 'http://locreep.com:3000/message/'
     values = {'conversation_id' : conversation.id,
               'user_type' : 'creep',
               'message' : body }
@@ -120,7 +120,7 @@ def save_creepy_voice(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://localhost:3000/message/'
+    url = 'http://locreep.com:3000/message/'
     values = {'conversation_id' : conversation.id,
               'user_type' : 'creep',
               'message' : body }
@@ -151,7 +151,7 @@ def user_message(request):
     message = Message(conversation=conversation,user_type='user',body=body)
     message.save()
     
-    url = 'http://localhost:3000/message/'
+    url = 'http://locreep.com:3000/message/'
     values = {'conversation_id' : conversation_id,
               'user_type' : 'user',
               'message' : body }
