@@ -5,6 +5,7 @@ from twilio.rest import TwilioRestClient
 from twilio import twiml
 from django.views.decorators.csrf import csrf_exempt
 from django.core.context_processors import csrf
+from django.views.decorators.http import require_POST
 
 # from django.views.decorators.http import require_POST
 
@@ -27,17 +28,39 @@ def twilio(request):
     #                                      body="Hello!"
     return HttpResponse(str(request.POST)+"hello")
 
-@csrf_exempt
-
+# @require_POST
 def call(request):
-    return HttpResponse(request)
-    
-def xml(request):
+    To = request.GET.get('To','')
+	From = request.GET.get('From','')
+	Body = request.GET.get('RecordingUrl','')+'.mp3'
+	group = Group.objects.get(phone=To)
+	creep = Creep.objects.get(phone=From)
+	conversation = Conversation.objects.get(group=group,creep=creep)
+	message = Message(conversation=conversation,user_type='creep',creep=creep,body=Body)
+	message.save()
+	return HttpResponse("ends.")
+    # print str(request.POST)+"hello"
+    # print str(request.GET)+"hellohello"
+    # return HttpResponse(str(request.POST)+"hello")
+
+	
 
 
+
+@csrf_exempt
+def phone(request):	
     r = twiml.Response()
     r.say("hello")
-    r.record(action="http://locreep.com/test_site/call/")
+    r.record(action="http://3bbq.localtunnel.com/call/", method="GET")
+    return HttpResponse(str(r))
+	
+@csrf_exempt
+   
+def xml(request):
+	
+    r = twiml.Response()
+    r.say("hello")
+    r.record(action="http://3bbq.localtunnel.com/call/", method="GET")
     return HttpResponse(str(r))
 
 def myGroups(request):
@@ -46,7 +69,7 @@ def myGroups(request):
     # print call.length
     # print call.sid
 	
-    call = client.calls.create(to="9178551541", from_="3475148471", url="http://locreep.com/test_site/xml/")
+    call = client.calls.create(to="9178551541", from_="3475148471", url="http://3bbq.localtunnel.com/xml/")
 	
     # sid = call.sid
     # call = client.calls.get(sid)
