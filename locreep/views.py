@@ -13,7 +13,7 @@ from tumblr import Api
 import urllib
 import urllib2
 
-domain_name = "http://4th3.localtunnel.com"
+domain_name = "http://46xa.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -24,7 +24,10 @@ USER = "locreep@mailinator.com"
 PASSWORD = "locreep"
 
 def welcome(request):
-    return HttpResponse("wassup")
+    return render_to_response("welcome.html", { 'header': 'large' })
+
+def login(request):
+    return render_to_response("login.html")
 
 @csrf_exempt
 @require_POST
@@ -88,18 +91,44 @@ def confirmInvite(request, user_id):
     return render_to_response("confirmInvite.html",{'user':user})
 
 def save_creepy_voice(request):
-    To = request.GET.get('To','')
-    From = request.GET.get('From','')
-    Body = request.GET.get('RecordingUrl','')+'.mp3'
-    print To
-    print From
-    print Body
-    group = Group.objects.get(phone=To)
-    creep = Creep.objects.get(phone=From)
-    conversation = Conversation.objects.get(group=group,creep=creep)
-    message = Message(conversation=conversation,user_type='creep',creep=creep,body=Body)
+    group_phone = request.GET.get('To','')
+    creep_phone = request.GET.get('From','')
+    body = request.GET.get('RecordingUrl','')+'.mp3'
+    
+    # check if it's from a creep we know
+    try:
+        creep = Creep.objects.get(phone=creep_phone)
+    except Creep.DoesNotExist:
+        creep = Creep(phone=creep_phone)
+        creep.save()
+    
+    # find the group
+    try:
+        group = Group.objects.get(phone=group_phone)
+    except Group.DoesNotExist:
+        return HttpResponse('no group with this phone number')
+    
+    # check if conversation with this creep is going on
+    try:
+        conversation = Conversation.objects.get(group=group,creep=creep)
+    except Conversation.DoesNotExist:
+        conversation = Conversation(group=group,creep=creep)
+        conversation.save()
+    
+    message = Message(conversation=conversation,user_type='creep',creep=creep,body=body)
     message.save()
-    return HttpResponse("ends.")
+    
+    # broadcast to chat room
+    url = 'http://localhost:3000/message/'
+    values = {'conversation_id' : conversation.id,
+              'user_type' : 'creep',
+              'message' : body }
+    data = urllib.urlencode(values)
+    req = urllib2.Request(url, data)
+    response = urllib2.urlopen(req)
+    the_page = response.read()
+    
+    return HttpResponse("{success:true}")
 
 @csrf_exempt
 def phone(request):	

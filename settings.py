@@ -12,23 +12,23 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'djangostack',
+#        'HOST': '/opt/bitnami/postgresql',
+#        'PORT': '5432',
+#        'USER': 'bitnami',
+#        'PASSWORD': '485d689220'
+#    }
+# }
+
 DATABASES = {
    'default': {
-       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'djangostack',
-       'HOST': '/opt/bitnami/postgresql',
-       'PORT': '5432',
-       'USER': 'bitnami',
-       'PASSWORD': '485d689220'
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(os.path.dirname(__file__), 'locreep.db')
    }
 }
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(os.path.dirname(__file__), 'locreep.db')
-#    }
-#}
 
 
 # Local time zone for this installation. Choices can be found here:

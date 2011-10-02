@@ -1,3 +1,8 @@
+#action_buttons {
+  background-color: #ebf4fb;
+  padding:14px;
+}
+
 .chat-bubble{
 	
 	font-size:14px;
@@ -140,7 +145,7 @@
 }
 
 #chat {
-	background: #DBE1ED;
+	background: #ebf4fb;
 	clear: both;
 }
 	
@@ -167,4 +172,5 @@
 	width: 100%;
 	float: left;
 	font-family: Helvetica;
+	margin-bottom:20px;
 }

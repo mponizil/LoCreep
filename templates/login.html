@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link href="/static/stylized.css" media="screen" rel="stylesheet" type="text/css" />
+
+<div id="content">		
+
+	<div id="blue_form">
+		<div id="stylized">
+		<form id="form" name="form" method="post" action="index.html">
+	
+		<p>Sign in</p>
+
+		<div class="form_row">
+			<label>Email
+			<span class="small">Add a valid address</span>
+			</label>
+			<input type="text" name="email" id="email" />
+		</div>
+
+		<div class="form_row">
+			<label>Password
+			<span class="small">Min. size 6 chars</span>
+			</label>
+			<input type="password" name="password" id="password" />
+		</div>
+	
+		<div class="form_row_for_btn">
+			<a class="large yellow awesome">Sign-in</a>
+		</div>
+
+		<!-- <button type="submit">Sign-up</button> -->
+		<div class="spacer"></div>
+
+		</form>
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}

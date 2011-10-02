@@ -12,7 +12,8 @@ socket.emit('init', { conversation_id: {{ conversation_id }} })
 socket.on('message', function(data) {
   // add message to the page
   if(data.user_type == 'creep') {
-    $("#top_form").after($('<div class="bubble right">		  <div class="chat-bubble gray-bubble">			<div class="chat-bubble-glare"></div>			<p class="lemon">' + data.message + '</p>			<div class="chat-bubble-arrow-border-gray"></div>			<div class="chat-bubble-arrow-gray"></div>		  </div>	  		</div>'));
+    var message = (data.message.match(/\.mp3/)) ? '<a href="' + data.message + '">Voicemail</a>' : data.message;
+    $("#top_form").after($('<div class="bubble right">		  <div class="chat-bubble gray-bubble">			<div class="chat-bubble-glare"></div>			<p class="lemon">' + message + '</p>			<div class="chat-bubble-arrow-border-gray"></div>			<div class="chat-bubble-arrow-gray"></div>		  </div>	  		</div>'));
   } else {
     $("#top_form").after($('<div class="bubble left">			<div class="chat-bubble green-bubble">				<div class="chat-bubble-glare"></div>				<p class="lemon">' + data.message + '</p>				<div class="chat-bubble-arrow-border-green"></div>				<div class="chat-bubble-arrow-green"></div>			</div>		</div>'));
   }
@@ -48,6 +49,7 @@ function submit_msg() {
 			<p class="phone">{{ creep.phone }}</p>
 			<!-- <ul class="other_info">other info!</ul> -->
 		</div>
+		<div style="clear:both;"></div>
 	</div>
 	
 	<div id="chat">
@@ -65,7 +67,13 @@ function submit_msg() {
 		  <div class="bubble right">
   		  <div class="chat-bubble gray-bubble">
   			<div class="chat-bubble-glare"></div>
-  			<p class="lemon">{{ message.body }}</p>
+  			<p class="lemon">
+  			  {% if ".mp3" in message.body %}
+  			  <a href="{{ message.body }}">Voicemail</a>
+  			  {% else %}
+  			  {{ message.body }}
+  			  {% endif %}
+  			</p>
   			<div class="chat-bubble-arrow-border-gray"></div>
   			<div class="chat-bubble-arrow-gray"></div>
   		  </div>	  
@@ -74,22 +82,23 @@ function submit_msg() {
   		<div class="bubble left">
   			<div class="chat-bubble green-bubble">
   				<div class="chat-bubble-glare"></div>
-  				<p class="lemon">{{ message.body }}</p>
+  				<p class="lemon">{{ message.body|urlize }}</p>
   				<div class="chat-bubble-arrow-border-green"></div>
   				<div class="chat-bubble-arrow-green"></div>
   			</div>
   		</div>
   		{% endif %}
 		  
-		{% endfor %}	
+		{% endfor %}
 		
 	</div>
 	
-	<div class="chat_form">
+	<div class="chat_form" id="action_buttons">
 		<a class="small blue awesome" id="to_tumblr">To Tumblr</a>
 		<a class="small orange awesome">QR</a>
-		<a class="small red awesome">Back</a>
+		<a class="small red awesome" href="/myGroups/">Back</a>
 	</div>
+	
 </div>
 
 {% endblock %}

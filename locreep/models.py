@@ -10,7 +10,7 @@ class User(models.Model):
         return self.fname
 
 class Creep(models.Model):
-    phone = models.IntegerField(max_length=10)
+    phone = models.CharField(max_length=12)
     photo = models.CharField(max_length=75)
     name = models.CharField(max_length=75)
 
@@ -23,7 +23,7 @@ class Group(models.Model):
     description = models.TextField()
     creeps = models.ManyToManyField(Creep, verbose_name="creeps in a group")
     users = models.ManyToManyField(User, verbose_name="users in a group") 
-    photo = models.CharField(max_length=75)
+    photo = models.CharField(max_length=75, null=True)
 
     def __unicode__(self):
         return self.name

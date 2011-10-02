@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link href="/static/stylized.css" media="screen" rel="stylesheet" type="text/css" />
+
+<div id="content">		
+	
+	<div id="main_logo">
+	   <img src="/static/logo.jpg">
+	</div>
+
+	<div id="blue_form">
+		<div id="stylized">
+		<form id="form" name="form" method="post" action="index.html">
+	
+		<p>Sign up</p>
+	
+		<div class="form_row">
+			<label>First Name
+			<span class="small">Add your name</span>
+			</label>
+			<input type="text" name="name" id="name" />
+		</div>
+	
+		<div class="form_row">
+			<label>Last Name
+			<span class="small">Add your name</span>
+			</label>
+			<input type="text" name="name" id="name" />
+		</div>
+
+		<div class="form_row">
+			<label>Email
+			<span class="small">Add a valid address</span>
+			</label>
+			<input type="text" name="email" id="email" />
+		</div>
+
+		<div class="form_row">
+			<label>Password
+			<span class="small">Min. size 6 chars</span>
+			</label>
+			<input type="password" name="password" id="password" />
+		</div>
+	
+		<div class="form_row">
+			<label>Confirm
+			<span class="small">Min. size 6 chars</span>
+			</label>
+			<input type="password" name="password" id="password" />
+		</div>
+	
+		<div class="form_row_for_btn">
+			<a class="large red awesome">Sign-up</a>
+		</div>
+
+		<!-- <button type="submit">Sign-up</button> -->
+		<div class="spacer"></div>
+
+		</form>
+		</div>
+		
+		<br><br>
+	</div>
+	
+
+</div>
+
+{% endblock %}
