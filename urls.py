@@ -1,4 +1,7 @@
 from django.conf.urls.defaults import *
+from django.contrib import admin
+admin.autodiscover()
+
 from locreep import views
 
 urlpatterns = patterns('',
@@ -17,4 +20,5 @@ urlpatterns = patterns('',
 	#(r'^search/$', views.search),
 	#(r'^groups/$', views.groups),
 	#(r'^creeps/$', views.creeps),
+    url(r'^admin/', include(admin.site.urls)),
 )

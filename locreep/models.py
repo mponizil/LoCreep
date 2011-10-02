@@ -9,6 +9,11 @@ class User(models.Model):
     def __unicode__(self):
         return self.fname
 
+class Creep(models.Model):
+    phone = models.IntegerField(max_length=10)
+    photo = models.CharField(max_length=75)
+    name = models.CharField(max_length=200)
+
 class Group(models.Model):
     name = models.CharField(max_length = 30)
     phone = models.CharField(max_length = 12)
@@ -18,11 +23,6 @@ class Group(models.Model):
 
     def __unicode__(self):
         return self.name
-
-class Creep(models.Model):
-    phone = models.IntegerField(max_length=10)
-    photo = models.CharField(max_length=75)
-    name = models.CharField(max_length=200)
 
 class Conversation(models.Model):
     group = models.ForeignKey(Group, verbose_name="group this conversation belongs to")
@@ -42,3 +42,4 @@ class Message(models.Model):
 
     def __unicode__(self):
         return self.id
+
