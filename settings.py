@@ -12,21 +12,21 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangostack',
-        'HOST': '/opt/bitnami/postgresql',
-        'PORT': '5432',
-        'USER': 'bitnami',
-        'PASSWORD': '485d689220'
-    }
-}
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'djangostack',
+#        'HOST': '/opt/bitnami/postgresql',
+#        'PORT': '5432',
+#        'USER': 'bitnami',
+#        'PASSWORD': '485d689220'
+#    }
+# }
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/Users/mponizil/dev/python/lc/locreep.db',
+        'NAME': os.path.dirname(__file__)+'locreep.db',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -129,7 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'locreep',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
