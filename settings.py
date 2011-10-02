@@ -1,5 +1,7 @@
 # Django settings for Project project.
 
+import os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -10,7 +12,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #        'NAME': 'djangostack',
@@ -19,8 +21,8 @@ MANAGERS = ADMINS
 #        'USER': 'bitnami',
 #        'PASSWORD': '485d689220'
 #    }
-#}
-import os
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -115,10 +117,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    os.path.dirname(__file__)+'/templates'
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+   os.path.join(os.path.dirname(__file__), 'templates'),
 )
 
 INSTALLED_APPS = (

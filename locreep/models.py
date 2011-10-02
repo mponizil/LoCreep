@@ -10,8 +10,8 @@ class User(models.Model):
         return self.fname
 
 class Group(models.Model):
-    name = models.CharField(max_length=30)
-    phone = models.IntegerField(max_length=10)
+    name = models.CharField(max_length = 30)
+    phone = models.CharField(max_length = 12)
     description = models.TextField()
     creeps = models.ManyToManyField(Creep, verbose_name="creeps in a group")
     users = models.ManyToManyField(User, verbose_name="users in a group") 
@@ -24,23 +24,20 @@ class Creep(models.Model):
     photo = models.CharField(max_length=75)
     name = models.CharField(max_length=200)
 
-    def __unicode__(self):
-        return self.phone
-
 class Conversation(models.Model):
     group = models.ForeignKey(Group, verbose_name="group this conversation belongs to")
     creep = models.ForeignKey(Creep, verbose_name="creep this conversation belongs to")
-    tumblr_id = models.CharField(max_length=255)
-    qr_id = models.CharField(max_length=255)
+    tumblr_id = models.CharField(max_length=255, null=True)
+    qr_id = models.CharField(max_length=255, null=True)
 
     def __unicode__(self):
-        return self.group_id
+        return self.id
 
 class Message(models.Model):
     conversation_id = models.ForeignKey(Conversation)
     user_type = models.CharField(max_length=10)
-    user = models.ForeignKey(User)
-    creep = models.ForeignKey(Creep)
+    user = models.ForeignKey(User, null=True)
+    creep = models.ForeignKey(Creep, null=True)
 
     def __unicode__(self):
-        return self.conversation_id
+        return self.id

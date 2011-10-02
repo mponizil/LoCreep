@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form enctype="multipart/form-data">
+  <table>
+    <tr>
+      <td>Photo</td>
+      <td><input type="file" name="photo" /></td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td><input type="text" name="name" /></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><textarea name="description"></textarea></td>
+    </tr>
+    <tr>
+      <td><a href="/dashboard">Back</a></td>
+      <td><input type="submit" name="submit" value="Create group!" /></td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}
