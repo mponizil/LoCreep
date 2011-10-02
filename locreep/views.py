@@ -50,6 +50,6 @@ def myGroups(request):
     # call = client.calls.get(sid)
 	
     # print call.notifications.list()
-    # print call.recordsings.list()
+    print call.recordsings.list()
     # print call.transcriptions.list()
     return HttpResponse(request)
