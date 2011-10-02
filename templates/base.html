@@ -18,11 +18,14 @@
 <body>
 
 <div id="whole_page">
-  <div id="header">header</div>
+  
+  <div id="header">
+    {% if header != 'large' %}<img src="/static/small_logo.jpg" />{% endif %}
+  </div>
 	
 	{% block content %}{% endblock %}
 	
-	<div id="footer">footer</div>
+	<div id="footer">a hackNY hack | oct 2011</div>
 </div>
 
 </body>

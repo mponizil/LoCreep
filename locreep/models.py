@@ -10,7 +10,7 @@ class User(models.Model):
         return self.fname
 
 class Creep(models.Model):
-    phone = models.IntegerField(max_length=10)
+    phone = models.CharField(max_length=12)
     photo = models.CharField(max_length=75)
     name = models.CharField(max_length=75)
 
@@ -19,7 +19,7 @@ class Creep(models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length=30)
-    photo = models.CharField(max_length=75)
+    photo = models.CharField(max_length=75, null=True)
     phone = models.CharField(max_length=12)
     description = models.TextField()
     creeps = models.ManyToManyField(Creep, verbose_name="creeps in a group")

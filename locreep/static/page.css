@@ -1,7 +1,16 @@
+body {overflow-x:hidden;}
+input[type='text'] {
+  font-size:14px;
+  padding:4px;
+}
+a {color:#ff5400;}
+
 #summary{
 	width: 100%;
 	float: left;
-	border-bottom: 3px solid red;
+	border-bottom: 3px solid #444444;
+	padding:10px;
+	background-color:#fff;
 }
 
 .other_info{
@@ -35,21 +44,33 @@ h2.creep_name{
 	border: 1px solid #aaa;
 }
 
-/* width is the variable */
+#main_logo{
+	text-align: center;
+	background-color: #ff5400;
+	height: 130px;
+}
+
 #whole_page {
-  	width: 320px;
+  	width: 100%;
 	margin: auto;
 	position: relative;
-	border: 1px solid #ddd;
 }
 #content{
 }
 #header{
-	border: 1px solid #ddd;
+	background-color: #ff5400;
+	height: 40px;
+	padding-top:10px;
+	width: 100%;
 }
 #footer {
+	border-top: 1px solid #ddd;
 	clear: both;
-	border: 1px solid #ddd;
+	color: #787878;
+	height: 20px;
+	padding: 5px;
+	font-size: 13px;
+	text-align: center;
 }
 body{
 	font-family: "HelveticaNeue","Helvetica Neue","HelveticaNeueRoman","HelveticaNeue-Roman","Helvetica Neue Roman","TeXGyreHerosRegular","Helvetica","Tahoma","Geneva","Arial",sans-serif;
