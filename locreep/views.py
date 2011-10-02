@@ -33,7 +33,7 @@ def xml(request):
     return HttpResponse(str(r),content_type="application/xhtml+xml")
 
 @csrf_exempt
-@require_POST
+# @require_POST
 def myGroups(request):
 	
     # call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://foo.com/call.xml")
