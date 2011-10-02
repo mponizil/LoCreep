@@ -19,4 +19,5 @@ urlpatterns = patterns('',
 	#(r'^groups/$', views.groups),
 	#(r'^creeps/$', views.creeps),
     url(r'^admin/', include(admin.site.urls)),
+	(r'^tumblr_text/(.*)/(.*)$', views.tumblr_text),
 )
