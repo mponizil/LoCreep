@@ -10,6 +10,7 @@ var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|
 var socket = io.connect('http://localhost:3000/');
 socket.emit('init', { conversation_id: {{ conversation_id }} })
 socket.on('message', function(data) {
+  console.log(data);
   // add message to the page
   if(data.user_type == 'creep') {
     var message = (data.message.match(/\.mp3/)) ? '<a href="' + data.message + '">Voicemail</a>' : data.message;
@@ -37,6 +38,7 @@ $(function() {
 function submit_msg() {
   var body = $("input[name='msg']").val();
   $.post("/user_message/", { conversation_id: {{ conversation_id }}, body: body })
+  $("input[name='msg']").val('').focus();
   return false;
 }
 </script>
@@ -58,7 +60,7 @@ function submit_msg() {
 		<div class="chat_form" id="top_form">
 			<form action="form_action" method="post" id="send_message">
 			  <input class="msg_form_field"  type="text" name="msg"/>
-			  <a class="medium red awesome chat_profile_btn" id="make_post">Post</a>
+			  <a class="medium red awesome chat_profile_btn" id="make_post">Send Text</a>
 			</form>
 		</div>
 		

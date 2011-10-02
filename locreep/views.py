@@ -13,7 +13,7 @@ from tumblr import Api
 import urllib
 import urllib2
 
-domain_name = "http://46xa.localtunnel.com"
+domain_name = "http://3pyv.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -171,7 +171,7 @@ def creep(request, creep_id):
     
     conversations = Conversation.objects.filter(creep=creep)
     
-    messages = Message.objects.filter(conversation=conversations[0])
+    messages = Message.objects.filter(conversation=conversations[0]).order_by('-id')
     
     return render_to_response("creep.html", { 'conversation_id': conversations[0].id, 'creep': creep, 'messages': messages })
 
