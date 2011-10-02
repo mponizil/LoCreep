@@ -203,7 +203,7 @@ def myGroups(request):
     for i in groups:
         if rows%4==0:
             html+='<tr>'
-        html+='<td><a href="/group/?id='+str(i.id)+'"><img src = "'+str(i.photo)+'" style="height:50px;width:50px"></a></td>'
+        html+='<td><a href="/groupies/?id='+str(i.id)+'"><img src = "'+str(i.photo)+'" style="height:50px;width:50px"></a></td>'
 
         if rows%4==3:
             html += '</tr>'
@@ -217,31 +217,31 @@ def myGroups(request):
 
     return HttpResponse(html)
 
-def group(request):
+def groupies(request):
 
     html=''
 
     html+='<b>Members</b>'
     g = Group.objects.filter(id=request.GET['id']) #lets say this is all groups i belong to
-    members = User.objects.filter(group=g)
+    members = g[0].users.all()
     html+='<table>'
 
     for i in members:
         html+='<tr>'
-        html+='<td>'+i.name+'</td>'
+        html+='<td>'+i.fname+'</td>'
         html+='</tr>'
 
     html+='</table>'
 
     html+='<b>Creeps</b>'
-    creeps = Creep.objects.filter(group=g)
+    creeps = g[0].creeps.all()
 
     rows=0
     html+='<table>'
-    for i in groups:
+    for i in creeps:
         if rows%4==0:
             html+='<tr>'
-        html+='<td><a href="/creep/'+i.id+'/"><img src = "'+i.photo+'" style="height:50px;width:50px"></a></td>'
+        html+='<td><a href="/creep/'+str(i.id)+'"><img src = "'+i.photo+'" style="height:50px;width:50px"></a></td>'
         if rows%4==3:
             html += '</tr>'
 
