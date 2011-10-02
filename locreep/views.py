@@ -4,3 +4,9 @@ from django.shortcuts import render_to_response
 
 def welcome(request):
     return HttpResponse("wassup")
+
+def phone(request):
+    return HttpResponse("phone")
+
+def text(request):
+    return HttpResponse("text")

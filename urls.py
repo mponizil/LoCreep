@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from locreep.foodfinder import views
+from lc.locreep import views
 
 urlpatterns = patterns('',
 	(r'^$', views.welcome),

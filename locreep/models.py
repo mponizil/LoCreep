@@ -9,14 +9,17 @@ class User(models.Model):
         return self.fname
 
 class Group(models.Model):
+    name = models.CharField()
     phone = models.IntegerField(max_length = 10)
+    description = models.TextField()
 
     def __unicode__(self):
-        return self.phone
+        return self.name
 
 class UserInGroups(models.Model):
     user_id = models.ForeignKey(User)
     group_id = models.ForeignKey(Group)
+    confirmed = models.BooleanField()
 
     def __unicode__(self):
         return self.id
