@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from twilio.rest import TwilioRestClient
 from twilio import twiml
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+# from django.views.decorators.http import require_POST
 
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
@@ -33,7 +33,6 @@ def xml(request):
     return HttpResponse(str(r),content_type="application/xhtml+xml")
 
 @csrf_exempt
-# @require_POST
 def myGroups(request):
 	
     # call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://foo.com/call.xml")
