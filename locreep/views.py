@@ -122,3 +122,6 @@ def user_message(request):
     the_page = response.read()
     
     return HttpResponse('{success:true}')
+
+def chat(request):
+    return render_to_response("chat.html")

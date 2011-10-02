@@ -25,7 +25,10 @@ io.set('log level',2);
 var chat = io.of('/chat');
 
 chat.on('connection', function(socket) {
-  socket.emit('message', { hey: 'you' })
+  
+  socket.on('init', function(data) {
+    socket.join(data.conversation_id)
+  })
   
   socket.on('disconnect', function() {})
 })
