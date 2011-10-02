@@ -5,6 +5,7 @@ class User(models.Model):
     password = models.CharField(max_length = 60)
     fname = models.CharField(max_length = 20)
     lname = models.CharField(max_length = 20)
+
     def __unicode__(self):
         return self.fname
 
@@ -28,7 +29,7 @@ class Creep(models.Model):
     phone = models.IntegerField(max_length = 10)
     photo = models.CharField(max_length = 75)
     last_seen = models.CharField(max_length = 255)
-    
+
     def __unicode__(self):
         return self.phone
 

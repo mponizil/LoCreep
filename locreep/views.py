@@ -21,14 +21,9 @@ def twilio(request):
     #                                      body="Hello!"
     return HttpResponse(str(request.POST)+"hello")
 
-def xml(request):
-	context={}
-    
-	return  render_to_response('myGroups.xml')
-
 def myGroups(request):
     context={}
-    # return render_to_response('myGroups.html', context, context_instance=RequestContext(request))
+    return render_to_response('myGroups.xml', context, context_instance=RequestContext(request))
     #                                      body="Hello!")
 	
     # call = client.calls.create(to="+19178551541", from_="+13475148471", url="http://foo.com/call.xml")

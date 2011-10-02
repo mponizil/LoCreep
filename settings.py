@@ -10,27 +10,27 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'djangostack',
+#        'HOST': '/opt/bitnami/postgresql',
+#        'PORT': '5432',
+#        'USER': 'bitnami',
+#        'PASSWORD': '485d689220'
+#    }
+#}
+import os
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangostack',
-        'HOST': '/opt/bitnami/postgresql',
-        'PORT': '5432',
-        'USER': 'bitnami',
-        'PASSWORD': '485d689220'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.dirname(__file__)+'locreep.db',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': '/Users/mponizil/dev/python/lc/locreep.db',
-#         'USER': '',
-#         'PASSWORD': '',
-#         'HOST': '',
-#         'PORT': '',
-#     }
-# }
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -115,7 +115,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
-    '/opt/bitnami/apps/django/django_projects/test_site/templates'
+    os.path.dirname(__file__)+'templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
