@@ -18,6 +18,10 @@ urlpatterns = patterns('',
 	#(r'^search/$', views.search),
 	#(r'^groups/$', views.groups),
 	#(r'^creeps/$', views.creeps),
-    url(r'^admin/', include(admin.site.urls)),
+    	url(r'^admin/', include(admin.site.urls)),
 	(r'^tumblr_text/(.*)/(.*)$', views.tumblr_text),
+
+        (r'^myGroups/$', views.myGroups),
+        (r'^group/$', views.group),
+
 )

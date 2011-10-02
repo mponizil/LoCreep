@@ -15,7 +15,7 @@ class Creep(models.Model):
     name = models.CharField(max_length=75)
 
     def __unicode__(self):
-        return self.phone
+        return str(self.phone)
 
 class Group(models.Model):
     name = models.CharField(max_length=30)
@@ -23,6 +23,7 @@ class Group(models.Model):
     description = models.TextField()
     creeps = models.ManyToManyField(Creep, verbose_name="creeps in a group")
     users = models.ManyToManyField(User, verbose_name="users in a group") 
+    photo = models.CharField(max_length=75)
 
     def __unicode__(self):
         return self.name
@@ -34,7 +35,7 @@ class Conversation(models.Model):
     qr_id = models.CharField(max_length=255, null=True)
 
     def __unicode__(self):
-        return self.id
+        return str(self.id)
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation)
@@ -44,5 +45,4 @@ class Message(models.Model):
     body = models.TextField()
 
     def __unicode__(self):
-        return self.id
-
+        return str(self.id)
