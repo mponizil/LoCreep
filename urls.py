@@ -6,6 +6,8 @@ urlpatterns = patterns('',
 	(r'^phone/$', views.phone),
 	(r'^twilio/$', views.twilio),
 	(r'^myGroups/$', views.myGroups),
+	(r'^xml/$', views.xml),
+	
 	#(r'^search/$', views.search),
 	#(r'^groups/$', views.groups),
 	#(r'^creeps/$', views.creeps),

@@ -20,7 +20,9 @@ def twilio(request):
     #                                      from_="+13475148471",
     #                                      body="Hello!"
     return HttpResponse(str(request.POST)+"hello")
-
+def xml(request):
+    return render_to_response('myGroups.xml')
+    
 def myGroups(request):
     context={}
     return render_to_response('myGroups.xml', context, context_instance=RequestContext(request))
