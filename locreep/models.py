@@ -10,22 +10,22 @@ class User(models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length = 30)
-    phone = models.IntegerField(max_length = 10)
+    phone = models.CharField(max_length = 12)
     description = models.TextField()
 
     def __unicode__(self):
         return self.name
 
 class UserInGroups(models.Model):
-    user_id = models.ForeignKey(User)
-    group_id = models.ForeignKey(Group)
+    user = models.ForeignKey(User)
+    group = models.ForeignKey(Group)
     confirmed = models.BooleanField()
 
     def __unicode__(self):
         return self.id
 
 class Creep(models.Model):
-    phone = models.IntegerField(max_length = 10)
+    phone = models.CharField(max_length = 12)
     photo = models.CharField(max_length = 75)
     last_seen = models.CharField(max_length = 255)
     
@@ -33,19 +33,19 @@ class Creep(models.Model):
         return self.phone
 
 class Conversation(models.Model):
-    group_id = models.ForeignKey(Group)
-    creep_id = models.ForeignKey(Creep)
-    tumblr_id = models.CharField(max_length = 255)
-    qr_id = models.CharField(max_length = 255)
+    group = models.ForeignKey(Group)
+    creep = models.ForeignKey(Creep)
+    tumblr_id = models.CharField(max_length = 255, null = True)
+    qr_id = models.CharField(max_length = 255, null = True)
 
     def __unicode__(self):
-        return self.group_id
+        return self.id
 
 class Message(models.Model):
-    conversation_id = models.ForeignKey(Conversation)
+    conversation = models.ForeignKey(Conversation)
     user_type = models.CharField(max_length = 10)
-    user_id = models.ForeignKey(User)
-    creep_id = models.ForeignKey(Creep)
+    user = models.ForeignKey(User, null = True)
+    creep = models.ForeignKey(Creep, null = True)
 
     def __unicode__(self):
-        return self.phone
+        return self.id
