@@ -4,6 +4,8 @@ from django.shortcuts import render_to_response
 from twilio.rest import TwilioRestClient
 from twilio import twiml
 from django.views.decorators.csrf import csrf_exempt
+from django.core.context_processors import csrf
+
 # from django.views.decorators.http import require_POST
 
 
