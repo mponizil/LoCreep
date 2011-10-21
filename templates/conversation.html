@@ -3,19 +3,19 @@
 {% block content %}
 
 <script src="/static/application.js"></script>
-<script src="http://locreep.com:3000/socket.io/socket.io.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|addslashes }}', body: '{% if ".mp3" in message.body %}<a href="{{ message.body }}">Voicemail</a>{% else %}{{ message.body|addslashes }}{% endif %}' },{% endfor %}];
 
-var socket = io.connect('http://locreep.com:3000/');
+var socket = io.connect('http://localhost:3000/');
 socket.emit('init', { conversation_id: {{ conversation_id }} })
 socket.on('message', function(data) {
   // add message to the page
   if(data.user_type == 'creep') {
     var message = (data.message.match(/\.mp3/)) ? '<a href="' + data.message + '">Voicemail</a>' : data.message;
-    $("#top_form").after($('<div class="bubble right">		  <div class="chat-bubble gray-bubble">			<div class="chat-bubble-glare"></div>			<p class="lemon">' + message + '</p>			<div class="chat-bubble-arrow-border-gray"></div>			<div class="chat-bubble-arrow-gray"></div>		  </div>	  		</div>'));
+    $("#top_form").after($('<div class="bubble right"><div class="chat-bubble gray-bubble"><div class="chat-bubble-glare"></div><p class="lemon">' + message + '</p><div class="chat-bubble-arrow-border-gray"></div><div class="chat-bubble-arrow-gray"></div> </div></div>'));
   } else {
-    $("#top_form").after($('<div class="bubble left">			<div class="chat-bubble green-bubble">				<div class="chat-bubble-glare"></div>				<p class="lemon">' + data.message + '</p>				<div class="chat-bubble-arrow-border-green"></div>				<div class="chat-bubble-arrow-green"></div>			</div>		</div>'));
+    $("#top_form").after($('<div class="bubble left"><div class="chat-bubble green-bubble"><div class="chat-bubble-glare"></div><p class="lemon">' + data.message + '</p><div class="chat-bubble-arrow-border-green"></div><div class="chat-bubble-arrow-green"></div></div></div>'));
   }
 })
 
@@ -23,15 +23,7 @@ $(function() {
   $("#send_message").submit(submit_msg)
   $("#make_post").click(submit_msg)
   
-  $("#to_tumblr").click(function() {
-    var all_messages = "";
-    for(i in messages) {
-      var user_type = (messages[i].user_type == 'user') ? 'Babe' : 'Creep';
-      all_messages += "<strong>" + user_type + "</strong>" + ": " + messages[i].body + "<br />";
-    }
-    var title = (messages[0].body.match(/\.mp3/)) ? "Hey baby I'm gonna leave you a voicemail" : messages[0].body;
-    $.post("/tumblr_text/", { conversation_id: {{ conversation_id }}, title: title, body: all_messages })
-  })
+  $("#to_tumblr").click(to_tumblr)
 })
 
 function submit_msg() {
@@ -39,6 +31,17 @@ function submit_msg() {
   $.post("/user_message/", { conversation_id: {{ conversation_id }}, body: body })
   $("input[name='msg']").val('').focus();
   return false;
+}
+function to_tumblr() {
+  var all_messages = "";
+  for(i in messages) {
+    var user_type = (messages[i].user_type == 'user') ? 'Babe' : 'Creep';
+    all_messages += "<strong>" + user_type + "</strong>" + ": " + messages[i].body + "<br />";
+  }
+  var title = (messages[0].body.match(/\.mp3/)) ? "Hey baby I'm gonna leave you a voicemail" : messages[0].body;
+  $.post("/tumblr_text/", { conversation_id: {{ conversation_id }}, title: title, body: all_messages }, function() {
+    alert('Thanks for your contribution to the Locreep Tumblr. Check it out!\n\nlocreep.tumblr.com')
+  })
 }
 </script>
 
