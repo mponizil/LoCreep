@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="/static/application.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+<div id="content">		
+	
+	<h2>My Groups</h2>
+	
+	<ul>
+	  
+	  {% for g in groups %}
+	  <li><a href="/group/{{ g.id }}">{{ g.name }}</a></li>
+	  {% endfor %}
+	  
+	</ul>
+	
+	<button>New Group</button>
+	
+</div>
+
+{% endblock %}

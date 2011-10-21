@@ -20,34 +20,13 @@ account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
 tc = TwilioRestClient(account, token)
 
-@csrf_exempt
-def user_message(request):
-    conversation_id = request.POST.get('conversation_id')
+def dashboard(request):
     try:
-        conversation = Conversation.objects.get(id=conversation_id)
-    except Conversation.DoesNotExist:
-        return HttpResponse('no conversation')
+        groups = Group.objects.filter(users=request.user)
+    except Group.DoesNotExist:
+        groups = None
     
-    user = request.user
-    body = request.POST.get('body')
-    
-    message = Message(conversation=conversation,user_type='user',body=body)
-    message.save()
-    
-    url = 'http://localhost:3000/message/'
-    values = {'conversation_id' : conversation_id,
-              'user_type' : 'user',
-              'message' : body }
-    data = urllib.urlencode(values)
-    req = urllib2.Request(url, data)
-    response = urllib2.urlopen(req)
-    the_page = response.read()
-    
-    print tc
-    
-    sms = tc.sms.messages.create(to = conversation.creep.phone, from_ = conversation.group.phone, body = body)
-    
-    return HttpResponse('{success:true}')
+    return render_to_response("dashboard.html", { 'groups': groups })
 
 def group(request, group_id):
     try:
@@ -73,3 +52,32 @@ def conversation(request, conversation_id):
     qr = a['data']['url']+'.qrcode'
     
     return render_to_response("conversation.html", { 'conversation_id': conversation.id, 'creep': conversation.creep, 'messages': messages, 'qr': qr })
+
+@csrf_exempt
+def user_message(request):
+    conversation_id = request.POST.get('conversation_id')
+    try:
+        conversation = Conversation.objects.get(id=conversation_id)
+    except Conversation.DoesNotExist:
+        return HttpResponse('no conversation')
+
+    user = request.user
+    body = request.POST.get('body')
+
+    message = Message(conversation=conversation,user_type='user',body=body)
+    message.save()
+
+    url = 'http://localhost:3000/message/'
+    values = {'conversation_id' : conversation_id,
+              'user_type' : 'user',
+              'message' : body }
+    data = urllib.urlencode(values)
+    req = urllib2.Request(url, data)
+    response = urllib2.urlopen(req)
+    the_page = response.read()
+
+    print tc
+
+    sms = tc.sms.messages.create(to = conversation.creep.phone, from_ = conversation.group.phone, body = body)
+
+    return HttpResponse('{success:true}')

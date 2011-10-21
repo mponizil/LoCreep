@@ -2,6 +2,28 @@
 
 {% block content %}
 
+<script type="text/javascript">
+$(function() {
+  $("#register").submit(register)
+  $("#signup").click(register)
+})
+function register() {
+  params = {
+    fname: $("#fname").val(),
+    lname: $("#lname").val(),
+    email: $("#email").val(),
+    password: $("#password1").val()
+  };
+  $.post("/register", params, function(data) {
+    console.log(data)
+    var res = $.parseJSON(data);
+    if(res.success) window.location = "/dashboard";
+    else alert(res.error);
+  })
+  return false;
+}
+</script>
+
 <link href="/static/stylized.css" media="screen" rel="stylesheet" type="text/css" />
 
 <div id="content">		
@@ -12,7 +34,7 @@
 
 	<div id="blue_form">
 		<div id="stylized">
-		<form id="form" name="form" method="post" action="index.html">
+		<form id="register" name="register">
 	
 		<p>Sign up</p>
 	
@@ -20,14 +42,14 @@
 			<label>First Name
 			<span class="small">Add your name</span>
 			</label>
-			<input type="text" name="name" id="name" />
+			<input type="text" name="name" id="fname" />
 		</div>
 	
 		<div class="form_row">
 			<label>Last Name
 			<span class="small">Add your name</span>
 			</label>
-			<input type="text" name="name" id="name" />
+			<input type="text" name="name" id="lname" />
 		</div>
 
 		<div class="form_row">
@@ -41,18 +63,18 @@
 			<label>Password
 			<span class="small">Min. size 6 chars</span>
 			</label>
-			<input type="password" name="password" id="password" />
+			<input type="password" name="password" id="password1" />
 		</div>
 	
 		<div class="form_row">
 			<label>Confirm
 			<span class="small">Min. size 6 chars</span>
 			</label>
-			<input type="password" name="password" id="password" />
+			<input type="password" name="password" id="password2" />
 		</div>
 	
 		<div class="form_row_for_btn">
-			<a class="large red awesome">Sign-up</a>
+			<a class="large red awesome" id="signup">Sign-up</a>
 		</div>
 
 		<!-- <button type="submit">Sign-up</button> -->

@@ -1,6 +1,7 @@
 from locreep.models import *
 
 from django.template import RequestContext, loader
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,13 +17,39 @@ USER = "locreep@mailinator.com"
 PASSWORD = "locreep"
 
 def welcome(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect("/group/1")
-    else:
-        return render_to_response("welcome.html", { 'header': 'large' })
+    return render_to_response("welcome.html", { 'header': 'large' })
+
+@csrf_exempt
+def register(request):
+    fname = request.POST.get('fname')
+    lname = request.POST.get('lname')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    
+    u = User.objects.create_user(email,email,password)
+    u.first_name = fname
+    u.last_name = lname
+    u.save()
+    
+    #login(request, u)
+    
+    return HttpResponse('{ "success": true }')
 
 def login(request):
     return render_to_response("login.html")
+
+@csrf_exempt
+def auth(request):
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    
+    user = authenticate(username=email,password=password)
+    
+    if user is not None:
+        login(request, user)
+        return HttpResponse('{ "success": true }')
+    else:
+        return HttpResponse('{ "success": false, "error": "The email and password you entered were not found." }')
 
 @csrf_exempt
 @require_POST

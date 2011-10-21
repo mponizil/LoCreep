@@ -1,13 +1,5 @@
 from django.db import models
-
-class User(models.Model):
-    email = models.CharField(max_length=60)
-    password = models.CharField(max_length=60)
-    fname = models.CharField(max_length=20)
-    lname = models.CharField(max_length=20)
-
-    def __unicode__(self):
-        return self.fname
+from django.contrib.auth.models import User
 
 class Creep(models.Model):
     phone = models.CharField(max_length=12)

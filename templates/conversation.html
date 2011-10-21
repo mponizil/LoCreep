@@ -28,7 +28,7 @@ $(function() {
 
 function submit_msg() {
   var body = $("input[name='msg']").val();
-  $.post("/user_message/", { conversation_id: {{ conversation_id }}, body: body })
+  $.post("/user_message", { conversation_id: {{ conversation_id }}, body: body })
   $("input[name='msg']").val('').focus();
   return false;
 }
@@ -39,7 +39,7 @@ function to_tumblr() {
     all_messages += "<strong>" + user_type + "</strong>" + ": " + messages[i].body + "<br />";
   }
   var title = (messages[0].body.match(/\.mp3/)) ? "Hey baby I'm gonna leave you a voicemail" : messages[0].body;
-  $.post("/tumblr_text/", { conversation_id: {{ conversation_id }}, title: title, body: all_messages }, function() {
+  $.post("/tumblr_text", { conversation_id: {{ conversation_id }}, title: title, body: all_messages }, function() {
     alert('Thanks for your contribution to the Locreep Tumblr. Check it out!\n\nlocreep.tumblr.com')
   })
 }
