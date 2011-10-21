@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script type="text/javascript">
+$(function() {
+  $("#save_group").submit(save_group);
+  $("#save_group_btn").click(save_group);
+})
+function save_group() {
+  var params = {
+    name: $("#name").val(),
+    description: $("#description").val(),
+    phone: $("#phone").val()
+  }
+  $.post("/groups/save", params, function(data) {
+    var res = $.parseJSON(data);
+    if(res.success) window.location = "/groups/" + res.data.group_id;
+    else alert(res.error);
+  })
+}
+</script>
+
+<form id="save_group" name="save_group" enctype="multipart/form-data">
+  <input type="hidden" name="phone" id="phone" value="{{ phone }}" />
+  <table>
+    <tr>
+      <td>Photo</td>
+      <td><input type="file" name="photo" /></td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td><input type="text" name="name" id="name" /></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><textarea name="description" id="description"></textarea></td>
+    </tr>
+    <tr>
+      <td><a href="/dashboard">Back</a></td>
+      <td><a class="large green awesome" id="save_group_btn">Create Group</td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}

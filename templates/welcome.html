@@ -15,7 +15,6 @@ function register() {
     password: $("#password1").val()
   };
   $.post("/register", params, function(data) {
-    console.log(data)
     var res = $.parseJSON(data);
     if(res.success) window.location = "/dashboard";
     else alert(res.error);

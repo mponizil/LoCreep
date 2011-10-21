@@ -4,15 +4,17 @@
 
 <script type="text/javascript">
 $(function() {
-  $("#form").submit(function() {
-    $.post("/auth", { email: $("#email").val(), password: $("#password").val() }, function(data) {
-      var res = $.parseJSON(data);
-      if(res.success) window.location = "/dashboard";
-      else alert(res.error);
-    })
-    return false;
-  })
+  $("#form").submit(login);
+  $("#signin").click(login);
 })
+function login() {
+  $.post("/auth", { email: $("#email").val(), password: $("#password").val() }, function(data) {
+    var res = $.parseJSON(data);
+    if(res.success) window.location = "/dashboard";
+    else alert(res.error);
+  })
+  return false;
+}
 </script>
 
 <link href="/static/stylized.css" media="screen" rel="stylesheet" type="text/css" />
@@ -40,7 +42,7 @@ $(function() {
 		</div>
 	
 		<div class="form_row_for_btn">
-			<a class="large yellow awesome">Sign-in</a>
+			<a class="large yellow awesome" id="signin">Sign-in</a>
 		</div>
 
 		<!-- <button type="submit">Sign-up</button> -->

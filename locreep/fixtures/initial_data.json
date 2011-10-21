@@ -1,0 +1,26 @@
+[
+  {
+    "model": "locreep.number",
+    "pk": 1,
+    "fields": {
+      "phone": "+13475148471",
+      "is_available": true
+    }
+  },
+  {
+    "model": "locreep.number",
+    "pk": 2,
+    "fields": {
+      "phone": "+12012557890",
+      "is_available": true
+    }
+  },
+  {
+    "model": "locreep.number",
+    "pk": 3,
+    "fields": {
+      "phone": "+19738217807",
+      "is_available": true
+    }
+  }
+]

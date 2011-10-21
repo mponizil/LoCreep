@@ -2,6 +2,7 @@ from locreep.models import *
 
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -20,14 +21,16 @@ account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
 tc = TwilioRestClient(account, token)
 
+@login_required(login_url='/login')
 def dashboard(request):
     try:
         groups = Group.objects.filter(users=request.user)
     except Group.DoesNotExist:
         groups = None
     
-    return render_to_response("dashboard.html", { 'groups': groups })
+    return render_to_response("dashboard.html", { 'groups': groups }, context_instance=RequestContext(request))
 
+@login_required(login_url='/login')
 def group(request, group_id):
     try:
         group = Group.objects.get(id=group_id)
@@ -36,8 +39,34 @@ def group(request, group_id):
     
     conversations = Conversation.objects.filter(group=group)
     
-    return render_to_response("group.html", { 'conversations': conversations })
+    return render_to_response("group.html", { 'group': group, 'conversations': conversations }, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def create_group(request):
+    number = Number.objects.filter(is_available=True)
+    return render_to_response("create-group.html", { 'phone': number[0].phone })
+
+@csrf_exempt
+def save_group(request):
+    name = request.POST['name']
+    description = request.POST['description']
+    phone = request.POST['phone']
     
+    # create new group
+    g = Group(name=name,description=description,phone=phone)
+    g.save()
+    
+    # add current user to the group
+    g.users.add(request.user)
+    
+    # make the phone number unavailable
+    number = Number.objects.get(phone=phone)
+    number.is_available = False
+    number.save()
+    
+    return HttpResponse('{ "success": true, "data": { "group_id": ' + str(g.id) + ' } }')
+
+@login_required(login_url='/login')
 def conversation(request, conversation_id):
     try:
         conversation = Conversation.objects.get(id=conversation_id)
@@ -51,7 +80,7 @@ def conversation(request, conversation_id):
     a = json.loads(f.read())
     qr = a['data']['url']+'.qrcode'
     
-    return render_to_response("conversation.html", { 'conversation_id': conversation.id, 'creep': conversation.creep, 'messages': messages, 'qr': qr })
+    return render_to_response("conversation.html", { 'conversation_id': conversation.id, 'group_id': conversation.group.id, 'creep': conversation.creep, 'messages': messages, 'qr': qr }, context_instance=RequestContext(request))
 
 @csrf_exempt
 def user_message(request):

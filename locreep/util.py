@@ -1,7 +1,7 @@
 from locreep.models import *
 
 from django.template import RequestContext, loader
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,32 +16,35 @@ BLOG = "locreep.tumblr.com"
 USER = "locreep@mailinator.com"
 PASSWORD = "locreep"
 
-def welcome(request):
-    return render_to_response("welcome.html", { 'header': 'large' })
+def welcome_pg(request):
+    if not request.user.is_authenticated():
+        return render_to_response("welcome.html", { 'header': 'large' }, context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/dashboard')
 
 @csrf_exempt
 def register(request):
-    fname = request.POST.get('fname')
-    lname = request.POST.get('lname')
-    email = request.POST.get('email')
-    password = request.POST.get('password')
+    fname = request.POST['fname']
+    lname = request.POST['lname']
+    email = request.POST['email']
+    password = request.POST['password']
     
     u = User.objects.create_user(email,email,password)
     u.first_name = fname
     u.last_name = lname
     u.save()
     
-    #login(request, u)
+    login(request, u)
     
     return HttpResponse('{ "success": true }')
 
-def login(request):
-    return render_to_response("login.html")
+def login_pg(request):
+    return render_to_response("login.html", context_instance=RequestContext(request))
 
 @csrf_exempt
 def auth(request):
-    email = request.POST.get('email')
-    password = request.POST.get('password')
+    email = request.POST['email']
+    password = request.POST['password']
     
     user = authenticate(username=email,password=password)
     
@@ -51,12 +54,16 @@ def auth(request):
     else:
         return HttpResponse('{ "success": false, "error": "The email and password you entered were not found." }')
 
+def logout_pg(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
 @csrf_exempt
 @require_POST
 def tumblr_text(request):
-    conversation_id = request.POST.get('conversation_id')
-    title = request.POST.get('title')
-    body = request.POST.get('body')
+    conversation_id = request.POST['conversation_id']
+    title = request.POST['title']
+    body = request.POST['body']
     
     tumblr = Api(BLOG,USER,PASSWORD)
     post = tumblr.write_regular(title, body)

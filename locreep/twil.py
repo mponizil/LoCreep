@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 import urllib
 import urllib2
 
-domain_name = "http://3r2z.localtunnel.com"
+domain_name = "http://4sdw.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -22,12 +22,12 @@ tc = TwilioRestClient(account, token)
 @csrf_exempt
 @require_POST
 def text(request):
-    creep_phone = request.POST.get('From')
-    group_phone = request.POST.get('To')
-    body = request.POST.get('Body')
+    creep_phone = request.POST['From']
+    group_phone = request.POST['To']
+    body = request.POST['Body']
     
     # creep_phone = '+17608463179'
-    # group_phone = '+13475148471'
+    # group_phone = '+12012557890'
     # body = 'sup'
 
     # check if it's from a creep we know
@@ -45,7 +45,7 @@ def text(request):
     
     # check if conversation with this creep is going on
     try:
-        conversation = Conversation.objects.get(group=group)
+        conversation = Conversation.objects.get(group=group,creep=creep)
     except Conversation.DoesNotExist:
         conversation = Conversation(group=group,creep=creep)
         conversation.save()
@@ -67,7 +67,7 @@ def text(request):
     # send reply
     # sms = tc.sms.messages.create(to = creep_phone, from_ = group_phone, body = "lol you're funny!")
     
-    return HttpResponse('{success:true}')
+    return HttpResponse('{ "success": true }')
 
 def save_creepy_voice(request):
     group_phone = request.GET.get('To','')
@@ -107,7 +107,7 @@ def save_creepy_voice(request):
     response = urllib2.urlopen(req)
     the_page = response.read()
     
-    return HttpResponse("{success:true}")
+    return HttpResponse('{ "success": true }')
 
 @csrf_exempt
 def phone(request):	

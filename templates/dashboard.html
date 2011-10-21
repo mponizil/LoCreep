@@ -12,12 +12,12 @@
 	<ul>
 	  
 	  {% for g in groups %}
-	  <li><a href="/group/{{ g.id }}">{{ g.name }}</a></li>
+	  <li><a href="/groups/{{ g.id }}">{{ g.name }}</a></li>
 	  {% endfor %}
 	  
 	</ul>
 	
-	<button>New Group</button>
+	<a href="/groups/create" class="large green awesome">New Group</a>
 	
 </div>
 

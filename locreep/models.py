@@ -38,3 +38,7 @@ class Message(models.Model):
 
     def __unicode__(self):
         return str(self.id)
+
+class Number(models.Model):
+    phone = models.CharField(max_length=12)
+    is_available = models.BooleanField()

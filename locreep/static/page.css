@@ -12,7 +12,8 @@ a {color:#ff5400;}
 	padding:10px;
 	background-color:#fff;
 }
-
+#user {float: right;}
+#user a {color:#fff;}
 .other_info{
 	float: left;
     padding-top: 3px;

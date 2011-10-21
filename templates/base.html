@@ -20,7 +20,13 @@
 <div id="whole_page">
   
   <div id="header">
-    {% if header != 'large' %}<img src="/static/small_logo.jpg" />{% endif %}
+    {% if header != 'large' %}<a href="/"><img src="/static/small_logo.jpg" /></a>{% endif %}
+    
+    {% if user.is_authenticated %}
+    <div id="user">
+      <a href="/logout">logout</a>
+    </div>
+    {% endif %}
   </div>
 	
 	{% block content %}{% endblock %}
