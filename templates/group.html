@@ -22,6 +22,18 @@
 	  
 	</ul>
 	
+	<h2>Users in this group</h2>
+	
+	<ul>
+	  
+	  {% for u in group.users.all %}
+	  <li>{{ u.first_name }} {{ u.last_name }}</li>
+	  {% endfor %}
+	  
+	</ul>
+	
+	<a href="/groups/{{ group.id }}/invite" class="large blue awesome">Invite Friends</a>
+	
 </div>
 
 {% endblock %}

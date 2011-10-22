@@ -15,9 +15,14 @@ urlpatterns = patterns('',
 	(r'^logout$', util.logout_pg),
 	
 	(r'^dashboard$', app.dashboard),
-	(r'^groups/(\d+)$', app.group),
+	
 	(r'^groups/create$', app.create_group),
 	(r'^groups/save$', app.save_group),
+	(r'^groups/(\d+)$', app.group),
+	(r'^groups/(\d+)/invite$', app.group_invite),
+	(r'^users/search$', app.search),
+	(r'^groups/add-user$', app.add_user),
+	
 	(r'^conversations/(\d+)$', app.conversation),
     
     (r'^user_message$', app.user_message),

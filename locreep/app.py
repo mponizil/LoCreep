@@ -4,6 +4,8 @@ from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+from django.db.models import Q
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 
@@ -44,7 +46,7 @@ def group(request, group_id):
 @login_required(login_url='/login')
 def create_group(request):
     number = Number.objects.filter(is_available=True)
-    return render_to_response("create-group.html", { 'phone': number[0].phone })
+    return render_to_response("create-group.html", { 'phone': number[0].phone }, context_instance=RequestContext(request))
 
 @csrf_exempt
 def save_group(request):
@@ -67,6 +69,15 @@ def save_group(request):
     return HttpResponse('{ "success": true, "data": { "group_id": ' + str(g.id) + ' } }')
 
 @login_required(login_url='/login')
+def group_invite(request, group_id):
+    try:
+        group = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        group = None
+    
+    return render_to_response("group-invite.html", { 'group': group }, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
 def conversation(request, conversation_id):
     try:
         conversation = Conversation.objects.get(id=conversation_id)
@@ -83,15 +94,39 @@ def conversation(request, conversation_id):
     return render_to_response("conversation.html", { 'conversation_id': conversation.id, 'group_id': conversation.group.id, 'creep': conversation.creep, 'messages': messages, 'qr': qr }, context_instance=RequestContext(request))
 
 @csrf_exempt
+def search(request):
+    friend = request.POST['friend']
+    
+    users = User.objects.filter(Q(first_name__icontains=friend) | Q(last_name__icontains=friend)).exclude(id=request.user.id)
+    print users[0].id
+    u = []
+    for user in users:
+        u.append({ 'id': user.id, 'name': user.first_name + " " + user.last_name })
+    
+    return HttpResponse(json.dumps(u))
+
+@csrf_exempt
+def add_user(request):
+    group_id = request.POST['group_id']
+    user_id = request.POST['user_id']
+    
+    group = Group.objects.get(id=group_id)
+    user = User.objects.get(id=user_id)
+    
+    group.users.add(user)
+    
+    return HttpResponse('{ "success": true }')
+
+@csrf_exempt
 def user_message(request):
-    conversation_id = request.POST.get('conversation_id')
+    conversation_id = request.POST['conversation_id']
     try:
         conversation = Conversation.objects.get(id=conversation_id)
     except Conversation.DoesNotExist:
         return HttpResponse('no conversation')
 
     user = request.user
-    body = request.POST.get('body')
+    body = request.POST['body']
 
     message = Message(conversation=conversation,user_type='user',body=body)
     message.save()

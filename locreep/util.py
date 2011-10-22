@@ -34,7 +34,7 @@ def register(request):
     u.last_name = lname
     u.save()
     
-    login(request, u)
+    #login(request, u)
     
     return HttpResponse('{ "success": true }')
 

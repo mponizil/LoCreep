@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script type="text/javascript">
+$(function() {
+  $("#friend").keyup(function() {
+    var params = {
+      friend: $("#friend").val()
+    }
+    $("#results").empty();
+    if(params.friend) {
+      $.post("/users/search", params, function(data) {
+        var users = $.parseJSON(data);
+        for (i in users) {
+          var div = $("<div>").addClass("user").html(users[i].name);
+          var invite = $("<a>").addClass("small blue awesome").attr("id","user-" + users[i].id).html("Add to group");
+          $("#results").append(div,invite);
+          invite.click(function() {
+            var user_id = $(this).attr("id").substring(5);
+            $.post("/groups/add-user", { group_id: {{ group.id }}, user_id: user_id }, function(data) {
+              invite.replaceWith("Invited")
+            })
+          })
+        }
+      })
+    }
+  })
+})
+</script>
+
+<div id="content">
+  
+  {% if not group %}
+  group does not exist
+  {% else %}
+  
+  <h2>Invite Friends</h2>
+  <h5>Group: {{ group.name }}</h5>
+  
+  <input type="text" name="friend" id="friend" />
+  
+  <div id="results"></div>
+  
+  {% endif %}
+	
+</div>
+
+{% endblock %}
