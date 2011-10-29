@@ -1,11 +1,11 @@
 from django.conf.urls.defaults import *
-
 from django.contrib import admin
+admin.autodiscover()
 
 from lc.locreep import app, twil, util
 
 urlpatterns = patterns('',
-	(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
+	# (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
 	
 	(r'^$', util.welcome_pg),
 	(r'^welcome$', util.welcome_pg),
