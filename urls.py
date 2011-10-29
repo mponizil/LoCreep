@@ -33,5 +33,5 @@ urlpatterns = patterns('',
 	
 	(r'^tumblr_text$', util.tumblr_text),
 	
-    url(r'^admin', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 )

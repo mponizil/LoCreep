@@ -27,7 +27,7 @@ class Conversation(models.Model):
     qr_id = models.CharField(max_length=255, null=True)
 
     def __unicode__(self):
-        return str(self.id)
+        return str(self.group.name) + ": " + str(self.id)
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation)
@@ -37,8 +37,11 @@ class Message(models.Model):
     body = models.TextField()
 
     def __unicode__(self):
-        return str(self.id)
+        return str(self.body)[:10]
 
 class Number(models.Model):
     phone = models.CharField(max_length=12)
     is_available = models.BooleanField()
+    
+    def __unicode__(self):
+        return str(self.phone)

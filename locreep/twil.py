@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 import urllib
 import urllib2
 
-domain_name = "http://3q6q.localtunnel.com"
+domain_name = "http://3id5.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -27,7 +27,7 @@ def text(request):
     body = request.POST['Body']
     
     # creep_phone = '+17608463179'
-    # group_phone = '+12012557890'
+    # group_phone = '+13475148471'
     # body = 'sup'
 
     # check if it's from a creep we know
@@ -55,7 +55,7 @@ def text(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://localhost:3000/message/'
+    url = 'http://localhost:3000/message'
     values = {'conversation_id' : conversation.id,
               'user_type' : 'creep',
               'message' : body }
@@ -98,7 +98,7 @@ def save_creepy_voice(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://localhost:3000/message/'
+    url = 'http://localhost:3000/message'
     values = {'conversation_id' : conversation.id,
               'user_type' : 'creep',
               'message' : body }
