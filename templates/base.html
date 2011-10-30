@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/underscore.js"></script>
 
   <link href="/static/reset.css" media="screen" rel="stylesheet" type="text/css" />
   <link href="/static/page.css" media="screen" rel="stylesheet" type="text/css" />
@@ -24,6 +25,7 @@
     
     {% if user.is_authenticated %}
     <div id="user">
+      {{ user.first_name }} {{ user.last_name }}
       <a href="/logout">logout</a>
     </div>
     {% endif %}

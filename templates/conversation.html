@@ -8,7 +8,7 @@
 var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|addslashes }}', body: '{% if ".mp3" in message.body %}<a href="{{ message.body }}">Voicemail</a>{% else %}{{ message.body|addslashes }}{% endif %}' },{% endfor %}];
 
 var socket = io.connect('http://localhost:3000/');
-socket.emit('init', { conversation_id: {{ conversation_id }} })
+socket.emit('conversation.init', { conversation_id: {{ conversation_id }} })
 socket.on('message', function(data) {
   // add message to the page
   if(data.user_type == 'creep') {

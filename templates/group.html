@@ -4,6 +4,35 @@
 
 <script src="/static/application.js"></script>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+var socket = io.connect('http://localhost:3000/');
+socket.emit('group.init', { group_id: {{ group.id }} })
+socket.on('message', function(data) {
+  var params = {
+    conversation_id: data.conversation_id,
+    creep_phone: data.creep_phone,
+    message: data.message
+  }
+  
+  if ($("#conversation-" + data.conversation_id).length == 0) new_conversation(params);
+  else new_message(params);
+})
+function new_conversation(params) {
+  var li = $("<li>").attr("id","conversation-" + params.conversation_id);
+  var a = $("<a>").attr("href","/conversations/" + params.conversation_id).html(params.creep_phone);
+  li.append(a);
+  $("#conversations").append(li)
+  
+  new_message(params);
+}
+function new_message(params) {
+  var li = $("#conversation-" + params.conversation_id);
+  li.css("background-color","green");
+  setTimeout(function() {
+    li.css("background-color","transparent");
+  }, 2000)
+}
+</script>
 
 <div id="content">
   
@@ -12,10 +41,10 @@
   
   <p>{{ group.description }}</p>
 	
-	<ul>
+	<ul id="conversations">
 	  
 	  {% for c in conversations %}
-	  <li><a href="/conversations/{{ c.id }}">{{ c.creep.phone }}</a></li>
+	  <li id="conversation-{{ c.id }}"><a href="/conversations/{{ c.id }}">{{ c.creep.phone }}</a></li>
 	  {% empty %}
 	  You haven't been contacted by any creeps :(
 	  {% endfor %}
@@ -27,12 +56,14 @@
 	<ul>
 	  
 	  {% for u in group.users.all %}
+	  {% if u.password %}
 	  <li>{{ u.first_name }} {{ u.last_name }}</li>
+	  {% endif %}
 	  {% endfor %}
 	  
 	</ul>
 	
-	<a href="/groups/{{ group.id }}/invite" class="large blue awesome">Invite Friends</a>
+	<a href="/groups/{{ group.id }}/add-friends" class="large blue awesome">Invite Friends</a>
 	
 </div>
 

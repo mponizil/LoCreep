@@ -23,6 +23,7 @@ def welcome_pg(request):
         return HttpResponseRedirect('/dashboard')
 
 @csrf_exempt
+@require_POST
 def register(request):
     fname = request.POST['fname']
     lname = request.POST['lname']
@@ -34,14 +35,40 @@ def register(request):
     u.last_name = lname
     u.save()
     
-    #login(request, u)
+    user = authenticate(username=email,password=password)
+    login(request, user)
     
+    return HttpResponse('{ "success": true }')
+
+@csrf_exempt
+@require_POST
+def update_user(request):
+    fname = request.POST['fname']
+    lname = request.POST['lname']
+    email = request.POST['email']
+    password = request.POST['password']
+    
+    if request.user.is_anonymous():
+        u = User.objects.get(username=email)
+    else:
+        u = request.user
+        
+    u.first_name = fname
+    u.last_name = lname
+    u.username = email
+    u.set_password(password)
+    u.save()
+
+    user = authenticate(username=email,password=password)
+    login(request, user)
+
     return HttpResponse('{ "success": true }')
 
 def login_pg(request):
     return render_to_response("login.html", context_instance=RequestContext(request))
 
 @csrf_exempt
+@require_POST
 def auth(request):
     email = request.POST['email']
     password = request.POST['password']
