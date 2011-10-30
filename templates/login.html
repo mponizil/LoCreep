@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 $(function() {
-  $("#form").submit(login);
+  $("#login_form").submit(login);
   $("#signin").click(login);
 })
 function login() {
@@ -17,41 +17,38 @@ function login() {
 }
 </script>
 
-<link href="/static/stylized.css" media="screen" rel="stylesheet" type="text/css" />
-
-<div id="content">		
-
+<div id="content">
+	<div id="main_logo">
+	   <img src="static/images/logo.jpg">
+	</div>
 	<div id="blue_form">
 		<div id="stylized">
-		<form id="form" name="form" method="post" action="index.html">
+			<form id="login_form" name="login_form">
+
+				<p>Sign in</p>
 	
-		<p>Sign in</p>
+				<div class="form_row">
+					<label>Email
+					</label>
+					<input type="text" name="email" id="email" />
+				</div>
 
-		<div class="form_row">
-			<label>Email
-			<span class="small">Add a valid address</span>
-			</label>
-			<input type="text" name="email" id="email" />
-		</div>
-
-		<div class="form_row">
-			<label>Password
-			<span class="small">Min. size 6 chars</span>
-			</label>
-			<input type="password" name="password" id="password" />
-		</div>
+				<div class="form_row">
+					<label>Password
+					</label>
+					<input type="password" name="password" id="password" />
+				</div>
 	
-		<div class="form_row_for_btn">
-			<a class="large yellow awesome" id="signin">Sign-in</a>
-		</div>
+				<div class="form_row_for_btn">
+					<a class="large red awesome" id="signin">Sign-in</a>
+				</div>
 
-		<!-- <button type="submit">Sign-up</button> -->
-		<div class="spacer"></div>
-
-		</form>
+				<!-- <button type="submit">Sign-up</button> -->
+				<div class="spacer"></div>
+				<br><br>
+			</form>
 		</div>
 	</div>
-	
 </div>
 
 {% endblock %}

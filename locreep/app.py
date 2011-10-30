@@ -43,9 +43,27 @@ def group(request, group_id):
     except Group.DoesNotExist:
         return HttpResponse("no group found")
     
+    return render_to_response("group.html", { 'group': group }, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def view_members(request, group_id):
+    try:
+        group = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        return HttpResponse("no group found")
+    
+    return render_to_response("view-members.html", { 'group': group }, context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def view_creeps(request, group_id):
+    try:
+        group = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        return HttpResponse("no group found")
+
     conversations = Conversation.objects.filter(group=group)
     
-    return render_to_response("group.html", { 'group': group, 'conversations': conversations }, context_instance=RequestContext(request))
+    return render_to_response("view-creeps.html", { 'group': group, 'conversations': conversations }, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def create_group(request):
@@ -53,13 +71,13 @@ def create_group(request):
     return render_to_response("create-group.html", { 'phone': number[0].phone }, context_instance=RequestContext(request))
 
 @csrf_exempt
+@require_POST
 def save_group(request):
     name = request.POST['name']
-    description = request.POST['description']
     phone = request.POST['phone']
     
     # create new group
-    g = Group(name=name,description=description,phone=phone)
+    g = Group(name=name,phone=phone)
     g.save()
     
     # add current user to the group
@@ -120,7 +138,7 @@ def conversation(request, conversation_id):
     a = json.loads(f.read())
     qr = a['data']['url']+'.qrcode'
     
-    return render_to_response("conversation.html", { 'conversation_id': conversation.id, 'group_id': conversation.group.id, 'creep': conversation.creep, 'messages': messages, 'qr': qr }, context_instance=RequestContext(request))
+    return render_to_response("conversation.html", { 'conversation': conversation, 'creep': conversation.creep, 'messages': messages, 'qr': qr }, context_instance=RequestContext(request))
 
 @csrf_exempt
 @require_POST
@@ -132,7 +150,7 @@ def search(request):
     u = []
     for user in users:
         in_group = Group.objects.filter(id=group_id,users=user).exists()
-        u.append({ 'id': user.id, 'name': user.get_full_name(), 'email': user.username, 'in_group': in_group })
+        u.append({ 'id': user.id, 'photo': user.userprofile.photo, 'name': user.get_full_name(), 'email': user.username, 'in_group': in_group })
     
     return HttpResponse(json.dumps(u))
 

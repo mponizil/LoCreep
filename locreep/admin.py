@@ -1,6 +1,7 @@
 from django.contrib import admin
-from locreep.models import Group, Creep, Conversation, Message, Number
+from locreep.models import UserProfile, Group, Creep, Conversation, Message, Number
 
+admin.site.register(UserProfile)
 admin.site.register(Group)
 admin.site.register(Creep)
 admin.site.register(Conversation)

@@ -65,7 +65,7 @@ def update_user(request):
     return HttpResponse('{ "success": true }')
 
 def login_pg(request):
-    return render_to_response("login.html", context_instance=RequestContext(request))
+    return render_to_response("login.html", { 'header': 'large' }, context_instance=RequestContext(request))
 
 @csrf_exempt
 @require_POST

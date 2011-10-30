@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+var socket = io.connect('http://localhost:3000/');
+socket.emit('group.init', { group_id: {{ group.id }} })
+socket.on('message', function(data) {
+  var params = {
+    conversation_id: data.conversation_id,
+    creep_phone: data.creep_phone,
+    body: data.body
+  }
+  
+  $("#no-creeps").remove();
+  if ($("#conversation-" + data.conversation_id).length == 0) new_conversation(params);
+  else new_message(params);
+})
+function new_conversation(params) {
+  var summary = $('<div class="summary" id="conversation-' + params.conversation_id + '"><div class="profile_pic"><img src="/static/images/creeps/anonymous.jpg"></div><div class="details"><p class="name"><a href="/conversations/' + params.conversation_id + '">Name Unknown</a></p><p class="info">' + params.creep_phone + '</p><p class="info">info 2</p><p class="info">Creeping since: Just now</p></div></div>');
+  
+  $("#conversations").append(summary)
+  
+  new_message(params);
+}
+function new_message(params) {
+  var summary = $("#conversation-" + params.conversation_id);
+  
+  summary.animate({
+    'background-color': '#d3ffc2'
+  }, 500)
+  setTimeout(function() {
+    summary.animate({
+      'background-color': '#fff'
+    })
+  }, 500)
+}
+</script>
+
+<div id="content">
+	<div class="dark_nav_bar">
+    <a href="/dashboard">Dashboard</a> > <a href="/groups/{{ group.id }}">{{ group.name }}</a> > Creeps
+	</div>
+	<div class="nav_bar">
+    {{ group.name }}'s Creeps
+	</div>
+	
+	{% for c in conversations %}
+	<div class="summary" id="conversation-{{ c.id }}">
+		<div class="profile_pic">
+			<img src="{{ c.creep.photo }}" width="120">
+		</div>
+		<div class="details">
+			<p class="name"><a href="/conversations/{{ c.id }}">Name Unknown</a></p>
+			<p class="info">{{ c.creep.phone }}</p>
+			<p class="info">info 2</p>
+			<p class="info">Creeping since: Oct 6, 2011</p>
+		</div>
+	</div>
+	{% empty %}
+  <div id="no-creeps">You haven't been contacted by any creeps yet :(</div>
+  {% endfor %}
+</div>
+
+{% endblock %}

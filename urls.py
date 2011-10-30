@@ -19,9 +19,13 @@ urlpatterns = patterns('',
 	
 	(r'^groups/create$', app.create_group),
 	(r'^groups/save$', app.save_group),
+	
 	(r'^groups/(\d+)$', app.group),
+	(r'^groups/(\d+)/members$', app.view_members),
+	(r'^groups/(\d+)/creeps$', app.view_creeps),
 	(r'^groups/(\d+)/add-friends$', app.add_friends),
 	(r'^groups/(\d+)/added-by-email$', app.added_by_email),
+	
 	(r'^users/search$', app.search),
 	(r'^groups/add-user$', app.add_user),
 	(r'^groups/add-email$', app.add_email),

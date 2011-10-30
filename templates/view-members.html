@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="content">
+	<div class="dark_nav_bar">
+		<a href="/dashboard">Dashboard</a> > <a href="/groups/{{ group.id }}">{{ group.name }}</a> > Members
+	</div>
+	<div class="nav_bar">
+		Members
+	</div>
+	
+	{% for u in group.users.all %}
+  {% if u.password %}
+  <div class="summary">
+		<div class="profile_pic">
+			<img src="{{ u.userprofile.photo }}" width="120">
+		</div>
+		<div class="details">					
+			<p class="name">{{ u.first_name }} {{ u.last_name }}</p>
+			<p class="info">info 1</p>
+			<p class="info">info 2</p>
+			<p class="info">Member since: Oct 6, 2011</p>					
+		</div>			
+	</div>
+  {% endif %}
+  {% endfor %}
+  
+  <div class="nav_bar">
+		<a href="/groups/{{ group.id }}/add-friends">Add Friends</a>
+		<span class="nav_white_arrow">></span>
+	</div>
+  
+</div>
+
+{% endblock %}

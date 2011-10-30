@@ -8,16 +8,20 @@ $(function() {
 })
 
 function friend_suggest_init() {
-  $("#friend").keyup(function() {
-    var params = {
-      friend: $("#friend").val(),
-      group_id: {{ group.id }}
-    }
-    $("#results").empty();
-    
-    if (params.friend) search_users(params);
-    email_invite(params.friend)
-  })
+  $("#find_friends").submit(find_friends);
+  $("#search-friends").click(find_friends);
+}
+function find_friends() {
+  var params = {
+    friend: $("#friend").val(),
+    group_id: {{ group.id }}
+  }
+  $("#results").empty();
+  
+  if (params.friend) search_users(params);
+  email_invite(params.friend);
+  
+  return false;
 }
 function search_users(params) {
   $.post("/users/search", params, function(data) {
@@ -27,32 +31,37 @@ function search_users(params) {
 }
 function show_suggestions(users) {
   _.each(users, function(user) {
-    var li = $("<li>");
-    var div = $("<div>").addClass("user").html(user.name);
-    var add;
-    if (!user.in_group) add = $("<a>").addClass("small blue awesome").attr("id","user-" + user.id).html("Add to group");
-    else add = "Added";
-    li.append(div,add);
-    $("#results").append(li);
     
-    add.click(function() {
-      var user_id = $(this).attr("id").substring(5);
-      add_friend(user_id, $(this));
-    })
+    var summary = $('<div class="summary"><div class="profile_pic"><img src="' + user.photo + '" width="120"></div><div class="details"><p class="name">' + user.name + '</p><p class="info">keep info within 200px to be safe</p><p class="info">info 2</p></div></div>');
+  	
+    var add = $("<p>").addClass("invite").attr("id","user-" + user.id).html("Add to group");
+    summary.find(".details").append(add);
+    
+    $("#results").append(summary);
+    
+    if (user.in_group) {
+      add.html("Added");
+    } else {
+      add.click(function() {
+        var user_id = $(this).attr("id").substring(5);
+        add_friend(user_id, $(this));
+      })
+    }
   })
 }
 function add_friend(user_id, add) {
   $.post("/groups/add-user", { group_id: {{ group.id }}, user_id: user_id }, function(data) {
-    add.replaceWith("Added");
+    add.html("Added");
   })
 }
 function email_invite(email) {
   if (email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
-    var li = $("<li>");
-    var div = $("<div>").addClass("email").html(email);
-    var add = $("<a>").addClass("small red awesome").html("Invite by email");
-    li.append(div,add);
-    $("#results").append(li);
+    var summary = $('<div class="summary"><div class="profile_pic"><img src="' + user.photo + '"></div><div class="details"><p class="name">' + email + '</p></div></div>');
+  	
+    var add = $("<p>").addClass("invite").html("Invite by email");
+    summary.find(".details").append(add);
+    
+    $("#results").append(summary);
     
     add.click(function() {
       add_email(email, add);
@@ -61,26 +70,28 @@ function email_invite(email) {
 }
 function add_email(email, add) {
   $.post("/groups/add-email", { group_id: {{ group.id }}, invited_by_id: {{ user.id }}, email: email }, function(data) {
-    add.replaceWith("Invite sent");
+    add.html("Invite sent");
   })
 }
 </script>
 
 <div id="content">
-  
-  {% if not group %}
-  group does not exist
-  {% else %}
-  
-  <h2>Add Friends by Name or Email</h2>
-  <h5>Group: {{ group.name }}</h5>
-  
-  <input type="text" name="friend" id="friend" />
-  
-  <ul id="results"></ul>
-  
-  {% endif %}
+	<div class="dark_nav_bar">
+		<a href="/dashboard">Dashboard</a> > <a href="/groups/{{ group.id }}">{{ group.name }}</a> > Invite
+	</div>
+	<div class="nav_bar">
+		Search by name or email
+	</div>
 	
+	<div id="search_form">
+	  <form name="find_friends" id="find_friends">
+	    <input class="msg_form_field" type="text" name="friend" id="friend" />
+	    <a class="medium red awesome chat_profile_btn" id="search-friends">Search</a>
+	  </form>
+	</div>
+	
+	<div id="results"></div>		
+		
 </div>
 
 {% endblock %}

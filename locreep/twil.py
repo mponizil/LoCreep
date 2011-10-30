@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 import urllib
 import urllib2
 
-domain_name = "http://4y5y.localtunnel.com"
+domain_name = "http://433m.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -73,10 +73,11 @@ def text(request):
     
     return HttpResponse('{ "success": true }')
 
+@csrf_exempt
 def save_creepy_voice(request):
-    group_phone = request.GET.get('To','')
-    creep_phone = request.GET.get('From','')
-    body = request.GET.get('RecordingUrl','')+'.mp3'
+    group_phone = request.GET['To']
+    creep_phone = request.GET['From']
+    body = request.GET['RecordingUrl'] + '.mp3'
     
     # check if it's from a creep we know
     try:
@@ -103,9 +104,13 @@ def save_creepy_voice(request):
     
     # broadcast to chat room
     url = 'http://localhost:3000/message'
-    values = {'conversation_id' : conversation.id,
-              'user_type' : 'creep',
-              'message' : body }
+    values = {
+        'group_id' : group.id,
+        'conversation_id' : conversation.id,
+        'user_type' : 'creep',
+        'creep_phone' : creep.phone,
+        'message' : body
+    }
     data = urllib.urlencode(values)
     req = urllib2.Request(url, data)
     response = urllib2.urlopen(req)
@@ -117,5 +122,5 @@ def save_creepy_voice(request):
 def phone(request):	
     r = twiml.Response()
     r.say("hello")
-    r.record(action=domain_name+"/save_creepy_voice/", method="GET")
+    r.record(action=domain_name+"/save_creepy_voice", method="GET")
     return HttpResponse(str(r))

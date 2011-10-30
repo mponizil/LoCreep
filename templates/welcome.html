@@ -23,69 +23,73 @@ function register() {
 }
 </script>
 
-<link href="/static/stylized.css" media="screen" rel="stylesheet" type="text/css" />
-
-<div id="content">		
-	
+<div id="content">
 	<div id="main_logo">
-	   <img src="/static/logo.jpg">
+	   <img src="static/images/logo.jpg">
 	</div>
-
 	<div id="blue_form">
 		<div id="stylized">
-		<form id="register" name="register">
-	
-		<p>Sign up</p>
-	
-		<div class="form_row">
-			<label>First Name
-			<span class="small">Add your name</span>
-			</label>
-			<input type="text" name="name" id="fname" />
-		</div>
-	
-		<div class="form_row">
-			<label>Last Name
-			<span class="small">Add your name</span>
-			</label>
-			<input type="text" name="name" id="lname" />
-		</div>
+			<form id="form" name="form" method="post" action="index.html">
 
-		<div class="form_row">
-			<label>Email
-			<span class="small">Add a valid address</span>
-			</label>
-			<input type="text" name="email" id="email" />
-		</div>
-
-		<div class="form_row">
-			<label>Password
-			<span class="small">Min. size 6 chars</span>
-			</label>
-			<input type="password" name="password" id="password1" />
-		</div>
+				<p>Welcome to LoCreep!</p>
 	
-		<div class="form_row">
-			<label>Confirm
-			<span class="small">Min. size 6 chars</span>
-			</label>
-			<input type="password" name="password" id="password2" />
-		</div>
+				<div class="form_row">
+					<label>First Name
+					</label>
+					<input type="text" name="fname" id="fname" />
+				</div>
 	
-		<div class="form_row_for_btn">
-			<a class="large red awesome" id="signup">Sign-up</a>
-		</div>
+				<div class="form_row">
+					<label>Last Name
+					</label>
+					<input type="text" name="lname" id="lname" />
+				</div>
 
-		<!-- <button type="submit">Sign-up</button> -->
-		<div class="spacer"></div>
+				<div class="form_row">
+					<label>Email
+					</label>
+					<input type="text" name="email" id="email" />
+				</div>
 
-		</form>
+				<div class="form_row">
+					<label>Password
+					</label>
+					<input type="password" name="password1" id="password1" />
+				</div>
+	
+				<div class="form_row">
+					<label>Confirm
+					</label>
+					<input type="password" name="password2" id="password2" />
+				</div>
+	
+				<div class="form_row_for_btn">
+					<a class="large red awesome" id="signup">Sign-up</a>
+				</div>
+
+				<!-- <button type="submit">Sign-up</button> -->
+				<div class="spacer"></div>
+
+			</form>
 		</div>
-		
-		<br><br>
 	</div>
-	
+	<div id="blue_form">
+		<div id="stylized">
+			<form id="form" name="form" method="post" action="index.html">
 
+				<p>Already have an account?</p>
+	
+				<div class="form_row_for_btn">
+					<a class="large red awesome" href="/login">Sign-in</a>
+				</div>
+
+				<!-- <button type="submit">Sign-up</button> -->
+				<div class="spacer"></div>
+				
+				<br><br>
+			</form>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

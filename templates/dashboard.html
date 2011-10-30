@@ -2,23 +2,43 @@
 
 {% block content %}
 
-<script src="/static/application.js"></script>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-
-<div id="content">		
+<div id="content">
+	<div class="dark_nav_bar">
+		My Account
+	</div>
+	<div class="nav_bar">
+		Groups
+		<span class="nav_minus">−</span>
+	</div>
+	{% for g in groups %}
+	<div class ="submenu_bar">
+		<a href="/groups/{{ g.id }}">{{ g.name }}</a>
+		<span class="nav_dark_arrow">></span>
+	</div>
+	{% endfor %}
 	
-	<h2>My Groups</h2>
+	<div class="nav_bar">
+		<a href="/groups/create">New Group</a>
+		<span class="nav_white_arrow">></span>
+	</div>
 	
-	<ul>
-	  
-	  {% for g in groups %}
-	  <li><a href="/groups/{{ g.id }}">{{ g.name }}</a></li>
-	  {% endfor %}
-	  
-	</ul>
-	
-	<a href="/groups/create" class="large green awesome">New Group</a>
-	
+	<!-- wrap one nav bar and its submenu inside another unique named div for js to pick up -->
+	<div id="second_nav_wrap_for_javascript">
+		<div class="nav_bar">
+			Badges
+			<span class="nav_minus">−</span>
+		</div>
+		<div class ="submenu_bar">
+			Badge 1
+		</div>
+		<div class ="submenu_bar">
+			Badge 2
+		</div>
+		<div class ="submenu_bar">
+			Badge 3
+		</div>
+	</div>
+		
 </div>
 
 {% endblock %}

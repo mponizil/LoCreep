@@ -1,18 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta id="viewport" name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	
+	<title>Locreep</title>
 	
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<script type="text/javascript" src="/static/underscore.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.colors.js"></script>
+	<script type="text/javascript" src="/static/js/underscore.js"></script>
+	<script type="text/javascript" src="/static/js/application.js"></script>
 
-  <link href="/static/reset.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href="/static/page.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href="/static/chat.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href="/static/awesome_btn.css" media="screen" rel="stylesheet" type="text/css" />
-
-  <title>Locreep</title>
+  <link href="/static/css/reset.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="/static/css/page.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="/static/css/chat.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="/static/css/awesome_btn.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="/static/css/stylized.css" media="screen" rel="stylesheet" type="text/css" />
 	
 </head>
 
@@ -21,19 +24,18 @@
 <div id="whole_page">
   
   <div id="header">
-    {% if header != 'large' %}<a href="/"><img src="/static/small_logo.jpg" /></a>{% endif %}
+    {% if header != 'large' %}<a href="/"><img src="/static/images/small_logo.jpg" /></a>{% endif %}
     
     {% if user.is_authenticated %}
-    <div id="user">
-      {{ user.first_name }} {{ user.last_name }}
-      <a href="/logout">logout</a>
-    </div>
+			<div id="header_menu">{{ user.first_name }} {{ user.last_name }} | <a href="/logout">Sign out</a></div>
     {% endif %}
   </div>
 	
 	{% block content %}{% endblock %}
 	
-	<div id="footer">a hackNY hack | oct 2011</div>
+	<div id="footer">
+		About | Terms of Use | Contact
+	</div>
 </div>
 
 </body>

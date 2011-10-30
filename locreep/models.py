@@ -1,19 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    photo = models.CharField(max_length=75, default="/static/images/users/anonymous.jpg")
+    
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+    
+    post_save.connect(create_user_profile, sender=User)
+    
+    def __unicode__(self):
+        return str(self.user.username)
 
 class Creep(models.Model):
     phone = models.CharField(max_length=12)
-    photo = models.CharField(max_length=75)
-    name = models.CharField(max_length=75)
+    photo = models.CharField(max_length=75, default="/static/images/creeps/anonymous.jpg")
+    name = models.CharField(max_length=75, default="Name Unknown")
 
     def __unicode__(self):
         return str(self.phone)
 
 class Group(models.Model):
     name = models.CharField(max_length=30)
-    photo = models.CharField(max_length=75, blank=True)
+    photo = models.CharField(max_length=75, blank=True, default="/static/images/groups/anonymous.jpg")
     phone = models.CharField(max_length=12)
-    description = models.TextField()
     creeps = models.ManyToManyField(Creep, verbose_name="creeps in a group", null=True, blank=True)
     users = models.ManyToManyField(User, verbose_name="users in a group")
 

@@ -8,16 +8,11 @@
 var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|addslashes }}', body: '{% if ".mp3" in message.body %}<a href="{{ message.body }}">Voicemail</a>{% else %}{{ message.body|addslashes }}{% endif %}' },{% endfor %}];
 
 var socket = io.connect('http://localhost:3000/');
-socket.emit('conversation.init', { conversation_id: {{ conversation_id }} })
-socket.on('message', function(data) {
-  // add message to the page
-  if(data.user_type == 'creep') {
-    var message = (data.message.match(/\.mp3/)) ? '<a href="' + data.message + '">Voicemail</a>' : data.message;
-    $("#top_form").after($('<div class="bubble right"><div class="chat-bubble gray-bubble"><div class="chat-bubble-glare"></div><p class="lemon">' + message + '</p><div class="chat-bubble-arrow-border-gray"></div><div class="chat-bubble-arrow-gray"></div> </div></div>'));
-  } else {
-    $("#top_form").after($('<div class="bubble left"><div class="chat-bubble green-bubble"><div class="chat-bubble-glare"></div><p class="lemon">' + data.message + '</p><div class="chat-bubble-arrow-border-green"></div><div class="chat-bubble-arrow-green"></div></div></div>'));
-  }
-})
+socket.emit('conversation.init', { conversation_id: {{ conversation.id }} });
+socket.on('message', function(message) {
+  messages.push(message)
+  new_msg(message);
+});
 
 $(function() {
   $("#send_message").submit(submit_msg)
@@ -26,9 +21,17 @@ $(function() {
   $("#to_tumblr").click(to_tumblr)
 })
 
+function new_msg(message) {
+  if(message.user_type == 'creep') {
+    var body = (message.body.match(/\.mp3/)) ? '<a href="' + message.body + '">Voicemail</a>' : message.body;
+    $("#top_form").after($('<div class="bubble right"><div class="chat-bubble gray-bubble"><div class="chat-bubble-glare"></div><p class="lemon">' + body + '</p><div class="chat-bubble-arrow-border-gray"></div><div class="chat-bubble-arrow-gray"></div> </div></div>'));
+  } else {
+    $("#top_form").after($('<div class="bubble left"><div class="chat-bubble green-bubble"><div class="chat-bubble-glare"></div><p class="lemon">' + message.body + '</p><div class="chat-bubble-arrow-border-green"></div><div class="chat-bubble-arrow-green"></div></div></div>'));
+  }
+}
 function submit_msg() {
   var body = $("input[name='msg']").val();
-  $.post("/user_message", { conversation_id: {{ conversation_id }}, body: body })
+  $.post("/user_message", { conversation_id: {{ conversation.id }}, body: body })
   $("input[name='msg']").val('').focus();
   return false;
 }
@@ -39,22 +42,27 @@ function to_tumblr() {
     all_messages += "<strong>" + user_type + "</strong>" + ": " + messages[i].body + "<br />";
   }
   var title = (messages[0].body.match(/\.mp3/)) ? "Hey baby I'm gonna leave you a voicemail" : messages[0].body;
-  $.post("/tumblr_text", { conversation_id: {{ conversation_id }}, title: title, body: all_messages }, function() {
+  $.post("/tumblr_text", { conversation_id: {{ conversation.id }}, title: title, body: all_messages }, function() {
     alert('Thanks for your contribution to the Locreep Tumblr. Check it out!\n\nlocreep.tumblr.com')
   })
 }
 </script>
 
-<div id="content">		
+<div id="content">
 	
-	<div id="summary">
-		<div class="creep_pic"><img src="/static/hackny.jpg"></div>
-		<div class="creep_details">
-			<h2 class="creep_name">{{ creep.name }}</h2>
-			<p class="phone">{{ creep.phone }}</p>
-			<!-- <ul class="other_info">other info!</ul> -->
+	<div class="dark_nav_bar">
+		<a href="/dashboard">Dashboard</a> > <a href="/groups/{{ conversation.group.id }}">{{ conversation.group.name }}</a> > <a href="/groups/{{ conversation.group.id }}/creeps">Creeps</a> > {{ creep.phone }}
+	</div>
+	<div class="summary">
+		<div class="profile_pic">
+			<img src="{{ creep.photo }}" width="120">
 		</div>
-		<div style="clear:both;"></div>
+		<div class="details">
+			<p class="name">{{ creep.name }}</p>
+			<p class="info">{{ creep.phone }}</p>
+			<p class="info">info 2</p>
+			<p class="info">Creeping since: Oct 6, 2011</p>
+		</div>
 	</div>
 	
 	<div id="chat">
@@ -101,7 +109,7 @@ function to_tumblr() {
 	<div class="chat_form" id="action_buttons">
 		<a class="small blue awesome" id="to_tumblr">To Tumblr</a>
 		<a class="small orange awesome" href="{{ qr }}" target="_blank">QR</a>
-		<a class="small red awesome" href="/groups/{{ group_id }}">Back</a>
+		<a class="small red awesome" href="/groups/{{ conversation.group.id }}">Back</a>
 	</div>
 	
 </div>

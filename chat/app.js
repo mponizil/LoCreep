@@ -40,7 +40,7 @@ app.post('/message', function(req, res) {
     group_id: req.body.group_id,
     conversation_id: req.body.conversation_id,
     user_type: req.body.user_type,
-    message: req.body.message
+    body: req.body.message
   };
   
   if (params.user_type == 'creep') params.creep_phone = req.body.creep_phone;

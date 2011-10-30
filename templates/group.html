@@ -2,69 +2,36 @@
 
 {% block content %}
 
-<script src="/static/application.js"></script>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script type="text/javascript">
-var socket = io.connect('http://localhost:3000/');
-socket.emit('group.init', { group_id: {{ group.id }} })
-socket.on('message', function(data) {
-  var params = {
-    conversation_id: data.conversation_id,
-    creep_phone: data.creep_phone,
-    message: data.message
-  }
-  
-  if ($("#conversation-" + data.conversation_id).length == 0) new_conversation(params);
-  else new_message(params);
-})
-function new_conversation(params) {
-  var li = $("<li>").attr("id","conversation-" + params.conversation_id);
-  var a = $("<a>").attr("href","/conversations/" + params.conversation_id).html(params.creep_phone);
-  li.append(a);
-  $("#conversations").append(li)
-  
-  new_message(params);
-}
-function new_message(params) {
-  var li = $("#conversation-" + params.conversation_id);
-  li.css("background-color","green");
-  setTimeout(function() {
-    li.css("background-color","transparent");
-  }, 2000)
-}
-</script>
-
 <div id="content">
-  
-  <h2>{{ group.name }}</h2>
-  <h5>{{ group.phone }}</h5>
-  
-  <p>{{ group.description }}</p>
+	<div class="dark_nav_bar">
+		<a href="/dashboard">Dashboard</a> > {{ group.name }}
+	</div>
 	
-	<ul id="conversations">
-	  
-	  {% for c in conversations %}
-	  <li id="conversation-{{ c.id }}"><a href="/conversations/{{ c.id }}">{{ c.creep.phone }}</a></li>
-	  {% empty %}
-	  You haven't been contacted by any creeps :(
-	  {% endfor %}
-	  
-	</ul>
+	<div class="summary">
+		<div class="profile_pic">
+			<img src="{{ group.photo }}" width="120">
+		</div>
+		<div class="details">
+			<p class="name">{{ group.name }}</p>
+			<p class="info">Created: Oct 6, 2011</p>
+			<p class="info">{{ group.phone }}</p>
+		</div>
+	</div>
 	
-	<h2>Users in this group</h2>
-	
-	<ul>
-	  
-	  {% for u in group.users.all %}
-	  {% if u.password %}
-	  <li>{{ u.first_name }} {{ u.last_name }}</li>
-	  {% endif %}
-	  {% endfor %}
-	  
-	</ul>
-	
-	<a href="/groups/{{ group.id }}/add-friends" class="large blue awesome">Invite Friends</a>
-	
+			
+	<div class="nav_bar">
+		<a href="/groups/{{ group.id }}/members">View Members (3)</a>
+		<span class="nav_white_arrow">></span>
+	</div>
+	<div class="nav_bar">
+		<a href="/groups/{{ group.id }}/creeps">View Creeps (5)</a>
+		<span class="nav_white_arrow">></span>
+	</div>
+	<div class="nav_bar">
+		<a href="/groups/{{ group.id }}/add-friends">Add Friends</a>
+		<span class="nav_white_arrow">></span>
+	</div>
+		
 </div>
 
 {% endblock %}
