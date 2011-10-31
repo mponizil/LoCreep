@@ -130,6 +130,10 @@ def delete_group(request, group_id):
     
     group.delete()
     
+    number = Number.objects.get(phone=group.phone)
+    number.is_available = True
+    number.save()
+    
     return HttpResponse('{ "success": true }')
 
 @login_required(login_url='/login')
@@ -214,9 +218,13 @@ def add_member(request):
     
     # max users in a group is 5
     membership = Membership.objects.filter(group=group)
-    print membership.count()
     if membership.count() >= 5:
         return HttpResponse('{ "success": false, "error": "Only 5 users to a group." }')
+    
+    # check if membership exists
+    membership = Membership.objects.filter(user=user,group=group)
+    if membership.count() >= 1:
+        return HttpResponse('{ "success": false, "error": "User is already in this group." }')
     
     # create new membership
     membership = Membership.objects.create(user=user,group=group,is_leader=False)
@@ -302,6 +310,11 @@ def add_email(request):
         
         user = User(username=email)
         user.save()
+    
+    # check if membership exists
+    membership = Membership.objects.filter(user=user,group=group)
+    if membership.count() >= 1:
+        return HttpResponse('{ "success": false, "error": "User is already in this group." }')
     
     # create new membership
     membership = Membership.objects.create(user=user,group=group,is_leader=False)

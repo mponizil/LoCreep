@@ -2,34 +2,24 @@
 
 {% block content %}
 
+{% if is_leader %}
 <script type="text/javascript">
 $(function() {
   $(".kill-member").click(function() {
-    kill_user($(this), "Are you sure you want to remove this user from the group?", kill_member);
-  })
-  $(".kill-self").click(function() {
-    kill_user($(this), "Are you sure you want to leave this group?", kill_self);
+    var do_kill = confirm("Are you sure you want to remove this user from the group?");
+    if (do_kill) {
+      var summary = $(this).parents(".summary");
+      var user_id = summary.attr("id").substring(5);
+      $.post("/groups/{{ group.id }}/users/" + user_id + "/delete", function(data) {
+        var res = $.parseJSON(data);
+        if (res.success) summary.remove();
+        else alert(res.error);
+      })
+    }
   })
 })
-function kill_user(which_kill, check_kill, kill_complete) {
-  var do_kill = confirm(check_kill);
-  if (do_kill) {
-    var summary = which_kill.parents(".summary");
-    var user_id = summary.attr("id").substring(5);
-    $.post("/groups/{{ group.id }}/users/" + user_id + "/delete", kill_complete)
-  }
-}
-function kill_member(data) {
-  var res = $.parseJSON(data);
-  if (res.success) summary.remove();
-  else alert(res.error);
-}
-function kill_self(data) {
-  var res = $.parseJSON(data);
-  if (res.success) window.location = "/dashboard";
-  else alert(res.error);
-}
 </script>
+{% endif %}
 
 <div id="content">
 	<div class="dark_nav_bar">
@@ -51,9 +41,6 @@ function kill_self(data) {
 		</div>
 		{% if is_leader and u != user %}
 		<div class="kill-member">X</div>
-		{% endif %}
-		{% if not is_leader and u == user %}
-		<div class="kill-self">X</div>
 		{% endif %}
 	</div>
   {% endif %}

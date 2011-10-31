@@ -95,7 +95,7 @@ class Number(models.Model):
     is_available = models.BooleanField()
     
     def __unicode__(self):
-        return str(self.phone)
+        return str(self.phone) + " (" + str(self.is_available) + ")"
 
 class Venue(models.Model):
     latitude  = models.DecimalField(max_digits=12, decimal_places=8)

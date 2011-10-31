@@ -20,7 +20,12 @@ socket.on('message', function(data) {
 function new_conversation(params) {
   var summary = $('<div class="summary" id="conversation-' + params.conversation_id + '"><a href="/conversations/' + params.conversation_id + '"></a><div class="profile_pic"><img src="/static/images/creeps/anonymous.jpg" width="120"></div><div class="details"><p class="name">Name Unknown</p><p class="info">' + params.creep_phone + '</p><p class="info">Make a note</p><p class="info">Creeping since: Just now</p></div></div>');
   
-  $("#conversations").append(summary)
+  $("#conversations").append(summary);
+  
+  summary.css("cursor","pointer");
+  summary.click(function() {
+    window.location = "/conversations/" + params.conversation_id;
+  })
   
   new_message(params);
 }

@@ -52,10 +52,16 @@ function show_suggestions(users) {
   })
 }
 function add_friend(user_id, add) {
+  add.html("Adding...");
   $.post("/groups/add-member", { group_id: {{ group.id }}, user_id: user_id }, function(data) {
     var res = $.parseJSON(data);
-    if(res.success) add.html("Added");
-    else alert(res.error);
+    if(res.success) {
+      add.unbind("click");
+      add.css("cursor","default");
+      add.html("Added");
+    } else {
+      alert(res.error);
+    }
   })
 }
 function email_invite(email) {
@@ -75,10 +81,16 @@ function email_invite(email) {
   }
 }
 function add_email(email, add) {
+  add.html("Inviting...");
   $.post("/groups/add-email", { group_id: {{ group.id }}, invited_by_id: {{ user.id }}, email: email }, function(data) {
     var res = $.parseJSON(data);
-    if(res.success) add.html("Invite sent");
-    else alert(res.error);
+    if(res.success) {
+      add.unbind("click");
+      add.css("cursor","default");
+      add.html("Invite sent");
+    } else {
+      alert(res.error);
+    }
   })
 }
 </script>

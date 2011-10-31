@@ -14,6 +14,17 @@ $(function() {
       })
     }
   })
+  
+  $("#kill-self").click(function() {
+    var do_kill = confirm("Are you sure you want to leave this group?");
+    if (do_kill) {
+      $.post("/groups/{{ group.id }}/users/{{ user.id }}/delete", function(data) {
+        var res = $.parseJSON(data);
+        if (res.success) window.location = "/dashboard";
+        else alert(res.error);
+      })
+    }
+  })
 })
 </script>
 
@@ -47,8 +58,13 @@ $(function() {
 		<span class="nav_white_arrow">></span>
 	</div>
 	{% if is_leader %}
-	<div class="nav_bar" id="kill">
-	  <a href="javascript:void(0)" class="no-link">Kill Group</a>
+	<div class="nav_bar kill" id="kill">
+	  <a href="javascript:void(0)" class="no-link">Delete Group</a>
+		<span class="nav_white_arrow">></span>
+	</div>
+	{% else %}
+	<div class="nav_bar kill" id="kill-self">
+	  <a href="javascript:void(0)" class="no-link">Leave Group</a>
 		<span class="nav_white_arrow">></span>
 	</div>
 	{% endif %}
