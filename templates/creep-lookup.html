@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script type="text/javascript">
+$(function() {
+  creep_lookup_init();
+})
+
+function creep_lookup_init() {
+  $("#creep_lookup").submit(creep_lookup);
+  $("#search-number").click(creep_lookup);
+}
+function creep_lookup() {
+  var params = {
+    number: $("#number").val(),
+  }
+  $("#results").empty();
+  
+  if (params.number) {
+    $.post("/reverse-lookup", params, function(data) {
+      var res = $.parseJSON(data);
+      if (res.c_hits > 0 || res.m_hits > 0) {
+        var positive_match = $("<div id='positive-match'><h2>We found a match</h2><p class='number'>" + res.number + "</p><div class='hits'><div class='c-hits'>Found in " + res.c_hits + " conversation(s)</div><div class='m-hits'>Has sent " + res.c_hits + " message(s) tracked by LoCreep</div></div>");
+        $("#results").append(positive_match)
+      } else {
+        var creep_free = $("<div id='creep-free'><h2>This number is LoCreep approved!</h2><p class='number'>" + res.number + "</p>");
+        $("#results").append(creep_free)
+      }
+    })
+  }
+  
+  return false;
+}
+</script>
+
+<style type="text/css">
+#results {
+  padding:20px;
+}
+h2 {
+  font-size:24px;
+  text-align:center;
+  margin-bottom:20px;
+}
+.number {
+  font-weight:bold;
+  color:#373737;
+  text-align:center;
+  margin-bottom:20px;
+}
+.hits {
+  padding:20px;
+  background-color:#ccc;
+}
+</style>
+
+<div id="content">
+	<div class="dark_nav_bar">
+		<a href="/dashboard">Dashboard</a> > Creep Lookup
+	</div>
+	<div class="nav_bar">
+		Enter a number you suspect belongs to a creep
+	</div>
+	
+	<div id="search_form">
+	  <form name="creep_lookup" id="creep_lookup">
+	    <input class="msg_form_field" type="text" name="number" id="number" />
+	    <a class="medium red awesome chat_profile_btn" id="search-number">Search</a>
+	  </form>
+	</div>
+	
+	<div id="results">
+	</div>		
+		
+</div>
+
+{% endblock %}

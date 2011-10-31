@@ -45,5 +45,8 @@ urlpatterns = patterns('',
 	(r'^gauge$', gauge.home),
 	(r'^locate$', gauge.locate),
 	
+	(r'^creep-lookup$', app.creep_lookup),
+	(r'^reverse-lookup$', app.reverse_lookup),
+	
     url(r'^admin/', include(admin.site.urls)),
 )

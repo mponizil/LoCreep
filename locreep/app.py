@@ -350,3 +350,26 @@ def user_message(request):
     sms = tc.sms.messages.create(to = conversation.creep.phone, from_ = conversation.group.phone, body = body)
 
     return HttpResponse('{ success: true }')
+
+@login_required(login_url='/login')
+def creep_lookup(request):
+    return render_to_response("creep-lookup.html", context_instance=RequestContext(request))
+
+@csrf_exempt
+@require_POST
+def reverse_lookup(request):
+    number = request.POST['number']
+    
+    try:
+        creep = Creep.objects.get(phone__icontains=number)
+        creep_phone = creep.phone
+        conversations = Conversation.objects.filter(creep=creep)
+        messages = Message.objects.filter(creep=creep)
+        c_hits = conversations.count()
+        m_hits = messages.count()
+    except Creep.DoesNotExist:
+        creep_phone = number
+        c_hits = 0
+        m_hits = 0
+    
+    return HttpResponse('{ "number": "' + creep_phone + '", "c_hits": ' + str(c_hits) + ', "m_hits": ' + str(m_hits) + ' }')
