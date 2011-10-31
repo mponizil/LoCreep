@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 import urllib
 import urllib2
 
-domain_name = "http://487f.localtunnel.com"
+domain_name = "http://3s9s.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -29,19 +29,20 @@ def text(request):
     # creep_phone = '+17608463179'
     # group_phone = '+13475148471'
     # body = 'sup'
-
-    # check if it's from a creep we know
-    try:
-        creep = Creep.objects.get(phone=creep_phone)
-    except Creep.DoesNotExist:
-        creep = Creep(phone=creep_phone)
-        creep.save()
     
     # find the group
     try:
         group = Group.objects.get(phone=group_phone)
     except Group.DoesNotExist:
         return HttpResponse('no group with this phone number')
+    
+    # check if it's from a creep we know
+    try:
+        creep = Creep.objects.get(phone=creep_phone)
+    except Creep.DoesNotExist:
+        creep = Creep(phone=creep_phone)
+        creep.save()
+        group.creeps.add(creep)
     
     # check if conversation with this creep is going on
     try:

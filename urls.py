@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from lc.locreep import app, twil, util
+from lc.locreep import app, twil, util, gauge
 
 urlpatterns = patterns('',
 	# (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
@@ -39,6 +39,9 @@ urlpatterns = patterns('',
 	(r'^save_creepy_voice$', twil.save_creepy_voice),
 	
 	(r'^tumblr_text$', util.tumblr_text),
+	
+	(r'^gauge$', gauge.home),
+	(r'^locate$', gauge.locate),
 	
     url(r'^admin/', include(admin.site.urls)),
 )

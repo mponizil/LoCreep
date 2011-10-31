@@ -18,7 +18,7 @@ socket.on('message', function(data) {
   else new_message(params);
 })
 function new_conversation(params) {
-  var summary = $('<div class="summary" id="conversation-' + params.conversation_id + '"><div class="profile_pic"><img src="/static/images/creeps/anonymous.jpg"></div><div class="details"><p class="name"><a href="/conversations/' + params.conversation_id + '">Name Unknown</a></p><p class="info">' + params.creep_phone + '</p><p class="info">Make a note</p><p class="info">Creeping since: Just now</p></div></div>');
+  var summary = $('<div class="summary" id="conversation-' + params.conversation_id + '"><a href="/conversations/' + params.conversation_id + '"></a><div class="profile_pic"><img src="/static/images/creeps/anonymous.jpg" width="120"></div><div class="details"><p class="name">Name Unknown</p><p class="info">' + params.creep_phone + '</p><p class="info">Make a note</p><p class="info">Creeping since: Just now</p></div></div>');
   
   $("#conversations").append(summary)
   
@@ -26,15 +26,10 @@ function new_conversation(params) {
 }
 function new_message(params) {
   var summary = $("#conversation-" + params.conversation_id);
-  
+  summary.css("background-color","#fff");
   summary.animate({
     'background-color': '#d3ffc2'
-  }, 500)
-  setTimeout(function() {
-    summary.animate({
-      'background-color': '#fff'
-    })
-  }, 500)
+  }, 'slow')
 }
 </script>
 

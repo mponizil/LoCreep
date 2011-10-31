@@ -24,6 +24,7 @@ function find_friends() {
 }
 function search_users(params) {
   $.post("/users/search", params, function(data) {
+    console.log(data);
     var users = $.parseJSON(data);
     show_suggestions(users);
     if (users.length == 0) email_invite(params.friend);
@@ -32,7 +33,7 @@ function search_users(params) {
 function show_suggestions(users) {
   _.each(users, function(user) {
     
-    var summary = $('<div class="summary"><div class="profile_pic"><img src="' + user.photo + '" width="120"></div><div class="details"><p class="name">' + user.name + '</p><p class="info">' + user.email + '</p></div></div>');
+    var summary = $('<div class="summary"><div class="profile_pic"><img src="' + user.photo + '" width="120" /></div><div class="details"><p class="name">' + user.name + '</p><p class="info">' + user.email + '</p></div></div>');
   	
     var add = $("<p>").addClass("invite").attr("id","user-" + user.id).html("Add to group");
     summary.find(".details").append(add);
@@ -58,7 +59,7 @@ function add_friend(user_id, add) {
 }
 function email_invite(email) {
   if (email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
-    var summary = $('<div class="summary"><div class="profile_pic"><img src="/static/images/users/email.jpg" width="120"></div><div class="details"><p class="name">' + email + '</p></div></div>');
+    var summary = $('<div class="summary"><div class="profile_pic"><img src="/static/images/users/email.jpg" width="120" /></div><div class="details"><p class="name">' + email + '</p></div></div>');
   	
     var add = $("<p>").addClass("invite").html("Invite by email");
     summary.find(".details").append(add);

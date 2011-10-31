@@ -39,27 +39,27 @@ def dashboard(request):
 @login_required(login_url='/login')
 def group(request, group_id):
     try:
-        group = Group.objects.get(id=group_id)
+        group = Group.objects.get(id=group_id,users=request.user)
     except Group.DoesNotExist:
-        return HttpResponse("no group found")
+        return render_to_response("error.html", { 'error': "no group found" })
     
     return render_to_response("group.html", { 'group': group }, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def view_members(request, group_id):
     try:
-        group = Group.objects.get(id=group_id)
+        group = Group.objects.get(id=group_id,users=request.user)
     except Group.DoesNotExist:
-        return HttpResponse("no group found")
+        return render_to_response("error.html", { 'error': "no group found" })
     
     return render_to_response("view-members.html", { 'group': group }, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def view_creeps(request, group_id):
     try:
-        group = Group.objects.get(id=group_id)
+        group = Group.objects.get(id=group_id,users=request.user)
     except Group.DoesNotExist:
-        return HttpResponse("no group found")
+        return render_to_response("error.html", { 'error': "no group found" })
 
     conversations = Conversation.objects.filter(group=group)
     
@@ -93,7 +93,7 @@ def save_group(request):
 @login_required(login_url='/login')
 def add_friends(request, group_id):
     try:
-        group = Group.objects.get(id=group_id)
+        group = Group.objects.get(id=group_id,users=request.user)
     except Group.DoesNotExist:
         group = None
     
@@ -110,17 +110,17 @@ def added_by_email(request, group_id):
     try:
         user = User.objects.get(username=email)
     except User.DoesNotExist:
-        return HttpResponse("invalid invite link. no user found.")
+        return render_to_response("error.html", { 'error': "invalid invite link. no user found." })
     
     # check if user has a password
     if user.password:
-        return HttpResponse("invalid invite link. user already registered.")
+        return render_to_response("error.html", { 'error': "invalid invite link. user already registered." })
     
     # make sure they're really in the group the link says they're in
     try:
         group = Group.objects.get(id=group_id,users=user)
     except Group.DoesNotExist:
-        return HttpResponse("invalid invite link. no group found with user.")
+        return render_to_response("error.html", { 'error': "invalid invite link. no group found with user." })
     
     return render_to_response("added-by-email.html", { 'user': user, 'group': group })
 
@@ -129,7 +129,7 @@ def conversation(request, conversation_id):
     try:
         conversation = Conversation.objects.get(id=conversation_id)
     except Conversation.DoesNotExist:
-        return HttpResponse("no conversation found")
+        return render_to_response("error.html", { 'error': "no conversation found" })
     
     messages = Message.objects.filter(conversation=conversation).order_by('-id')
     
@@ -160,7 +160,11 @@ def add_user(request):
     group_id = request.POST['group_id']
     user_id = request.POST['user_id']
     
-    group = Group.objects.get(id=group_id)
+    try:
+        group = Group.objects.get(id=group_id,users=request.user)
+    except Group.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "not authorized" }')
+    
     user = User.objects.get(id=user_id)
     
     group.users.add(user)
@@ -177,7 +181,10 @@ def add_email(request):
     smtp_server = 'smtp.gmail.com:587'
     from_addr = 'misha.ponizil@gmail.com'
     
-    group = Group.objects.get(id=group_id)
+    try:
+        group = Group.objects.get(id=group_id,users=request.user)
+    except Group.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "not authorized" }')
     
     try:
         user = User.objects.get(username=email)
@@ -222,7 +229,7 @@ def user_message(request):
     try:
         conversation = Conversation.objects.get(id=conversation_id)
     except Conversation.DoesNotExist:
-        return HttpResponse('no conversation')
+        return render_to_response("error.html", { 'error': "no conversation" })
 
     user = request.user
     body = request.POST['body']
@@ -243,4 +250,4 @@ def user_message(request):
 
     sms = tc.sms.messages.create(to = conversation.creep.phone, from_ = conversation.group.phone, body = body)
 
-    return HttpResponse('{success:true}')
+    return HttpResponse('{ success: true }')
