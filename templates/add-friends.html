@@ -24,7 +24,6 @@ function find_friends() {
 }
 function search_users(params) {
   $.post("/users/search", params, function(data) {
-    console.log(data);
     var users = $.parseJSON(data);
     show_suggestions(users);
     if (users.length == 0) email_invite(params.friend);
@@ -53,8 +52,10 @@ function show_suggestions(users) {
   })
 }
 function add_friend(user_id, add) {
-  $.post("/groups/add-user", { group_id: {{ group.id }}, user_id: user_id }, function(data) {
-    add.html("Added");
+  $.post("/groups/add-member", { group_id: {{ group.id }}, user_id: user_id }, function(data) {
+    var res = $.parseJSON(data);
+    if(res.success) add.html("Added");
+    else alert(res.error);
   })
 }
 function email_invite(email) {
@@ -69,11 +70,15 @@ function email_invite(email) {
     add.click(function() {
       add_email(email, add);
     })
+  } else {
+    $("#results").html("<div id='error'>No results found. Enter an email address to invite someone by email.</div>")
   }
 }
 function add_email(email, add) {
   $.post("/groups/add-email", { group_id: {{ group.id }}, invited_by_id: {{ user.id }}, email: email }, function(data) {
-    add.html("Invite sent");
+    var res = $.parseJSON(data);
+    if(res.success) add.html("Invite sent");
+    else alert(res.error);
   })
 }
 </script>

@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 import urllib
 import urllib2
 
-domain_name = "http://3s9s.localtunnel.com"
+domain_name = "http://3iui.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -42,6 +42,10 @@ def text(request):
     except Creep.DoesNotExist:
         creep = Creep(phone=creep_phone)
         creep.save()
+    
+    try:
+        group = Group.objects.get(phone=group_phone,creeps=creep)
+    except Group.DoesNotExist:
         group.creeps.add(creep)
     
     # check if conversation with this creep is going on

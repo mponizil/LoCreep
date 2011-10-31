@@ -30,7 +30,7 @@ tc = TwilioRestClient(account, token)
 @login_required(login_url='/login')
 def dashboard(request):
     try:
-        groups = Group.objects.filter(users=request.user)
+        groups = Group.objects.filter(members=request.user)
     except Group.DoesNotExist:
         groups = None
     
@@ -39,25 +39,37 @@ def dashboard(request):
 @login_required(login_url='/login')
 def group(request, group_id):
     try:
-        group = Group.objects.get(id=group_id,users=request.user)
+        group = Group.objects.get(id=group_id,members=request.user)
     except Group.DoesNotExist:
-        return render_to_response("error.html", { 'error': "no group found" })
+        return render_to_response("error.html", { 'error': "No group found." })
     
-    return render_to_response("group.html", { 'group': group }, context_instance=RequestContext(request))
+    try:
+        membership = Membership.objects.get(user=request.user,group=group,is_leader=True)
+        is_leader = True
+    except Membership.DoesNotExist:
+        is_leader = False
+    
+    return render_to_response("group.html", { 'group': group, 'is_leader': is_leader }, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def view_members(request, group_id):
     try:
-        group = Group.objects.get(id=group_id,users=request.user)
+        group = Group.objects.get(id=group_id,members=request.user)
     except Group.DoesNotExist:
-        return render_to_response("error.html", { 'error': "no group found" })
+        return render_to_response("error.html", { 'error': "No group found." })
     
-    return render_to_response("view-members.html", { 'group': group }, context_instance=RequestContext(request))
+    try:
+        membership = Membership.objects.get(user=request.user,group=group,is_leader=True)
+        is_leader = True
+    except Membership.DoesNotExist:
+        is_leader = False
+    
+    return render_to_response("view-members.html", { 'group': group, 'is_leader': is_leader }, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def view_creeps(request, group_id):
     try:
-        group = Group.objects.get(id=group_id,users=request.user)
+        group = Group.objects.get(id=group_id,members=request.user)
     except Group.DoesNotExist:
         return render_to_response("error.html", { 'error': "no group found" })
 
@@ -68,6 +80,10 @@ def view_creeps(request, group_id):
 @login_required(login_url='/login')
 def create_group(request):
     number = Number.objects.filter(is_available=True)
+    
+    if number.count() == 0:
+        return render_to_response("error.html", { 'error': "We apologize but we are fresh out of numbers to give out. Try again soon; we are working on obtaining more." })
+    
     return render_to_response("create-group.html", { 'phone': number[0].phone }, context_instance=RequestContext(request))
 
 @csrf_exempt
@@ -76,24 +92,50 @@ def save_group(request):
     name = request.POST['name']
     phone = request.POST['phone']
     
+    # see if user is group leader of any groups
+    membership = Membership.objects.filter(user=request.user,is_leader=True)
+    if membership.count() > 0:
+        return HttpResponse('{ "success": false, "error": "You may only create one group." }')
+        
     # create new group
-    g = Group(name=name,phone=phone)
-    g.save()
+    group = Group(name=name,phone=phone)
+    group.save()
     
-    # add current user to the group
-    g.users.add(request.user)
+    # create user membership as leader
+    membership = Membership.objects.create(user=request.user,group=group,is_leader=True)
     
     # make the phone number unavailable
-    number = Number.objects.get(phone=phone)
+    try:
+        number = Number.objects.get(phone=phone,is_available=True)
+    except Number.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "We apologize but we are fresh out of numbers to give out. Try again soon; we are working on obtaining more." }')
     number.is_available = False
     number.save()
     
-    return HttpResponse('{ "success": true, "data": { "group_id": ' + str(g.id) + ' } }')
+    return HttpResponse('{ "success": true, "data": { "group_id": ' + str(group.id) + ' } }')
+
+@csrf_exempt
+@require_POST
+def delete_group(request, group_id):
+    # make sure group exists and user is a member
+    try:
+        group = Group.objects.get(id=group_id,members=request.user)
+    except Group.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "Group does not exist." }')
+    
+    try:
+        membership = Membership.objects.get(user=request.user,group=group,is_leader=True)
+    except Membership.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "You are not leader of this group." }')
+    
+    group.delete()
+    
+    return HttpResponse('{ "success": true }')
 
 @login_required(login_url='/login')
 def add_friends(request, group_id):
     try:
-        group = Group.objects.get(id=group_id,users=request.user)
+        group = Group.objects.get(id=group_id,members=request.user)
     except Group.DoesNotExist:
         group = None
     
@@ -118,7 +160,7 @@ def added_by_email(request, group_id):
     
     # make sure they're really in the group the link says they're in
     try:
-        group = Group.objects.get(id=group_id,users=user)
+        group = Group.objects.get(id=group_id,members=user)
     except Group.DoesNotExist:
         return render_to_response("error.html", { 'error': "invalid invite link. no group found with user." })
     
@@ -147,30 +189,72 @@ def search(request):
     group_id = request.POST['group_id']
     
     users = User.objects.filter(Q(username__icontains=friend) | Q(first_name__icontains=friend) | Q(last_name__icontains=friend)).exclude(id=request.user.id)
-    u = []
+    users_found = []
     for user in users:
-        in_group = Group.objects.filter(id=group_id,users=user).exists()
-        u.append({ 'id': user.id, 'photo': user.userprofile.photo, 'name': user.get_full_name(), 'email': user.username, 'in_group': in_group })
+        in_group = Group.objects.filter(id=group_id,members=user).exists()
+        users_found.append({ 'id': user.id, 'photo': user.userprofile.photo, 'name': user.get_full_name(), 'email': user.username, 'in_group': in_group })
     
-    return HttpResponse(json.dumps(u))
+    return HttpResponse(json.dumps(users_found))
 
 @csrf_exempt
 @require_POST
-def add_user(request):
+def add_member(request):
     group_id = request.POST['group_id']
     user_id = request.POST['user_id']
     
     try:
-        group = Group.objects.get(id=group_id,users=request.user)
+        group = Group.objects.get(id=group_id,members=request.user)
     except Group.DoesNotExist:
-        return HttpResponse('{ "success": false, "error": "not authorized" }')
+        return HttpResponse('{ "success": false, "error": "Not authorized." }')
     
-    user = User.objects.get(id=user_id)
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "User not found." }')
     
-    group.users.add(user)
+    # max users in a group is 5
+    membership = Membership.objects.filter(group=group)
+    print membership.count()
+    if membership.count() >= 5:
+        return HttpResponse('{ "success": false, "error": "Only 5 users to a group." }')
+    
+    # create new membership
+    membership = Membership.objects.create(user=user,group=group,is_leader=False)
     
     return HttpResponse('{ "success": true }')
+
+@csrf_exempt
+@require_POST
+def delete_member(request, group_id, user_id):
+    # check if user to be deleted exists
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "No user found." }')
     
+    # check if group exists with user to be deleted as member
+    try:
+        group = Group.objects.get(id=group_id,members=user)
+    except Group.DoesNotExist:
+        return HttpResponse('{ "success": false, "error": "No group found." }')
+    
+    # check if request.user is leader
+    try:
+        membership = Membership.objects.get(user=request.user,group=group,is_leader=True)
+        if user == request.user:
+            return HttpResponse('{ "success": false, "error": "The leader cannot be deleted from their own group." }')
+    except Membership.DoesNotExist:
+        if user == request.user:
+            membership = Membership.objects.get(user=user,group=group)
+        else:
+            return HttpResponse('{ "success": false, "error": "You are not leader of this group." }')
+    
+    # delete membership
+    membership = Membership.objects.get(user=user,group=group)
+    membership.delete()
+
+    return HttpResponse('{ "success": true }')
+
 @csrf_exempt
 @require_POST
 def add_email(request):
@@ -181,8 +265,9 @@ def add_email(request):
     smtp_server = 'smtp.gmail.com:587'
     from_addr = 'misha.ponizil@gmail.com'
     
+    # make sure user is actually in this group
     try:
-        group = Group.objects.get(id=group_id,users=request.user)
+        group = Group.objects.get(id=group_id,members=request.user)
     except Group.DoesNotExist:
         return HttpResponse('{ "success": false, "error": "not authorized" }')
     
@@ -218,7 +303,8 @@ def add_email(request):
         user = User(username=email)
         user.save()
     
-    group.users.add(user)
+    # create new membership
+    membership = Membership.objects.create(user=user,group=group,is_leader=False)
 
     return HttpResponse('{ "success": true }')
 

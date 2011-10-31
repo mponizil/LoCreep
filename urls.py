@@ -25,9 +25,11 @@ urlpatterns = patterns('',
 	(r'^groups/(\d+)/creeps$', app.view_creeps),
 	(r'^groups/(\d+)/add-friends$', app.add_friends),
 	(r'^groups/(\d+)/added-by-email$', app.added_by_email),
+	(r'^groups/(\d+)/delete$', app.delete_group),
+	(r'^groups/(\d+)/users/(\d+)/delete$', app.delete_member),
 	
 	(r'^users/search$', app.search),
-	(r'^groups/add-user$', app.add_user),
+	(r'^groups/add-member$', app.add_member),
 	(r'^groups/add-email$', app.add_email),
 	
 	(r'^conversations/(\d+)$', app.conversation),

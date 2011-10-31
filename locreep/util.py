@@ -30,13 +30,13 @@ def register(request):
     email = request.POST['email']
     password = request.POST['password']
     
-    u = User.objects.create_user(email,email,password)
-    u.first_name = fname
-    u.last_name = lname
-    u.save()
+    user = User.objects.create_user(email,email,password)
+    user.first_name = fname
+    user.last_name = lname
+    user.save()
     
-    user = authenticate(username=email,password=password)
-    login(request, user)
+    auth_user = authenticate(username=email,password=password)
+    login(request, auth_user)
     
     return HttpResponse('{ "success": true }')
 
@@ -49,18 +49,18 @@ def update_user(request):
     password = request.POST['password']
     
     if request.user.is_anonymous():
-        u = User.objects.get(username=email)
+        user = User.objects.get(username=email)
     else:
-        u = request.user
+        user = request.user
         
-    u.first_name = fname
-    u.last_name = lname
-    u.username = email
-    u.set_password(password)
-    u.save()
+    user.first_name = fname
+    user.last_name = lname
+    user.username = email
+    user.set_password(password)
+    user.save()
 
-    user = authenticate(username=email,password=password)
-    login(request, user)
+    auth_user = authenticate(username=email,password=password)
+    login(request, auth_user)
 
     return HttpResponse('{ "success": true }')
 

@@ -37,7 +37,7 @@ class Group(models.Model):
     photo = models.CharField(max_length=75, blank=True, default="/static/images/groups/anonymous.jpg")
     phone = models.CharField(max_length=12)
     creeps = models.ManyToManyField(Creep, verbose_name="creeps in a group", null=True, blank=True)
-    users = models.ManyToManyField(User, verbose_name="users in a group")
+    members = models.ManyToManyField(User, through="Membership")
     
     def save(self):
         if self.date_created == None:
@@ -46,6 +46,17 @@ class Group(models.Model):
     
     def __unicode__(self):
         return self.name
+
+class Membership(models.Model):
+    user = models.ForeignKey(User)
+    group = models.ForeignKey(Group)
+    is_leader = models.BooleanField(default=False)
+    
+    def __unicode__(self):
+        leader = ""
+        if self.is_leader:
+            leader = " (Leader)"
+        return str(self.group.name) + ": " + str(self.user.username) + str(leader)
 
 class Conversation(models.Model):
     date_created = models.DateTimeField()
@@ -87,16 +98,14 @@ class Number(models.Model):
         return str(self.phone)
 
 class Venue(models.Model):
-  latitude  = models.DecimalField(max_digits=12, decimal_places=8)
-  longitude = models.DecimalField(max_digits=12, decimal_places=8)
-  fourSqId  = models.CharField(max_length=200)
-  points = models.IntegerField()
+    latitude  = models.DecimalField(max_digits=12, decimal_places=8)
+    longitude = models.DecimalField(max_digits=12, decimal_places=8)
+    fourSqId  = models.CharField(max_length=200)
+    points = models.IntegerField()
 
-#for future robustness
-#  points    = models.ForeignKey(CreepPoints)
+    # for future robustness
+    # points = models.ForeignKey(CreepPoints)
 
 class CreepPoint(models.Model):
-  place = models.ForeignKey(Venue)
-  time = models.DateField(auto_now=True)
-
-  #creepId=
+    place = models.ForeignKey(Venue)
+    time = models.DateField(auto_now=True)

@@ -76,7 +76,9 @@
 	text-transform: capitalize;
 	padding: 10px;
 }
-
+#kill {
+  background-color:#bf1c1c !important;
+}
 
 
 
@@ -130,7 +132,7 @@
 #error .error-message {
   background-color:#ccc;
   padding:20px;
-  width:200px;
+  width:320px;
   margin:0 auto;
 }
 

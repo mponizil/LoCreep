@@ -3,7 +3,7 @@ $(function() {
   $(window).resize(msg_form_field_resize);
   
   $(".nav_bar, .submenu_bar, .summary").each(function(i) {
-    var a = $(this).find("a");
+    var a = $(this).find("a[id!='no-link']");
     
     if (a.length > 0) {
       $(this).css("cursor","pointer");

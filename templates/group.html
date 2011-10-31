@@ -2,6 +2,21 @@
 
 {% block content %}
 
+<script type="text/javascript">
+$(function() {
+  $("#kill").click(function() {
+    var do_kill = confirm("Are you sure you would like to delete this group? This action cannot be undone.");
+    if (do_kill) {
+      $.post("/groups/{{ group.id }}/delete", function(data) {
+        var res = $.parseJSON(data);
+        if (res.success) window.location = "/dashboard";
+        else alert(res.error);
+      })
+    }
+  })
+})
+</script>
+
 <div id="content">
 	<div class="dark_nav_bar">
 		<a href="/dashboard">Dashboard</a> > {{ group.name }}
@@ -20,7 +35,7 @@
 	
 			
 	<div class="nav_bar">
-		<a href="/groups/{{ group.id }}/members">View Members ({{ group.users.count }})</a>
+		<a href="/groups/{{ group.id }}/members">View Members ({{ group.members.count }})</a>
 		<span class="nav_white_arrow">></span>
 	</div>
 	<div class="nav_bar">
@@ -31,7 +46,12 @@
 		<a href="/groups/{{ group.id }}/add-friends">Add Friends</a>
 		<span class="nav_white_arrow">></span>
 	</div>
-		
+	{% if is_leader %}
+	<div class="nav_bar" id="kill">
+	  <a href="javascript:void(0)" class="no-link">Kill Group</a>
+		<span class="nav_white_arrow">></span>
+	</div>
+	{% endif %}
 </div>
 
 {% endblock %}

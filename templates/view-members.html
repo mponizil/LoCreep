@@ -2,6 +2,35 @@
 
 {% block content %}
 
+<script type="text/javascript">
+$(function() {
+  $(".kill-member").click(function() {
+    kill_user($(this), "Are you sure you want to remove this user from the group?", kill_member);
+  })
+  $(".kill-self").click(function() {
+    kill_user($(this), "Are you sure you want to leave this group?", kill_self);
+  })
+})
+function kill_user(which_kill, check_kill, kill_complete) {
+  var do_kill = confirm(check_kill);
+  if (do_kill) {
+    var summary = which_kill.parents(".summary");
+    var user_id = summary.attr("id").substring(5);
+    $.post("/groups/{{ group.id }}/users/" + user_id + "/delete", kill_complete)
+  }
+}
+function kill_member(data) {
+  var res = $.parseJSON(data);
+  if (res.success) summary.remove();
+  else alert(res.error);
+}
+function kill_self(data) {
+  var res = $.parseJSON(data);
+  if (res.success) window.location = "/dashboard";
+  else alert(res.error);
+}
+</script>
+
 <div id="content">
 	<div class="dark_nav_bar">
 		<a href="/dashboard">Dashboard</a> > <a href="/groups/{{ group.id }}">{{ group.name }}</a> > Members
@@ -10,16 +39,22 @@
 		Members
 	</div>
 	
-	{% for u in group.users.all %}
+	{% for u in group.members.all %}
   {% if u.password %}
-  <div class="summary">
+  <div class="summary" id="user-{{ u.id }}">
 		<div class="profile_pic">
 			<img src="{{ u.userprofile.photo }}" width="120">
 		</div>
 		<div class="details">					
 			<p class="name">{{ u.first_name }} {{ u.last_name }}</p>
 			<p class="info">Member since: {{ u.date_joined|date:"M d, Y" }}</p>					
-		</div>			
+		</div>
+		{% if is_leader and u != user %}
+		<div class="kill-member">X</div>
+		{% endif %}
+		{% if not is_leader and u == user %}
+		<div class="kill-self">X</div>
+		{% endif %}
 	</div>
   {% endif %}
   {% endfor %}
