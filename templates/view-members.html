@@ -18,9 +18,7 @@
 		</div>
 		<div class="details">					
 			<p class="name">{{ u.first_name }} {{ u.last_name }}</p>
-			<p class="info">info 1</p>
-			<p class="info">info 2</p>
-			<p class="info">Member since: Oct 6, 2011</p>					
+			<p class="info">Member since: {{ u.date_joined|date:"M d, Y" }}</p>					
 		</div>			
 	</div>
   {% endif %}

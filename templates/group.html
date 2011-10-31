@@ -20,11 +20,11 @@
 	
 			
 	<div class="nav_bar">
-		<a href="/groups/{{ group.id }}/members">View Members (3)</a>
+		<a href="/groups/{{ group.id }}/members">View Members ({{ group.users.count }})</a>
 		<span class="nav_white_arrow">></span>
 	</div>
 	<div class="nav_bar">
-		<a href="/groups/{{ group.id }}/creeps">View Creeps (5)</a>
+		<a href="/groups/{{ group.id }}/creeps">View Creeps ({{ group.creeps.count }})</a>
 		<span class="nav_white_arrow">></span>
 	</div>
 	<div class="nav_bar">

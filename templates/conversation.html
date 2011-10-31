@@ -60,8 +60,8 @@ function to_tumblr() {
 		<div class="details">
 			<p class="name">{{ creep.name }}</p>
 			<p class="info">{{ creep.phone }}</p>
-			<p class="info">info 2</p>
-			<p class="info">Creeping since: Oct 6, 2011</p>
+			<p class="info">{{ conversation.notes }}</p>
+			<p class="info">Creeping since: {{ creep.date_created|date:"M d, Y" }}</p>
 		</div>
 	</div>
 	

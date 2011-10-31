@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 import urllib
 import urllib2
 
-domain_name = "http://433m.localtunnel.com"
+domain_name = "http://487f.localtunnel.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"

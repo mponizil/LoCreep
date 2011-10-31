@@ -47,13 +47,10 @@
 	padding: 10px 10px 10px 20px;
 }
 
-.submenu_bar a{
-	background: url("/static/images/arrow_right.png") no-repeat scroll right center transparent;
-    display: block;
-	color: #8e657a;
-    font-size: 14px;
-    padding: 10px 10px 10px 20px;
-    text-transform: capitalize;
+.submenu_bar a {
+  color: #8e657a;
+  font-size: 14px;
+  text-transform: capitalize;
 }
 
 .dark_nav_bar{

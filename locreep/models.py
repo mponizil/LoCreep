@@ -16,6 +16,7 @@ class UserProfile(models.Model):
         return str(self.user.username)
 
 class Creep(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
     phone = models.CharField(max_length=12)
     photo = models.CharField(max_length=75, default="/static/images/creeps/anonymous.jpg")
     name = models.CharField(max_length=75, default="Name Unknown")
@@ -24,6 +25,7 @@ class Creep(models.Model):
         return str(self.phone)
 
 class Group(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=30)
     photo = models.CharField(max_length=75, blank=True, default="/static/images/groups/anonymous.jpg")
     phone = models.CharField(max_length=12)
@@ -34,8 +36,10 @@ class Group(models.Model):
         return self.name
 
 class Conversation(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
     group = models.ForeignKey(Group, verbose_name="group this conversation belongs to", null=True, blank=True)
     creep = models.ForeignKey(Creep, verbose_name="creep this conversation belongs to", null=True, blank=True)
+    notes = models.TextField(blank=True, default="Make a note")
     tumblr_id = models.CharField(max_length=255, blank=True)
     qr_id = models.CharField(max_length=255, blank=True)
 
@@ -43,6 +47,7 @@ class Conversation(models.Model):
         return str(self.group.name) + ": " + str(self.id)
 
 class Message(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
     conversation = models.ForeignKey(Conversation)
     user_type = models.CharField(max_length=10)
     user = models.ForeignKey(User, null=True)

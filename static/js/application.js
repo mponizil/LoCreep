@@ -2,7 +2,7 @@ $(function() {
   msg_form_field_resize();
   $(window).resize(msg_form_field_resize);
   
-  $(".nav_bar").each(function(i) {
+  $(".nav_bar, .submenu_bar, .summary").each(function(i) {
     var a = $(this).find("a");
     
     if (a.length > 0) {

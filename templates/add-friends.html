@@ -19,7 +19,6 @@ function find_friends() {
   $("#results").empty();
   
   if (params.friend) search_users(params);
-  email_invite(params.friend);
   
   return false;
 }
@@ -27,12 +26,13 @@ function search_users(params) {
   $.post("/users/search", params, function(data) {
     var users = $.parseJSON(data);
     show_suggestions(users);
+    if (users.length == 0) email_invite(params.friend);
   })
 }
 function show_suggestions(users) {
   _.each(users, function(user) {
     
-    var summary = $('<div class="summary"><div class="profile_pic"><img src="' + user.photo + '" width="120"></div><div class="details"><p class="name">' + user.name + '</p><p class="info">keep info within 200px to be safe</p><p class="info">info 2</p></div></div>');
+    var summary = $('<div class="summary"><div class="profile_pic"><img src="' + user.photo + '" width="120"></div><div class="details"><p class="name">' + user.name + '</p><p class="info">' + user.email + '</p></div></div>');
   	
     var add = $("<p>").addClass("invite").attr("id","user-" + user.id).html("Add to group");
     summary.find(".details").append(add);
@@ -41,6 +41,8 @@ function show_suggestions(users) {
     
     if (user.in_group) {
       add.html("Added");
+      add.css("cursor","default")
+      add.css("color","green")
     } else {
       add.click(function() {
         var user_id = $(this).attr("id").substring(5);
@@ -56,7 +58,7 @@ function add_friend(user_id, add) {
 }
 function email_invite(email) {
   if (email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
-    var summary = $('<div class="summary"><div class="profile_pic"><img src="' + user.photo + '"></div><div class="details"><p class="name">' + email + '</p></div></div>');
+    var summary = $('<div class="summary"><div class="profile_pic"><img src="/static/images/users/email.jpg" width="120"></div><div class="details"><p class="name">' + email + '</p></div></div>');
   	
     var add = $("<p>").addClass("invite").html("Invite by email");
     summary.find(".details").append(add);
