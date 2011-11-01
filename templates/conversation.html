@@ -6,7 +6,7 @@
 <script type="text/javascript">
 var messages = [{% for message in messages %}{ user_type: '{{ message.user_type|addslashes }}', body: '{% if ".mp3" in message.body %}<a href="{{ message.body }}">Voicemail</a>{% else %}{{ message.body|addslashes }}{% endif %}' },{% endfor %}];
 
-var socket = io.connect('http://thelootsuite.com:3000/');
+var socket = io.connect('http://locreep.com:3000/');
 socket.emit('conversation.init', { conversation_id: {{ conversation.id }} });
 socket.on('message', function(message) {
   messages.push(message)
