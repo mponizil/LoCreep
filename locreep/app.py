@@ -328,17 +328,18 @@ def add_email(request):
 @require_POST
 def user_message(request):
     conversation_id = request.POST['conversation_id']
+    
     try:
         conversation = Conversation.objects.get(id=conversation_id)
     except Conversation.DoesNotExist:
         return render_to_response("error.html", { 'error': "no conversation" })
-
+    
     user = request.user
     body = request.POST['body']
-
+    
     message = Message(conversation=conversation,user_type='user',body=body)
     message.save()
-
+    
     url = 'http://thelootsuite.com:3000/message'
     values = {'conversation_id' : conversation_id,
               'user_type' : 'user',
@@ -347,10 +348,10 @@ def user_message(request):
     req = urllib2.Request(url, data)
     response = urllib2.urlopen(req)
     the_page = response.read()
-
+    
     sms = tc.sms.messages.create(to = conversation.creep.phone, from_ = conversation.group.phone, body = body)
 
-    return HttpResponse('{ success: true }')
+    return HttpResponse('{ "success": true }')
 
 @login_required(login_url='/login')
 def creep_lookup(request):

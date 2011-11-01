@@ -31,7 +31,7 @@ function new_msg(message) {
 function submit_msg() {
   var body = $("input[name='msg']").val();
   $.post("/user_message", { conversation_id: {{ conversation.id }}, body: body })
-  $("input[name='msg']").val('').focus();
+  $("input[name='msg']").val('');
   return false;
 }
 function to_tumblr() {
