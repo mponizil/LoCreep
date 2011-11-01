@@ -21,22 +21,38 @@ function save_group() {
 }
 </script>
 
-<form id="save_group" name="save_group" enctype="multipart/form-data">
-  <input type="hidden" name="phone" id="phone" value="{{ phone }}" />
-  <table>
-    <tr>
-      <td>Photo</td>
-      <td><input type="file" name="photo" /></td>
-    </tr>
-    <tr>
-      <td>Name</td>
-      <td><input type="text" name="name" id="name" /></td>
-    </tr>
-    <tr>
-      <td><a href="/dashboard">Back</a></td>
-      <td><a class="large green awesome" id="save_group_btn">Create Group</td>
-    </tr>
-  </table>
-</form>
+<div id="content">
+	<div class="dark_nav_bar">
+		<a href="/dashboard">Dashboard</a> > Create Group
+	</div>
+	
+	<div id="blue_form">
+		<div id="stylized">
+			<form id="save_group" name="save_group">
+			  
+			  <input type="hidden" name="phone" id="phone" value="{{ phone }}" />
+			  
+				<div class="form_row">
+					<label>Name</label>
+					<input type="text" name="name" id="name" />
+				</div>
+
+				<div class="form_row">
+					<label>Photo</label>
+					<input type="file" name="profile_pic" id="profile_pic" />
+				</div>
+	
+				<div class="form_row_for_btn">
+					<a class="large red awesome" id="save_group_btn">Create Group</a>
+				</div>
+
+				<!-- <button type="submit">Sign-up</button> -->
+				<div class="spacer"></div>
+				<br><br>
+			</form>
+		</div>
+	</div>
+		
+</div>
 
 {% endblock %}
