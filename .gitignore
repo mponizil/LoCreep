@@ -1,3 +1,7 @@
 *.pyc
 chat
 locreep.db
+logs/
+pip-log.txt
+python-tumblr-0.1/build/lib.linux-x86_64-2.6/
+static/admin/
