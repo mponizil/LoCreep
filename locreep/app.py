@@ -287,7 +287,7 @@ def add_email(request):
     except User.DoesNotExist:
         invited_by = User.objects.get(id=invited_by_id)
         invited_by_name = invited_by.get_full_name()
-        link = "http://localhost:8000/groups/" + str(group_id) + "/added-by-email?email=" + email
+        link = "http://thelootsuite.com/groups/" + str(group_id) + "/added-by-email?email=" + email
         
         # send email inviting user to join locreep
         msg = MIMEMultipart('alternative')
@@ -339,7 +339,7 @@ def user_message(request):
     message = Message(conversation=conversation,user_type='user',body=body)
     message.save()
 
-    url = 'http://localhost:8000/message'
+    url = 'http://thelootsuite.com:3000/message'
     values = {'conversation_id' : conversation_id,
               'user_type' : 'user',
               'message' : body }

@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 import urllib
 import urllib2
 
-domain_name = "http://4ehe.localtunnel.com"
+domain_name = "http://thelootsuite.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -60,7 +60,7 @@ def text(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://localhost:8000/message'
+    url = 'http://thelootsuite.com:3000/message'
     values = {
         'group_id' : group.id,
         'conversation_id' : conversation.id,
@@ -108,7 +108,7 @@ def save_creepy_voice(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://localhost:8000/message'
+    url = 'http://thelootsuite.com:3000/message'
     values = {
         'group_id' : group.id,
         'conversation_id' : conversation.id,
