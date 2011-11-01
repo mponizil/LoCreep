@@ -80,7 +80,13 @@
   background-color:#bf1c1c !important;
 }
 
-
+.badge {
+  float:left;
+}
+.details {
+  float:left;
+  margin-left:20px;
+}
 
 .summary{
 	float: left;
@@ -119,9 +125,18 @@
 	cursor: pointer;
 }
 
+#top_form {
+  padding-top:10px;
+}
 .msg_form_field {
   margin-left:4px;
   font-size:18px;
+  float:left;
+}
+#make_post {
+  float:left;
+  margin-top:2px;
+  margin-left:10px;
 }
 
 #error {

@@ -15,6 +15,6 @@ $(function() {
 })
 
 function msg_form_field_resize() {
-  var field_width = $("#whole_page").width() - 80;
+  var field_width = $("#whole_page").width() - 120;
 	$('.msg_form_field').css('width', field_width + 'px');
 }

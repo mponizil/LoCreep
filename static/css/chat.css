@@ -3,9 +3,7 @@
 	font-size:14px;
 	
 	line-height:1.3em;
-	margin-top:6px;
 	margin-bottom: 6px;
-	margin-left: 10px;
 	padding:6px;
 	position:relative;
 	text-align:center;
@@ -145,30 +143,37 @@
 
 #chat {
 	background: #f3e8c0;/*#DBE1ED;*/
-	clear: both;
+	/*clear: both;*/
 }
-	
+#chat .chat-box {
+  padding:20px;
+}
 #chat div.bubble {
-	margin: 10px 10px 0 0px;
+	/*margin: 0 20px;
 	width: 80%;
-	clear: both;
+	clear: both;*/
 }
 
 #chat div.right {
-	float: right;
+  float: right;
 }
-	
+  
 #chat div.left {
-	float: left;
-}	
+  float: left;
+}
 
+#action_buttons {
+  width:320px;
+  text-align:center;
+}
 #chat div.chat_form{
 	margin: 5px auto;
-	clear: both;
+	/*clear: both;*/
 }
 #chat {
 	padding-top: 5px;
+	padding-bottom:10px;
 	width: 100%;
-	float: left;
+	/*float: left;*/
 	font-family: Helvetica;
 }

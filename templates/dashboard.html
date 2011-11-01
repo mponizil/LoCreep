@@ -4,6 +4,10 @@
 
 <script type="text/javascript">
 $(function() {
+  $(".submenu_group").each(function(i) {
+    $(this).siblings(".nav_bar").css("cursor","pointer");
+    $(this).css("height",$(this).height());
+  })
   $(".submenu_group").hide();
   $(".nav_minus").html("+");
   $("#groups_wrap .nav_bar, #badges_wrap .nav_bar").toggle(
@@ -54,9 +58,11 @@ $(function() {
 		
 		<div class="submenu_group">
 		  <div class ="submenu_bar">
-    		<img src="/static/images/badges/mormon.png" width="32">
-        <p class="name">The Polygamist</p>
-  			<p class="info">Obtained: Oct 31, 2011</p>
+    		<div class="badge"><img src="/static/images/badges/mormon.png" width="32"></div>
+    		<div class="details">
+          <p class="name">The Polygamist</p>
+  			  <p class="info">Obtained: Oct 31, 2011</p>
+  			</div>
     	</div>
 		</div>
 	</div>
