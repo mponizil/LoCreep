@@ -49,7 +49,10 @@ def group(request, group_id):
     except Membership.DoesNotExist:
         is_leader = False
     
-    return render_to_response("group.html", { 'group': group, 'is_leader': is_leader }, context_instance=RequestContext(request))
+    membership = Membership.objects.filter(group=group).exclude(user__password='')
+    member_count = membership.count()
+    
+    return render_to_response("group.html", { 'group': group, 'member_count': member_count, 'is_leader': is_leader }, context_instance=RequestContext(request))
 
 @login_required(login_url='/login')
 def view_members(request, group_id):
@@ -336,7 +339,7 @@ def user_message(request):
     message = Message(conversation=conversation,user_type='user',body=body)
     message.save()
 
-    url = 'http://localhost:3000/message/'
+    url = 'http://localhost:8000/message'
     values = {'conversation_id' : conversation_id,
               'user_type' : 'user',
               'message' : body }
@@ -344,8 +347,6 @@ def user_message(request):
     req = urllib2.Request(url, data)
     response = urllib2.urlopen(req)
     the_page = response.read()
-
-    print tc
 
     sms = tc.sms.messages.create(to = conversation.creep.phone, from_ = conversation.group.phone, body = body)
 

@@ -118,6 +118,11 @@
 	color: #888;
 	line-height: 20px;
 }
+.summary .kill-member {
+  text-decoration:underline;
+  color:#BF1C1C;
+  cursor:pointer;
+}
 .summary .invite{
 	color: blue;
 	font-size: 16px;
