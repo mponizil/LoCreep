@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 
 import urllib
 import urllib2
+import cgi
 
 domain_name = "http://locreep.com"
 
@@ -24,7 +25,7 @@ tc = TwilioRestClient(account, token)
 def text(request):
     creep_phone = request.POST['From']
     group_phone = request.POST['To']
-    body = request.POST['Body']
+    body = cgi.escape(request.POST['Body'])
     
     # creep_phone = '+17608463179'
     # group_phone = '+13475148471'
