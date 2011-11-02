@@ -26,6 +26,7 @@ function creep_lookup() {
         
         $("#conclusion").html("HELL NO!");
         conclusion_blink();
+        $("#conclusion").show();
       } else {
         var creep_free = $("<div id='creep-free'><h2>This number is LoCreep approved!</h2><p class='number'>" + res.number + "</p>");
         $("#results").append(creep_free)
