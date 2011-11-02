@@ -106,6 +106,7 @@
   height:120px;
 	float: left;
 	border-right: 1px solid #999;
+	overflow:hidden;
 }
 .summary .name{
 	font-size: 16px;
