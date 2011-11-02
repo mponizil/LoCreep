@@ -159,7 +159,14 @@
   padding:20px;
   text-align:center;
 }
-
+#conclusion {
+  padding:10px;
+  padding-bottom:20px;
+  text-align:center;
+  font-size:16px;
+  color:#e01717;
+  font-weight:bold;
+}
 #main_logo{
 	text-align: center;
 	background-color: #d24e6d;

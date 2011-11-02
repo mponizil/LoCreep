@@ -22,7 +22,10 @@ function creep_lookup() {
       var res = $.parseJSON(data);
       if (res.c_hits > 0 || res.m_hits > 0) {
         var positive_match = $("<div id='positive-match'><h2>We found a match</h2><p class='number'>" + res.number + "</p><div class='hits'><div class='c-hits'>Found in " + res.c_hits + " conversation(s)</div><div class='m-hits'>Has sent " + res.c_hits + " message(s) tracked by LoCreep</div></div>");
-        $("#results").append(positive_match)
+        $("#results").append(positive_match);
+        
+        $("#conclusion").html("HELL NO!");
+        conclusion_blink();
       } else {
         var creep_free = $("<div id='creep-free'><h2>This number is LoCreep approved!</h2><p class='number'>" + res.number + "</p>");
         $("#results").append(creep_free)
@@ -31,6 +34,13 @@ function creep_lookup() {
   }
   
   return false;
+}
+function conclusion_blink() {
+  $("#conclusion").css("visibility","hidden");
+  setTimeout(function() {
+    $("#conclusion").css("visibility","visible");
+    setTimeout(conclusion_blink, 800)
+  }, 400)
 }
 </script>
 
@@ -71,7 +81,9 @@ h2 {
 	</div>
 	
 	<div id="results">
-	</div>		
+	</div>
+	
+	<div id="conclusion"></div>
 		
 </div>
 
