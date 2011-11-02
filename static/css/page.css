@@ -117,6 +117,10 @@
 	color: #888;
 	line-height: 20px;
 }
+.summary .info a{
+  text-decoration:underline;
+  color:#414141;
+}
 .summary .kill-member {
   text-decoration:underline;
   color:#BF1C1C;
