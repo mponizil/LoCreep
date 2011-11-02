@@ -22,7 +22,7 @@
   {
     position:absolute;
     top:83px;
-    left:143px;
+    left:133px;
   }
 </style>
 
@@ -32,12 +32,12 @@
   function rotatify(angle)
   {
     angle = parseInt(angle)*(90/100)-43
-    
     $('#needle').rotate({animateTo:angle})
   };
 
   function getVal(position) {
     $("#msg").html('working');
+    
     $.post("/locate", {'lat' : position.coords.latitude, 'long' : position.coords.longitude},
       function(data)
       {
@@ -46,12 +46,14 @@
         {
           $("#msg").html(obj.msg);
           rotatify(obj.score)
+          setTimeout('jitter();', 1010)
         }
         else
         {
           $("#msg").html('failure');
         }
-        window.setInterval('navigator.geolocation.getCurrentPosition(getVal);',2*60000);
+        //for now, only one request/load, for demo purposes
+        //window.setInterval('navigator.geolocation.getCurrentPosition(getVal);',2*60000);
       });
   }
 
@@ -61,21 +63,31 @@
     values=[0.1,0.1,0,0,-0.1,-0.1,0.2,-0.2];
     value=Math.floor(Math.random()*values.length);
     $('#needle').rotate({animateTo:angle+value,duration:100});
-    setTimeout('jitterback(angle);', 110)   
+    setTimeout('jitterback(angle);', 130)   
   }
  
   function jitterback(angle)
   {
     $('#needle').rotate({animateTo:angle,duration:100});
-    setTimeout('jitter();', 110)
+    setTimeout('jitter();', 130)
   }
 
-  //works in ff and chrome
-  //TODO:handle if user doesnt share, or on error
   $(document).ready(function() {
-    navigator.geolocation.getCurrentPosition(getVal);
+    // navigator.geolocation.getCurrentPosition(getVal,getVal,{timeout:10000});
+    messages = {
+      0: 'This zone is Creeper-free',
+      1: 'Nothing a bad bitch can\'t handle',
+      2: 'Get crunk at your own risk',
+      3: 'Shit just got real',
+      4: 'Bitches, we gotta get out of here'
+    }
+    
+    var score = Math.floor(Math.random() * 5);
+    
+    $("#msg").html(messages[score]);
+    rotatify(score * 20);
+    setTimeout('jitter();', 1010)
   });
-
 
 </script>
 

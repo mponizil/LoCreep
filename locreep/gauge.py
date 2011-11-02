@@ -6,11 +6,9 @@ import json
 import math
 from locreep.models import *
 
-@csrf_exempt ###DANGER, MUST FIX
+# @csrf_exempt
 def home(request):
-  context=[]
-  #return HttpResponse("Hello, world. You're at the poll index.")
-  return render_to_response('gauge.html', context, context_instance=RequestContext(request))
+  return render_to_response('gauge.html', context_instance=RequestContext(request))
 
 @csrf_exempt
 def locate(request):
@@ -18,7 +16,7 @@ def locate(request):
   lat = request.POST.get('lat') ###post
   lon = request.POST.get('long')
   score=0
-  for venue in Venue.objects.all():   
+  for venue in Venue.objects.all():
     earth_radius=3947 #miles
     dLat=math.radians(float(venue.latitude)-float(lat))
     dLon=math.radians(float(venue.longitude)-float(lon))
