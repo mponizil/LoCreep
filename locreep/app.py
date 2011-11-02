@@ -77,7 +77,7 @@ def view_creeps(request, group_id):
         group = Group.objects.get(id=group_id,members=request.user)
     except Group.DoesNotExist:
         return render_to_response("error.html", { 'error': "no group found" })
-
+    
     conversations = Conversation.objects.filter(group=group)
     
     return render_to_response("view-creeps.html", { 'group': group, 'conversations': conversations }, context_instance=RequestContext(request))
@@ -161,17 +161,17 @@ def added_by_email(request, group_id):
     try:
         user = User.objects.get(username=email)
     except User.DoesNotExist:
-        return render_to_response("error.html", { 'error': "invalid invite link. no user found." })
+        return render_to_response("error.html", { 'error': "Invalid invite link. No user found." })
     
     # check if user has a password
     if user.password:
-        return render_to_response("error.html", { 'error': "invalid invite link. user already registered." })
+        return render_to_response("error.html", { 'error': "Invalid invite link. User already registered." })
     
     # make sure they're really in the group the link says they're in
     try:
         group = Group.objects.get(id=group_id,members=user)
     except Group.DoesNotExist:
-        return render_to_response("error.html", { 'error': "invalid invite link. no group found with user." })
+        return render_to_response("error.html", { 'error': "Invalid invite link. No group found with user." })
     
     return render_to_response("added-by-email.html", { 'user': user, 'group': group })
 
@@ -180,7 +180,12 @@ def conversation(request, conversation_id):
     try:
         conversation = Conversation.objects.get(id=conversation_id)
     except Conversation.DoesNotExist:
-        return render_to_response("error.html", { 'error': "no conversation found" })
+        return render_to_response("error.html", { 'error': "No conversation found." })
+    
+    try:
+        group = Group.objects.get(conversation=conversation,members=request.user)
+    except Group.DoesNotExist:
+        return render_to_response("error.html", { 'error': "No conversation found." })
     
     messages = Message.objects.filter(conversation=conversation).order_by('-id')
     
