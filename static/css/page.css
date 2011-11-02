@@ -44,7 +44,7 @@
 	color: #8e657a;
 	overflow: hidden;
 	text-transform: capitalize;
-	padding: 10px 10px 10px 20px;
+	padding: 10px;
 }
 
 .submenu_bar a {
@@ -85,7 +85,7 @@
 }
 .details {
   float:left;
-  margin-left:20px;
+  margin-left:5px;
 }
 
 .summary{
