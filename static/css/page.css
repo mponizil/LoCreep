@@ -146,13 +146,12 @@
 
 #error {
   text-align:center;
-  padding:40px;
+  padding:20px;
   line-height:2;
 }
 #error .error-message {
   background-color:#ccc;
   padding:20px;
-  width:300px;
   margin:0 auto;
 }
 
