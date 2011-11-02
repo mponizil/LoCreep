@@ -23,6 +23,8 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import re
+
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
 tc = TwilioRestClient(account, token)
@@ -361,7 +363,8 @@ def creep_lookup(request):
 @require_POST
 def reverse_lookup(request):
     number = request.POST['number']
-    
+    number = re.sub("\D", "", number)
+
     try:
         creep = Creep.objects.get(phone__icontains=number)
         creep_phone = creep.phone
