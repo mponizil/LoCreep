@@ -281,7 +281,7 @@ def add_email(request):
     email = request.POST['email']
     
     smtp_server = 'smtp.gmail.com:587'
-    from_addr = 'misha.ponizil@gmail.com'
+    from_addr = 'invites@locreep.com'
     
     # make sure user is actually in this group
     try:
