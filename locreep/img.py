@@ -13,10 +13,10 @@ def upload_creep_photo(request):
     conversation_id = request.POST['conversation_id']
     
     if request.method == 'POST':
-        if not request.FILES['creep_photo']:
-            return render_to_response('error.html', { 'error': 'Please choose a file to upload.' }, context_instance=RequestContext(request))
+        f=request.FILES.get('creep_photo',None)
         
-        f=request.FILES['creep_photo'] # this is my file
+        if f is None:
+            return render_to_response('error.html', { 'error': 'Please choose a file to upload.' }, context_instance=RequestContext(request))
         
         try:
             tmp = Image.open(f)
