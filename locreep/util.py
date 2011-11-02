@@ -98,6 +98,25 @@ def tumblr_text(request):
     title = request.POST['title']
     body = request.POST['body']
     
+    # create a dictionary mapping names to random strings so they are unrecognizable but consistent
+    replacements = generate_replacements()
+
+    # strip credit card numbers
+    credit_pattern = re.compile(r"\d{3,5}\D*\d{3,5}\D*\d{3,5}\D*\d{3,5}")
+    body = credit_pattern.sub("XXXX-XXXX-XXXX-XXXX", body)
+
+    # strip phone numbers
+    phone_pattern = re.compile(r"(\d{3}\D*)?(\d{3})\D*(\d{4})")
+    body = phone_pattern.sub("XXX-XXXX", body)
+
+    # strip names
+    #TODO: make sure names.txt is in correct directory relative to server
+    names = open("names.txt", 'r')
+    for name in names:
+        name = name.rstrip() # remove newline
+        name_pattern = re.compile(r"\b" + name + r"\b", re.IGNORECASE)
+        body = name_pattern.sub(replacements[name], body)
+
     tumblr = Api(BLOG,USER,PASSWORD)
     post = tumblr.write_regular(title, body)
 

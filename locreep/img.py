@@ -21,7 +21,7 @@ def upload_creep_photo(request):
         
         rel_path = '/static/images/creeps/'+creep_id+'.'+strftime("%Y-%m-%d-%H-%M-%S")+'.'+tmp.format
         path = os.path.dirname(__file__) + '/..' + rel_path
-        print path
+        
         destination = open(path, 'wb+')
         
         for chunk in f.chunks():
