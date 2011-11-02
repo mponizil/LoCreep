@@ -12,6 +12,8 @@ from django.core.context_processors import csrf
 from django.views.decorators.http import require_POST
 from tumblr import Api
 
+import re, sys, random, string
+
 BLOG = "locreep.tumblr.com"
 USER = "locreep@mailinator.com"
 PASSWORD = "locreep"
@@ -121,6 +123,14 @@ def tumblr_text(request):
     post = tumblr.write_regular(title, body)
 
     return HttpResponse(title + "\n" + body)
+
+def generate_replacements():
+    names = open("names.txt", 'r')
+    replacements = {}
+    for name in names:
+        name = name.rstrip()
+        replacements[name] = ''.join(random.choice(string.ascii_uppercase) for x in range(len(name)))
+    return replacements
 
 def how_to(request):
     return render_to_response("how-to.html", context_instance=RequestContext(request))
