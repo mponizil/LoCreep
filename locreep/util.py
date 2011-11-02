@@ -30,6 +30,12 @@ def register(request):
     email = request.POST['email']
     password = request.POST['password']
     
+    if not fname or not lname or not email or not password:
+        return HttpResponse('{ "success": false, "error": "Please enter all the fields." }')
+        
+    if User.objects.filter(username=email).count() > 0:
+        return HttpResponse('{ "success": false, "error": "The email you entered already exists." }')
+    
     user = User.objects.create_user(email,email,password)
     user.first_name = fname
     user.last_name = lname

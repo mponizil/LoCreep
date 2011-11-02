@@ -6,6 +6,9 @@
 $(function() {
   $("#login_form").submit(login);
   $("#signin").click(login);
+  $("input").keyup(function(e) {
+    if(e.keyCode == 13) login();
+  })
 })
 function login() {
   $.post("/auth", { email: $("#email").val(), password: $("#password").val() }, function(data) {
