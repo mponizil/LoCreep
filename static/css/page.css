@@ -103,9 +103,8 @@
 }
 
 .summary .profile_pic{
+  height:120px;
 	float: left;
-}
-.summary .profile_pic img{
 	border-right: 1px solid #999;
 }
 .summary .name{

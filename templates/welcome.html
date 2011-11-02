@@ -6,7 +6,7 @@
 $(function() {
   $("#register").submit(register)
   $("#signup").click(register)
-  $("input").keyup(function(e) {
+  $("input[type='text'],input[type='password']").keyup(function(e) {
     if(e.keyCode == 13) register();
   })
 })

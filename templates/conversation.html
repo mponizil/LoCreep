@@ -68,8 +68,8 @@ function to_tumblr() {
 		<div class="details">
 			<p class="name">{{ creep.name }}</p>
 			<p class="info">{{ creep.phone }}</p>
-			<p class="info">{{ conversation.notes }}</p>
-			<p class="info">Creeping since: {{ creep.date_created|date:"M d, Y" }}</p>
+			<p class="info">Creep since: {{ creep.date_created|date:"M d, y" }}</p>
+			<p class="info"><form name="upload_creep" method="post" action="/upload/creep_photo" enctype="multipart/form-data"><input type="hidden" name="conversation_id" value="{{ conversation.id }}" /><input type="hidden" name="creep_id" value="{{ conversation.creep.id }}" /><input type="file" name="creep_photo" /><input type="submit" name="submit" value="Upload" /></form>
 		</div>
 	</div>
 	<div style="clear:both;"></div>

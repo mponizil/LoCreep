@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from lc.locreep import app, twil, util, gauge
+from lc.locreep import app, twil, util, gauge, img
 
 urlpatterns = patterns('',
 	# (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
@@ -44,6 +44,8 @@ urlpatterns = patterns('',
 	
 	(r'^gauge$', gauge.home),
 	(r'^locate$', gauge.locate),
+	
+	(r'^upload/creep_photo$', img.upload_creep_photo),
 	
 	(r'^creep-lookup$', app.creep_lookup),
 	(r'^reverse-lookup$', app.reverse_lookup),
