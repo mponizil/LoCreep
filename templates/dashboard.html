@@ -52,11 +52,11 @@ $(function() {
 	<!-- wrap one nav bar and its submenu inside another unique named div for js to pick up -->
 	<div id="badges_wrap">
 		<div class="nav_bar">
-			Badges ({% if user.id == 1 %}4{% else %}0{% endif %})
-			{% if user.id == 1 %}<span class="nav_minus">−</span>{% endif %}
+			Badges ({% if user.id == 3 %}4{% else %}0{% endif %})
+			{% if user.id == 3 %}<span class="nav_minus">−</span>{% endif %}
 		</div>
 		
-		{% if user.username == 'rzhou@gmail.com' %}
+		{% if user.id == 3 %}
 		<div class="submenu_group">
 		  
 		  <div class="submenu_bar">
