@@ -4,6 +4,8 @@ from PIL import Image
 from time import strftime
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 @csrf_exempt
 def upload_creep_photo(request):
