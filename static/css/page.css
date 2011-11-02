@@ -97,7 +97,7 @@
 }
 
 .summary .details{
-	width: 200px;
+	width: 160px;
 	margin-left: 15px;
 	float: left;
 }
@@ -152,6 +152,7 @@
 #error .error-message {
   background-color:#ccc;
   padding:20px;
+  width:220px;
   margin:0 auto;
 }
 
