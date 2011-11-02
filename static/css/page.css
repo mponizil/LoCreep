@@ -199,8 +199,13 @@
 	color: #787878;
 	height: 20px;
 	padding: 5px;
+	padding-top:20px;
 	font-size: 13px;
 	text-align: center;
+}
+#footer a {
+  text-decoration:underline;
+  color:#414141;
 }
 body{
 	font-family: "Helvatica","Helvetica Neue","HelveticaNeueRoman","HelveticaNeue-Roman","Helvetica Neue Roman","TeXGyreHerosRegular","Helvetica","Tahoma","Geneva","Arial",sans-serif;
