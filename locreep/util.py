@@ -113,7 +113,8 @@ def tumblr_text(request):
 
     # strip names
     #TODO: make sure names.txt is in correct directory relative to server
-    names = open("names.txt", 'r')
+    names_path = os.path.dirname(__file__) + '/../names.txt'
+    names = open(names_path, 'r')
     for name in names:
         name = name.rstrip() # remove newline
         name_pattern = re.compile(r"\b" + name + r"\b", re.IGNORECASE)
@@ -125,7 +126,8 @@ def tumblr_text(request):
     return HttpResponse(title + "\n" + body)
 
 def generate_replacements():
-    names = open("names.txt", 'r')
+    names_path = os.path.dirname(__file__) + '/../names.txt'
+    names = open(names_path, 'r')
     replacements = {}
     for name in names:
         name = name.rstrip()
