@@ -148,6 +148,10 @@
   padding:20px;
   line-height:2;
 }
+#blank {
+  padding:20px;
+  line-height:1.4;
+}
 #error .error-message {
   background-color:#ccc;
   padding:20px;
