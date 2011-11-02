@@ -96,3 +96,12 @@ def tumblr_text(request):
     post = tumblr.write_regular(title, body)
 
     return HttpResponse(title + "\n" + body)
+
+def how_to(request):
+    return render_to_response("how-to.html", context_instance=RequestContext(request))
+
+def terms(request):
+    return render_to_response("terms.html", context_instance=RequestContext(request))
+
+def contact(request):
+    return render_to_response("contact.html", context_instance=RequestContext(request))

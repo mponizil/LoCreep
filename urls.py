@@ -48,5 +48,9 @@ urlpatterns = patterns('',
 	(r'^creep-lookup$', app.creep_lookup),
 	(r'^reverse-lookup$', app.reverse_lookup),
 	
+	(r'^how-to$', util.how_to),
+	(r'^terms$', util.terms),
+	(r'^contact$', util.contact),
+	
     url(r'^admin/', include(admin.site.urls)),
 )
