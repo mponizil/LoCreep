@@ -313,7 +313,7 @@ def add_email(request):
         
         server = smtplib.SMTP(smtp_server)
         server.starttls()
-        server.login('misha.ponizil','series36')
+        server.login('invites@locreep.com','locreeper')
         server.sendmail(from_addr, email, msg.as_string())
         server.quit()
         # email sent
