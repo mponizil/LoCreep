@@ -12,7 +12,7 @@ from django.core.context_processors import csrf
 from django.views.decorators.http import require_POST
 from tumblr import Api
 
-import re, sys, random, string
+import os, re, sys, random, string
 
 BLOG = "locreep.tumblr.com"
 USER = "locreep@mailinator.com"
