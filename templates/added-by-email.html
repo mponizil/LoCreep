@@ -6,6 +6,9 @@
 $(function() {
   $("#update_user").submit(update_user)
   $("#signup").click(update_user)
+  $("input[type='text'],input[type='password']").keyup(function(e) {
+    if(e.keyCode == 13) update_user();
+  })
 })
 function update_user() {
   params = {
