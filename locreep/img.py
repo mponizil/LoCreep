@@ -13,6 +13,9 @@ def upload_creep_photo(request):
     conversation_id = request.POST['conversation_id']
     
     if request.method == 'POST':
+        if request.FILES['creep_photo'] is None:
+            return render_to_response('error.html', { 'error': 'Please choose a file to upload.' }, context_instance=RequestContext(request))
+        
         f=request.FILES['creep_photo'] # this is my file
         
         try:
