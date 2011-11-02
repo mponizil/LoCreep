@@ -39,7 +39,7 @@ $(function() {
 		</div>
 		<div class="details">
 			<p class="name">{{ group.name }}</p>
-			<p class="info">Created: Oct 6, 2011</p>
+			<p class="info">Created: {{ group.date_created|date:"M d, Y" }}</p>
 			<p class="info">{{ group.phone }}</p>
 		</div>
 	</div>
