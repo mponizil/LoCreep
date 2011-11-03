@@ -344,7 +344,7 @@ def user_message(request):
     user = request.user
     body = request.POST['body']
     
-    message = Message(conversation=conversation,user_type='user',body=body)
+    message = Message(conversation=conversation,user_type='user',user=user,body=body)
     message.save()
     
     url = 'http://locreep.com:3000/message'
