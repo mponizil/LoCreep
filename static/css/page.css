@@ -148,6 +148,11 @@
   margin-left:10px;
 }
 
+#video {
+  padding:20px 0;
+  width:320px;
+  margin:0 auto;
+}
 #error {
   text-align:center;
   padding:20px;
