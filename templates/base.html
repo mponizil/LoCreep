@@ -29,14 +29,14 @@
     {% if header != 'large' %}<a href="/"><img src="/static/images/small_logo.jpg" /></a>{% endif %}
     
     {% if user.is_authenticated %}
-			<div id="header_menu">{{ user.first_name }} {{ user.last_name }} | <a href="/logout">Sign out</a></div>
+			<div id="header_menu"><a href="/dashboard">{{ user.get_full_name }}</a> | <a href="/logout">Sign out</a></div>
     {% endif %}
   </div>
 	
 	{% block content %}{% endblock %}
 	
 	<div id="footer">
-		<a href="/how-to">How To Use</a> | <a href="/terms">Terms of Use</a> | <a href="/contact">Contact</a>
+		<a href="/video">Watch the Video</a> | <a href="/how-to">How To Use</a> | <a href="/terms">Terms of Use</a> | <a href="/contact">Contact</a>
 	</div>
 </div>
 

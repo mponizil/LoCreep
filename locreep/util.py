@@ -134,6 +134,9 @@ def generate_replacements():
         replacements[name] = ''.join(random.choice(string.ascii_uppercase) for x in range(len(name)))
     return replacements
 
+def video(request):
+    return render_to_response("video.html", context_instance=RequestContext(request))
+
 def how_to(request):
     return render_to_response("how-to.html", context_instance=RequestContext(request))
 

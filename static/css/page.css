@@ -198,6 +198,9 @@
 	font-size: 14px;
 	color: white;
 }
+#header_menu a {
+  color:white;
+}
 #header_menu{
 	float: right;
 	margin-right: 20px;

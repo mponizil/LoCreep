@@ -50,6 +50,7 @@ urlpatterns = patterns('',
 	(r'^creep-lookup$', app.creep_lookup),
 	(r'^reverse-lookup$', app.reverse_lookup),
 	
+	(r'^video$', util.video),
 	(r'^how-to$', util.how_to),
 	(r'^terms$', util.terms),
 	(r'^contact$', util.contact),
