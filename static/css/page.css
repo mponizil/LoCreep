@@ -151,7 +151,7 @@
 #error {
   text-align:center;
   padding:20px;
-  line-height:2;
+  line-height:1.4;
 }
 .blank {
   padding:20px 10px;
@@ -161,6 +161,7 @@
 .blank p {
   margin-bottom:10px;
 }
+#error a,
 .blank a {
   color:#78255e;
   text-decoration:underline;

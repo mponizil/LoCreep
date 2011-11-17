@@ -8,6 +8,7 @@ urlpatterns = patterns('',
 	# (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
 	
 	(r'^valid-email/(\w+)$', util.valid_email),
+	(r'^send-again$', util.send_again),
 	
 	(r'^$', util.welcome_pg),
 	(r'^welcome$', util.welcome_pg),

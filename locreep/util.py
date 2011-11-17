@@ -2,6 +2,7 @@ from locreep.models import *
 
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -34,7 +35,7 @@ def valid_email(request, rand_str):
         return render_to_response("error.html", { 'error': "You must be logged in to validate your email." })
     
     if request.user.is_anonymous() or (request.user.email != user.email or request.user.password != user.password):
-        return render_to_response("error.html", { 'error': 'Invalid registration key. Try logging in.' })
+        return render_to_response("error.html", { 'error': "Invalid registration key. Try logging in." })
     
     user.is_active = True
     user.save()
@@ -42,6 +43,45 @@ def valid_email(request, rand_str):
     registration_key.delete()
     
     return render_to_response("valid-email.html", context_instance=RequestContext(request))
+
+@login_required(login_url='/login')
+def send_again(request):
+    smtp_server = 'smtp.gmail.com:587'
+    from_addr = 'admin@locreep.com'
+    
+    # send email requesting they validate their address
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Please validate your email address"
+    msg['From'] = 'LoCreep Admin'
+    msg['To'] = request.user.email
+    
+    try:
+        registration_key = RegistrationKey.objects.get(user=request.user)
+        rand_str = registration_key.rand_str
+    except RegistrationKey.DoesNotExist:
+        rand_str = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(12))
+        registration_key = RegistrationKey(rand_str=rand_str,user=user)
+        registration_key.save()
+    
+    link = "http://locreep.com/valid-email/" + rand_str
+    
+    text = "Thanks for joining LoCreep! Please click the following link to validate your email address.\n\n" + link
+    html = "<html><head></head><body>Thanks for joining LoCreep! Please click the following link to validate your email address.<br /><br /><a href='" + link + "'>" + link + "</a></body></html>"
+    
+    part1 = MIMEText(text, 'plain')
+    part2 = MIMEText(html, 'html')
+    
+    msg.attach(part1)
+    msg.attach(part2)
+    
+    server = smtplib.SMTP(smtp_server)
+    server.starttls()
+    server.login('admin@locreep.com','locreeper')
+    server.sendmail(from_addr, request.user.email, msg.as_string())
+    server.quit()
+    # email sent
+    
+    return render_to_response("email-sent.html")
 
 def welcome_pg(request):
     if not request.user.is_authenticated():

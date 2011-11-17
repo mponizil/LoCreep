@@ -90,7 +90,7 @@ def create_group(request):
         return render_to_response("error.html", { 'error': "We apologize but we are fresh out of numbers to give out. Try again soon; we are working on obtaining more." })
     
     if not request.user.is_active:
-        return render_to_response("error.html", { 'error': "We apologize but we are going to need you to validate your email address before you can create a group." })
+        return render_to_response("error.html", { 'error': "We apologize but we are going to need you to validate your email address before you can create a group.<br /><br /><a href='/send-again'>Send confirmation email again</a>" })
     
     return render_to_response("create-group.html", { 'phone': number[0].phone }, context_instance=RequestContext(request))
 

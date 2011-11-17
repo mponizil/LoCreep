@@ -17,18 +17,18 @@ users = User.objects.all()[0:200]
 for user in users:
     if not user.email:
         # user.delete()
-        print 'deleting user without email\n\n'
+        print 'deleting user without email\n'
     else:
         # set user is_active to False
         user.is_active = False
         # user.save()
-        print 'deactivating user: ' + user.email + '\n'
+        print 'deactivating user: ' + user.email
 
         # create RegistrationKey
         rand_str = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(12))
         registration_key = RegistrationKey(rand_str=rand_str,user=user)
         # registration_key.save()
-        print 'creating registration key: ' + rand_str + '\n'
+        print 'creating registration key: ' + rand_str
 
         # email requesting that user validate email
         smtp_server = 'smtp.gmail.com:587'
@@ -42,8 +42,8 @@ for user in users:
 
         link = "http://locreep.com/valid-email/" + rand_str
 
-        text = "Hello LoCreeper,\n\nThanks for joining LoCreep, we are happy to have you on board! There are new features brewing, so stick around as we assemble the world's first Creeper prevention software.\n\nIn the mean time, we have a limited supply of phone numbers to give out and we need you to validate your email in order to user the service. Please click the following link to validate your email address.\n\n" + link
-        html = "<html><head></head><body>Hello LoCreeper,<br /><br />Thanks for joining LoCreep, we are happy to have you on board! There are new features brewing, so stick around as we assemble the world's first Creeper prevention software.<br /><br />In the mean time, we have a limited supply of phone numbers to give out and we need you to validate your email in order to user the service. Please click the following link to validate your email address.<br /><br /><a href='" + link + "'>" + link + "</a></body></html>"
+        text = "Hello LoCreeper,\n\nThanks for joining LoCreep, we are happy to have you on board! There are new features brewing, so stick around as we assemble the world's first Creeper prevention software.\n\nBefore becoming a card-carrying LoCreep user, we need you to validate your email in order to use the tools and receive a LoCreep phone number. Please click the following link to validate your email address. Thank you!\n\n" + link + "\n\nHappy creeping!\nThe LoCreep Team"
+        html = "<html><head></head><body>Hello LoCreeper,<br /><br />Thanks for joining LoCreep, we are happy to have you on board! There are new features brewing, so stick around as we assemble the world's first Creeper prevention software.<br /><br />Before becoming a card-carrying LoCreep user, we need you to validate your email in order to use the tools and receive a LoCreep phone number. Please click the following link to validate your email address. Thank you!<br /><br /><a href='" + link + "'>" + link + "</a><br /><br />Happy creeping!<br />The LoCreep Team</body></html>"
 
         part1 = MIMEText(text, 'plain')
         part2 = MIMEText(html, 'html')
@@ -56,5 +56,5 @@ for user in users:
         server.login('admin@locreep.com','locreeper')
         # server.sendmail(from_addr, user.email, msg.as_string())
         server.quit()
-        print 'email sent\n\n'
+        print 'email sent\n'
         # email sent
