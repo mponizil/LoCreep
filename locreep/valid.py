@@ -10,11 +10,11 @@ import random, string
 def ping_users(request):
     ret = ''
     if request.user.id == 1:
-        users = User.objects.all()
+        users = User.objects.all()[0:200]
 
         for user in users:
             if not user.email:
-                user.delete()
+                # user.delete()
             else:
                 # set user is_active to False
                 user.is_active = False
