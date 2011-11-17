@@ -35,7 +35,7 @@ def valid_email(request, rand_str):
         return render_to_response("error.html", { 'error': "You must be logged in to validate your email." })
     
     if request.user.is_anonymous() or (request.user.email != user.email or request.user.password != user.password):
-        return render_to_response("error.html", { 'error': "Invalid registration key. Try logging in." })
+        return render_to_response("error.html", { 'error': "Invalid registration key. Try <a href='/login'>logging in</a>." })
     
     user.is_active = True
     user.save()
