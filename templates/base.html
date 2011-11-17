@@ -26,17 +26,23 @@
 <div id="whole_page">
   
   <div id="header">
-    {% if header != 'large' %}<a href="/"><img src="/static/images/small_logo.jpg" /></a>{% endif %}
     
-    {% if user.is_authenticated %}
-			<div id="header_menu"><a href="/dashboard">{{ user.get_full_name }}</a> | <a href="/logout">Sign out</a></div>
-    {% endif %}
+    <div id="header-cont">
+
+      {% if header != 'large' %}<a href="/"><img src="/static/images/small_logo.jpg" /></a>{% endif %}
+    
+      {% if user.is_authenticated %}
+  			<div id="header_menu"><a href="/dashboard">{{ user.get_full_name }}</a> | <a href="/logout">Sign out</a></div>
+      {% endif %}
+    
+    </div>
+    
   </div>
 	
 	{% block content %}{% endblock %}
 	
 	<div id="footer">
-		<a href="/video">Watch the Video</a> | <a href="/how-to">How To Use</a> | <a href="/terms">Terms of Use</a> | <a href="/contact">Contact</a>
+		<a href="/video">Watch the Video</a> | <a href="/how-to">How To Use</a> | <a href="/terms">Terms of Use</a> | <a href="/press">Press</a> | <a href="/contact">Contact</a>
 	</div>
 </div>
 
