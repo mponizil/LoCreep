@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from lc.locreep import app, twil, util, gauge, img, static, valid
+from lc.locreep import app, twil, util, gauge, img, static
 
 urlpatterns = patterns('',
 	# (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
@@ -57,8 +57,6 @@ urlpatterns = patterns('',
 	(r'^terms$', static.terms),
 	(r'^contact$', static.contact),
     (r'^press$', static.press),
-    
-    (r'^valid$', valid.ping_users),
     
     url(r'^admin/', include(admin.site.urls)),
 )
