@@ -19,6 +19,9 @@ class UserProfile(models.Model):
 class RegistrationKey(models.Model):
     rand_str = models.CharField(max_length=12)
     user = models.ForeignKey(User)
+    
+    def __unicode__(self):
+        return str(self.user.email + ": " + self.rand_str)
 
 class Creep(models.Model):
     date_created = models.DateTimeField()

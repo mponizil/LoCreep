@@ -12,6 +12,10 @@ from django.core.context_processors import csrf
 from django.views.decorators.http import require_POST
 from tumblr import Api
 
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 import os, re, sys, random, string
 
 BLOG = "locreep.tumblr.com"
@@ -20,15 +24,24 @@ PASSWORD = "locreep"
 
 def valid_email(request, rand_str):
     try:
-        registration_key = RegisterKey.objects.get(rand_str=rand_str)
-    except RegisterKey.DoesNotExist:
+        registration_key = RegistrationKey.objects.get(rand_str=rand_str)
+    except RegistrationKey.DoesNotExist:
         return render_to_response("error.html", { 'error': "Invalid registration key." })
     
     user = registration_key.user
+    
+    if request.user is None:
+        return render_to_response("error.html", { 'error': "You must be logged in to validate your email." })
+    
+    if request.user.is_anonymous() or (request.user.email != user.email or request.user.password != user.password):
+        return render_to_response("error.html", { 'error': 'Invalid registration key. Try logging in.' })
+    
     user.is_active = True
     user.save()
     
-    return render_to_response("valid-email.html")
+    registration_key.delete()
+    
+    return render_to_response("valid-email.html", context_instance=RequestContext(request))
 
 def welcome_pg(request):
     if not request.user.is_authenticated():
@@ -58,6 +71,37 @@ def register(request):
     
     auth_user = authenticate(username=email,password=password)
     login(request, auth_user)
+    
+    smtp_server = 'smtp.gmail.com:587'
+    from_addr = 'admin@locreep.com'
+    
+    # send email requesting they validate their address
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Please validate your email address"
+    msg['From'] = 'LoCreep Admin'
+    msg['To'] = email
+    
+    rand_str = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(12))
+    registration_key = RegistrationKey(rand_str=rand_str,user=user)
+    registration_key.save()
+    
+    link = "http://locreep.com/valid-email/" + rand_str
+    
+    text = "Thanks for joining LoCreep! Please click the following link to validate your email address.\n\n" + link
+    html = "<html><head></head><body>Thanks for joining LoCreep! Please click the following link to validate your email address.<br /><br /><a href='" + link + "'>" + link + "</a></body></html>"
+    
+    part1 = MIMEText(text, 'plain')
+    part2 = MIMEText(html, 'html')
+    
+    msg.attach(part1)
+    msg.attach(part2)
+    
+    server = smtplib.SMTP(smtp_server)
+    server.starttls()
+    server.login('admin@locreep.com','locreeper')
+    server.sendmail(from_addr, email, msg.as_string())
+    server.quit()
+    # email sent
     
     return HttpResponse('{ "success": true }')
 
