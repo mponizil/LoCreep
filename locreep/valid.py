@@ -53,7 +53,7 @@ def ping_users(request):
                 server.login('admin@locreep.com','locreeper')
                 # server.sendmail(from_addr, user.email, msg.as_string())
                 server.quit()
-                ret += HttpResponse('email sent<br />')
+                ret += 'email sent<br />'
                 # email sent
         
         return HttpResponse(ret)
