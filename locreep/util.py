@@ -18,6 +18,18 @@ BLOG = "locreep.tumblr.com"
 USER = "locreep@mailinator.com"
 PASSWORD = "locreep"
 
+def valid_email(request, rand_str):
+    try:
+        registration_key = RegisterKey.objects.get(rand_str=rand_str)
+    except RegisterKey.DoesNotExist:
+        return render_to_response("error.html", { 'error': "Invalid registration key." })
+    
+    user = registration_key.user
+    user.is_active = True
+    user.save()
+    
+    return render_to_response("valid-email.html")
+
 def welcome_pg(request):
     if not request.user.is_authenticated():
         return render_to_response("welcome.html", { 'header': 'large' }, context_instance=RequestContext(request))
@@ -39,6 +51,7 @@ def register(request):
         return HttpResponse('{ "success": false, "error": "The email you entered already exists." }')
     
     user = User.objects.create_user(email,email,password)
+    user.is_active = False
     user.first_name = fname
     user.last_name = lname
     user.save()

@@ -7,6 +7,8 @@ from lc.locreep import app, twil, util, gauge, img, static
 urlpatterns = patterns('',
 	# (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
 	
+	(r'^valid-email/(\w+)$', util.valid_email),
+	
 	(r'^$', util.welcome_pg),
 	(r'^welcome$', util.welcome_pg),
 	(r'^register$', util.register),

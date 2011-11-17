@@ -16,6 +16,10 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return str(self.user.username)
 
+class RegistrationKey(models.Model):
+    rand_str = models.CharField(max_length=12)
+    user = models.ForeignKey(User)
+
 class Creep(models.Model):
     date_created = models.DateTimeField()
     phone = models.CharField(max_length=12)

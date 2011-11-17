@@ -26,16 +26,12 @@
 <div id="whole_page">
   
   <div id="header">
-    
-    <div id="header-cont">
 
-      {% if header != 'large' %}<a href="/"><img src="/static/images/small_logo.jpg" /></a>{% endif %}
-    
-      {% if user.is_authenticated %}
-  			<div id="header_menu"><a href="/dashboard">{{ user.get_full_name }}</a> | <a href="/logout">Sign out</a></div>
-      {% endif %}
-    
-    </div>
+    {% if header != 'large' %}<a href="/"><img src="/static/images/small_logo.jpg" /></a>{% endif %}
+  
+    {% if user.is_authenticated %}
+			<div id="header_menu"><a href="/dashboard">{{ user.get_full_name }}</a> | <a href="/logout">Sign out</a></div>
+    {% endif %}
     
   </div>
 	

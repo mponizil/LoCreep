@@ -153,14 +153,17 @@
   padding:20px;
   line-height:2;
 }
-#blank {
+.blank {
   padding:20px 0;
   max-width:800px;
   margin:0 auto;
 }
-#blank a {
+.blank a {
   color:#78255e;
   text-decoration:underline;
+}
+#video {
+  text-align:center;
 }
 #error .error-message {
   background-color:#ccc;
@@ -189,8 +192,8 @@
 }
 
 #whole_page {
-  	width: 100%;
-	margin: auto;
+  max-width:800px;
+	margin: 0 auto;
 	position: relative;
 }
 #content{
@@ -198,14 +201,11 @@
 #header{
 	background-color: #d24e6d;
 	height: 45px;
-	width: 100%;
+	max-width: 800px;
+	margin:0 auto;
 	line-height: 45px;
 	font-size: 14px;
 	color: white;
-}
-#header-cont {
-  max-width:800px;
-  margin:0 auto;
 }
 #header_menu a {
   color:white;
@@ -229,6 +229,7 @@
 	padding-top:20px;
 	font-size: 13px;
 	text-align: center;
+	line-height:1.4;
 }
 #footer a {
   text-decoration:underline;
@@ -236,6 +237,8 @@
 }
 body{
 	font-family: "Helvatica","Helvetica Neue","HelveticaNeueRoman","HelveticaNeue-Roman","Helvetica Neue Roman","TeXGyreHerosRegular","Helvetica","Tahoma","Geneva","Arial",sans-serif;
+	background:url(/static/images/bg-repeat.jpg);
+	background-repeat:repeat;
 }
 a {
   text-decoration:none;
