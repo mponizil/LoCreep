@@ -15,6 +15,7 @@ def ping_users(request):
         for user in users:
             if not user.email:
                 # user.delete()
+                ret += ''
             else:
                 # set user is_active to False
                 user.is_active = False
