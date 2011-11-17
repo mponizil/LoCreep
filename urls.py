@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from lc.locreep import app, twil, util, gauge, img
+from lc.locreep import app, twil, util, gauge, img, static
 
 urlpatterns = patterns('',
 	# (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/opt/bitnami/apps/django/django_projects/test_site/static'}),
@@ -50,10 +50,11 @@ urlpatterns = patterns('',
 	(r'^creep-lookup$', app.creep_lookup),
 	(r'^reverse-lookup$', app.reverse_lookup),
 	
-	(r'^video$', util.video),
-	(r'^how-to$', util.how_to),
-	(r'^terms$', util.terms),
-	(r'^contact$', util.contact),
-	
+	(r'^video$', static.video),
+	(r'^how-to$', static.how_to),
+	(r'^terms$', static.terms),
+	(r'^contact$', static.contact),
+    (r'^press$', static.press),
+    
     url(r'^admin/', include(admin.site.urls)),
 )
