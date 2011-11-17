@@ -8,6 +8,7 @@ from email.mime.text import MIMEText
 import random, string
 
 def ping_users(request):
+    ret = ''
     if request.user.id == 1:
         users = User.objects.all()
 
@@ -17,14 +18,14 @@ def ping_users(request):
             else:
                 # set user is_active to False
                 user.is_active = False
-                user.save()
-                print 'deactivating user: ' + user.email
+                # user.save()
+                ret += 'deactivating user: ' + user.email + '<br />'
     
                 # create RegistrationKey
                 rand_str = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(12))
                 registration_key = RegistrationKey(rand_str=rand_str,user=user)
                 registration_key.save()
-                print 'creating registration key: ' + rand_str
+                ret += 'creating registration key: ' + rand_str + '<br />'
     
                 # email requesting that user validate email
                 smtp_server = 'smtp.gmail.com:587'
@@ -50,11 +51,11 @@ def ping_users(request):
                 server = smtplib.SMTP(smtp_server)
                 server.starttls()
                 server.login('admin@locreep.com','locreeper')
-                server.sendmail(from_addr, user.email, msg.as_string())
+                # server.sendmail(from_addr, user.email, msg.as_string())
                 server.quit()
-                print HttpResponse('email sent')
+                ret += HttpResponse('email sent<br />')
                 # email sent
         
-        return HttpResponse('success')
+        return HttpResponse(ret)
     else:
         return HttpResponse('gtfo')
