@@ -77,7 +77,7 @@ def text(request):
     # send reply
     # sms = tc.sms.messages.create(to = creep_phone, from_ = group_phone, body = "lol you're funny!")
     
-    return HttpResponse('{ "success": true }')
+    return HttpResponse('<?xml version="1.0" encoding="UTF-8"?>')
 
 @csrf_exempt
 def save_creepy_voice(request):
@@ -122,11 +122,12 @@ def save_creepy_voice(request):
     response = urllib2.urlopen(req)
     the_page = response.read()
     
-    return HttpResponse('{ "success": true }')
+    return HttpResponse('<?xml version="1.0" encoding="UTF-8"?>')
 
 @csrf_exempt
 def phone(request):	
     r = twiml.Response()
+    # r.play("/static/mp3/voicemail.mp3")
     r.say("hello")
     r.record(action=domain_name+"/save_creepy_voice", method="GET")
     return HttpResponse(str(r))
