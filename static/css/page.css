@@ -111,7 +111,7 @@
 .summary .name{
 	font-size: 16px;
 	color: #e9307d;
-	line-height: 30px;
+	line-height: 24px;
 }
 .summary .info{
 	font-size: 15px;
@@ -148,19 +148,26 @@
   margin-left:10px;
 }
 
-#video {
-  padding:20px 0;
-  width:320px;
-  margin:0 auto;
-}
 #error {
   text-align:center;
   padding:20px;
-  line-height:2;
-}
-#blank {
-  padding:20px;
   line-height:1.4;
+}
+.blank {
+  padding:20px 10px;
+  max-width:800px;
+  margin:0 auto;
+}
+.blank p {
+  margin-bottom:10px;
+}
+#error a,
+.blank a {
+  color:#78255e;
+  text-decoration:underline;
+}
+#video {
+  text-align:center;
 }
 #error .error-message {
   background-color:#ccc;
@@ -189,8 +196,8 @@
 }
 
 #whole_page {
-  	width: 100%;
-	margin: auto;
+  max-width:800px;
+	margin: 0 auto;
 	position: relative;
 }
 #content{
@@ -198,7 +205,8 @@
 #header{
 	background-color: #d24e6d;
 	height: 45px;
-	width: 100%;
+	max-width: 800px;
+	margin:0 auto;
 	line-height: 45px;
 	font-size: 14px;
 	color: white;
@@ -221,10 +229,10 @@
 	clear: both;
 	color: #787878;
 	height: 20px;
-	padding: 5px;
-	padding-top:20px;
+	padding:20px 5px;
 	font-size: 13px;
 	text-align: center;
+	line-height:1.4;
 }
 #footer a {
   text-decoration:underline;
@@ -232,8 +240,15 @@
 }
 body{
 	font-family: "Helvatica","Helvetica Neue","HelveticaNeueRoman","HelveticaNeue-Roman","Helvetica Neue Roman","TeXGyreHerosRegular","Helvetica","Tahoma","Geneva","Arial",sans-serif;
+	background:url(/static/images/bg-repeat.jpg);
+	background-repeat:repeat;
 }
 a {
   text-decoration:none;
   color:#dfced9;
+}
+h1 {
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:10px;
 }
