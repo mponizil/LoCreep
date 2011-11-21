@@ -99,7 +99,7 @@ class Message(models.Model):
 
 class Number(models.Model):
     phone = models.CharField(max_length=12)
-    is_available = models.BooleanField()
+    is_available = models.BooleanField(default=True)
     
     def __unicode__(self):
         return str(self.phone) + " (" + str(self.is_available) + ")"
