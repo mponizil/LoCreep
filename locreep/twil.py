@@ -127,7 +127,7 @@ def save_creepy_voice(request):
 @csrf_exempt
 def phone(request):	
     r = twiml.Response()
-    # r.play("/static/mp3/voicemail.mp3")
-    r.say("hello")
+    r.play("/static/mp3/voicemail.mp3")
+    # r.say("hello")
     r.record(action=domain_name+"/save_creepy_voice", method="GET")
     return HttpResponse(str(r))
