@@ -214,7 +214,6 @@ class Api:
 		try: 
 			urlopen(req)
 			raise TumblrError("Error writing post")
-
 		except HTTPError, e:
 			if 201 == e.code:
 				newid = e.read() 
