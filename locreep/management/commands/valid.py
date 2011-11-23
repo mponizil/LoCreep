@@ -12,22 +12,22 @@ import random, string
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-        users = User.objects.filter(date_joined__lte=datetime(2011,11,17))
-
+        users = User.objects.filter(date_joined__lte=datetime(2011,11,17))[0:100]
+        
         for user in users:
             if not user.email or not re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$",user.email):
-                # user.delete()
+                user.delete()
                 print 'deleting user without email\n'
             else:
                 # set user is_active to False
                 user.is_active = False
-                # user.save()
+                user.save()
                 print 'deactivating user: ' + user.email
 
                 # create RegistrationKey
                 rand_str = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(12))
                 registration_key = RegistrationKey(rand_str=rand_str,user=user)
-                # registration_key.save()
+                registration_key.save()
                 print 'creating registration key: ' + rand_str
 
                 # email requesting that user validate email
@@ -53,8 +53,8 @@ class Command(BaseCommand):
 
                 server = smtplib.SMTP(smtp_server)
                 server.starttls()
-                # server.login('admin@locreep.com','locreeper')
-                # server.sendmail(from_addr, user.email, msg.as_string())
+                server.login('admin@locreep.com','locreeper')
+                server.sendmail(from_addr, user.email, msg.as_string())
                 server.quit()
                 print 'email sent\n'
                 # email sent
