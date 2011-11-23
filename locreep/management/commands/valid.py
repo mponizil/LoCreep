@@ -53,7 +53,7 @@ class Command(BaseCommand):
 
                 server = smtplib.SMTP(smtp_server)
                 server.starttls()
-                server.login('admin@locreep.com','locreeper')
+                # server.login('admin@locreep.com','locreeper')
                 # server.sendmail(from_addr, user.email, msg.as_string())
                 server.quit()
                 print 'email sent\n'
