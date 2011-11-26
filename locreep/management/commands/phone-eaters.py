@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # get all the inactive users
         users = User.objects.filter(is_active=False)
+        match = 0
         
         # iterate through inactive users to find which of them run groups
         for user in users:
@@ -52,8 +53,9 @@ class Command(BaseCommand):
                 server.starttls()
                 
                 print 'send email to: ' + user.email
-                print 'with link: ' + rk.rand_str + '\n\n'
+                print 'with link: ' + link
+                print str(match) + '\n'
                 
-                # server.login('admin@locreep.com','locreeper')
-                # server.sendmail(from_addr, user.email, msg.as_string())
+                server.login('admin@locreep.com','locreeper')
+                server.sendmail(from_addr, user.email, msg.as_string())
                 server.quit()
