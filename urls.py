@@ -55,11 +55,11 @@ urlpatterns = patterns('',
     # (r'^creep-lookup$', app.creep_lookup),
     # (r'^reverse-lookup$', app.reverse_lookup),
     # 
-    # (r'^video$', static.video),
+    (r'^video$', static.video),
     # (r'^how-to$', static.how_to),
     # (r'^terms$', static.terms),
-    # (r'^contact$', static.contact),
-    # (r'^press$', static.press),
+    (r'^contact$', static.contact),
+    (r'^press$', static.press),
     
     url(r'^admin/', include(admin.site.urls)),
 )
