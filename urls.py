@@ -40,11 +40,11 @@ urlpatterns = patterns('',
 	#  (r'^conversations/(\d+)$', app.conversation),
 	#     
 	#  (r'^user_message$', app.user_message),
-	#     
-	#  (r'^text$', twil.text),
-	#  (r'^phone$', twil.phone),
-	#  (r'^save_creepy_voice$', twil.save_creepy_voice),
-	#  
+	
+	(r'^text$', twil.text),
+	(r'^phone$', twil.phone),
+	(r'^save_creepy_voice$', twil.save_creepy_voice),
+	
 	#  (r'^tumblr_text$', util.tumblr_text),
 	#  
 	#  (r'^gauge$', gauge.home),
