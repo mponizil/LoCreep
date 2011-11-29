@@ -23,6 +23,9 @@ BLOG = "locreep.tumblr.com"
 USER = "locreep@mailinator.com"
 PASSWORD = "locreep"
 
+def down(request):
+    return render_to_response("down.html")
+
 def valid_email(request, rand_str):
     try:
         registration_key = RegistrationKey.objects.get(rand_str=rand_str)
