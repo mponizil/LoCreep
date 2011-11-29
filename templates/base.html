@@ -29,21 +29,21 @@
 
     {% if header != 'large' %}<a href="/"><img src="/static/images/small_logo.jpg" /></a>{% endif %}
     
-    {# <div id="header_menu"> #}
-    {#   {% if user.is_authenticated %} #}
-    {#   <a href="/dashboard">{{ user.get_full_name }}</a> | <a href="/logout">Sign out</a> #}
-    {#   {% else %} #}
-    {#   <a href="/login">Login</a> #}
-    {#   {% endif %} #}
-    {# </div> #}
+    <!--<div id="header_menu">
+      {% if user.is_authenticated %}
+      <a href="/dashboard">{{ user.get_full_name }}</a> | <a href="/logout">Sign out</a>
+      {% else %}
+      <a href="/login">Login</a>
+      {% endif %}
+    </div>-->
     
   </div>
 	
 	{% block content %}{% endblock %}
 	
-	<div id="footer">
-		<a href="/video">Video</a> | <!--<a href="/how-to">How To</a> | <a href="/terms">Terms</a> |--> <a href="/press">Press</a> | <a href="/contact">Contact</a>
-	</div>
+	<!--<div id="footer">
+		<a href="/video">Video</a> | <a href="/how-to">How To</a> | <a href="/terms">Terms</a> | <a href="/press">Press</a> | <a href="/contact">Contact</a>
+	</div>-->
 </div>
 
 </body>
