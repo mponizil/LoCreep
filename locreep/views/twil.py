@@ -1,19 +1,17 @@
+from django.conf import settings
 from locreep.models import *
 
+from django.views.decorators.csrf import csrf_exempt
+from django.core.context_processors import csrf
+from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
 
 from twilio.rest import TwilioRestClient
 from twilio import twiml
 
-from django.views.decorators.csrf import csrf_exempt
-from django.core.context_processors import csrf
-from django.views.decorators.http import require_POST
-
 import urllib
 import urllib2
 import cgi
-
-domain_name = "http://locreep.com"
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -60,7 +58,7 @@ def text(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://locreep.com:3000/message'
+    url = settings.CHAT_URL + '/message'
     values = {
         'group_id' : group.id,
         'conversation_id' : conversation.id,
@@ -108,7 +106,7 @@ def save_creepy_voice(request):
     message.save()
     
     # broadcast to chat room
-    url = 'http://locreep.com:3000/message'
+    url = settings.CHAT_URL + '/message'
     values = {
         'group_id' : group.id,
         'conversation_id' : conversation.id,
@@ -127,6 +125,5 @@ def save_creepy_voice(request):
 def phone(request):	
     r = twiml.Response()
     r.play("/static/mp3/voicemail.mp3")
-    # r.say("hello")
-    r.record(action=domain_name+"/save_creepy_voice", method="GET")
+    r.record(action=settings.URL+"/save_creepy_voice", method="GET")
     return HttpResponse(str(r))

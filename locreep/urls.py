@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('locreep.views',
+
     url(r'^valid-email/(\w+)$', 'util.valid_email'),
     url(r'^send-again$', 'util.send_again'),
     

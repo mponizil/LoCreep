@@ -20,6 +20,13 @@ DATABASES = {
    }
 }
 
+HOST = 'localhost'
+URL = 'http://58q3.localtunnel.com'
+CHAT_URL = 'http://localhost:3000'
+# HOST = 'locreep.com'
+# URL = 'http://locreep.com'
+# CHAT_URL = 'http://locreep.com:3000'
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

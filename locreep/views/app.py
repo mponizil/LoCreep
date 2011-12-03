@@ -1,29 +1,25 @@
+from django.conf import settings
+from django.db.models import Q
 from locreep.models import *
-
-from django.template import RequestContext, loader
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from django.db.models import Q
-
+from django.views.decorators.csrf import csrf_exempt
+from django.core.context_processors import csrf
+from django.views.decorators.http import require_POST
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from twilio.rest import TwilioRestClient
 from twilio import twiml
 
-from django.views.decorators.csrf import csrf_exempt
-from django.core.context_processors import csrf
-from django.views.decorators.http import require_POST
-
 import urllib
 import urllib2
 import json
+import re
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
-import re
 
 account = "ACb77594eb2632a2d77422086328ef03a9"
 token = "536e78251ae04f88ce7828ecd66fc673"
@@ -80,7 +76,7 @@ def view_creeps(request, group_id):
     
     conversations = Conversation.objects.filter(group=group)
     
-    return render(request, "view-creeps.html", { 'group': group, 'conversations': conversations })
+    return render(request, "view-creeps.html", { 'group': group, 'conversations': conversations, 'chat_url': settings.CHAT_URL })
 
 @login_required(login_url='/login')
 def create_group(request):
@@ -197,7 +193,7 @@ def conversation(request, conversation_id):
     a = json.loads(f.read())
     qr = a['data']['url']+'.qrcode'
     
-    return render(request, "conversation.html", { 'conversation': conversation, 'creep': conversation.creep, 'messages': messages, 'qr': qr })
+    return render(request, "conversation.html", { 'conversation': conversation, 'creep': conversation.creep, 'messages': messages, 'qr': qr, 'chat_url': settings.CHAT_URL })
 
 @csrf_exempt
 @require_POST
@@ -350,7 +346,7 @@ def user_message(request):
     message = Message(conversation=conversation,user_type='user',user=user,body=body)
     message.save()
     
-    url = 'http://locreep.com:3000/message'
+    url = settings.CHAT_URL + '/message'
     values = {'conversation_id' : conversation_id,
               'user_type' : 'user',
               'message' : body }
