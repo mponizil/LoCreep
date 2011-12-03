@@ -7,14 +7,13 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     photo = models.CharField(max_length=75, default="/static/images/users/anonymous.jpg")
     
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            UserProfile.objects.create(user=instance)
-    
-    post_save.connect(create_user_profile, sender=User)
-    
     def __unicode__(self):
         return str(self.user.username)
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+post_save.connect(create_user_profile, sender=User)
 
 class RegistrationKey(models.Model):
     rand_str = models.CharField(max_length=12)
