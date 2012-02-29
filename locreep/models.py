@@ -10,10 +10,10 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return str(self.user.username)
 
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
-post_save.connect(create_user_profile, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+    post_save.connect(create_user_profile, sender=User)
 
 class RegistrationKey(models.Model):
     rand_str = models.CharField(max_length=12)

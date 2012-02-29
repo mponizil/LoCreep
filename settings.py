@@ -2,7 +2,7 @@
 
 import os
 
-DEBUG = True
+DEBUG = False
 # DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -20,9 +20,9 @@ DATABASES = {
    }
 }
 
-HOST = 'localhost'
-URL = 'http://58q3.localtunnel.com'
-CHAT_URL = 'http://localhost:3000'
+HOST = 'locreep.com'
+URL = 'http://locreep.com'
+CHAT_URL = 'http://locreep.com:3000'
 # HOST = 'locreep.com'
 # URL = 'http://locreep.com'
 # CHAT_URL = 'http://locreep.com:3000'
