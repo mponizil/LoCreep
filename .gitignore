@@ -9,3 +9,4 @@ static/images/creeps/
 static/images/badges/
 static/images/users/
 info/
+local_settings.py
