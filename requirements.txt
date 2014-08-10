@@ -1,0 +1,6 @@
+Django==1.4
+httplib2==0.9
+six==1.7.3
+twilio==3.6.6
+wsgiref==0.1.2
+https://python-tumblr.googlecode.com/files/python-tumblr-0.1.zip
