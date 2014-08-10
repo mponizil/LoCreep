@@ -2,4 +2,4 @@
 
 Fend of creepers with your friends.
 
-![Conversation](example/screenshots/conversation.png)
+![Conversation](example/screenshots/conversation.jpg)
